@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WRT | AUTO BAB IV GENERATOR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .page-shadow {
+            box-shadow: 0 4px 20px rgba(13, 110, 253, 0.04);
+        }
+        /* Custom scrollbar for data-heavy panels */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e5eeff;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d2e4ff;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#6ffbbe",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#213145",
+                        "surface-container-highest": "#d3e4fe",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#001946",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "surface-variant": "#d3e4fe",
+                        "primary-fixed": "#d2e4ff",
+                        "error": "#ba1a1a",
+                        "primary": "#0061a5",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "tertiary-container": "#0cb880",
+                        "background": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "outline-variant": "#c0c7d4",
+                        "on-surface": "#0b1c30",
+                        "inverse-primary": "#a0caff",
+                        "on-tertiary-fixed": "#002113",
+                        "tertiary": "#006c49",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#b1c5ff",
+                        "secondary-fixed": "#dae2ff",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#0061a5",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#a0caff",
+                        "surface": "#f8f9ff",
+                        "on-primary-fixed-variant": "#00497e",
+                        "on-primary-fixed": "#001c37",
+                        "outline": "#707783",
+                        "inverse-on-surface": "#eaf1ff",
+                        "secondary-container": "#036cfb",
+                        "surface-container": "#e5eeff",
+                        "on-primary-container": "#003a67",
+                        "on-secondary-fixed-variant": "#00419e",
+                        "primary-container": "#4da6ff",
+                        "on-secondary-container": "#fefcff",
+                        "on-tertiary-container": "#00412b",
+                        "secondary": "#0055c9",
+                        "on-surface-variant": "#404752",
+                        "on-background": "#0b1c30"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "panel-sidebar": "280px",
+                        "stack-gap": "16px",
+                        "gutter": "24px",
+                        "panel-inspector": "320px",
+                        "panel-content": "1fr",
+                        "container-padding": "32px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "title-sm": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"],
+                        "data-mono": ["JetBrains Mono"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "title-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "data-mono": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline flex justify-between items-center w-full px-container-padding h-16 z-50 fixed top-0 left-0">
+<div class="flex items-center gap-8">
+<h1 class="font-display-lg text-display-lg font-bold text-primary dark:text-primary-fixed tracking-tighter">WRT</h1>
+<nav class="hidden md:flex gap-6">
+<a class="font-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors" href="#">Datasets</a>
+<a class="font-body-md text-primary dark:text-primary-fixed font-bold border-b-2 border-primary" href="#">Analysis</a>
+<a class="font-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors" href="#">Models</a>
+<a class="font-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors" href="#">Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-all">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-all">settings</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Researcher Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvaHuzqv4gqSZmn-3iZIRhmoPr7FH-Ur5dTVy7z1_-nZyjldRlMIvZ7H7pNf2VpeftGobVXGs5pJUf9PYXXVLLWE2hZnlBeB6p81UgSknpU4fxR-plWNlMYftA-jKRBryqneUyc0ArWig-g5T1Ih-HgMewg_AVK3mkpD54iJp_KWl-uzSC94z3Y6fYXe6HkM_AU5WpNjYqnnDXFfQUzI9XHuyEPdUeaY-wU89Qd9jnzU2Utk3cwifcTW0hzdLCjv-FFkYcdbwM_0_3"/>
+</div>
+</div>
+</header>
+<main class="pt-16 flex h-screen overflow-hidden">
+<!-- SideNavBar (Left) -->
+<aside class="flex flex-col h-full fixed left-0 top-0 pt-20 pb-8 px-4 z-40 bg-surface-container-low/60 dark:bg-inverse-surface/60 w-panel-sidebar backdrop-blur-xl border-r border-outline-variant dark:border-outline">
+<div class="px-2 mb-6">
+<div class="flex items-center gap-3 mb-1">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface">WRT</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant opacity-70 px-8">V2.4 Enterprise</p>
+</div>
+<button class="mx-2 mb-6 py-2.5 px-4 bg-primary text-on-primary rounded-lg font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                New Analysis
+            </button>
+<div class="flex-1 space-y-1">
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">dashboard</span>
+<span class="font-label-caps text-label-caps">Workspace</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg font-semibold transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder_open</span>
+<span class="font-label-caps text-label-caps">Active Projects</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">table_chart</span>
+<span class="font-label-caps text-label-caps">Raw Data</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">query_stats</span>
+<span class="font-label-caps text-label-caps">Statistical Models</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">ios_share</span>
+<span class="font-label-caps text-label-caps">Export Center</span>
+</a>
+</nav>
+<div class="pt-6 mt-6 border-t border-outline-variant/30">
+<p class="px-4 mb-2 font-label-caps text-[10px] text-outline uppercase tracking-widest">Chapter Structure</p>
+<nav class="space-y-0.5">
+<a class="flex items-center gap-3 px-4 py-1.5 text-primary text-body-sm hover:bg-primary/5 rounded-md font-semibold" href="#s41">
+<span class="text-primary font-bold">4.1</span> Respondent Profile
+                        </a>
+<a class="flex items-center gap-3 px-4 py-1.5 text-on-surface-variant text-body-sm hover:bg-surface-container-high/50 rounded-md" href="#s42">
+<span class="text-outline font-bold">4.2</span> Data Validity
+                        </a>
+<a class="flex items-center gap-3 px-4 py-1.5 text-on-surface-variant text-body-sm hover:bg-surface-container-high/50 rounded-md" href="#s43">
+<span class="text-outline font-bold">4.3</span> Reliability Test
+                        </a>
+<a class="flex items-center gap-3 px-4 py-1.5 text-on-surface-variant text-body-sm hover:bg-surface-container-high/50 rounded-md" href="#s44">
+<span class="text-outline font-bold">4.4</span> Normality Test
+                        </a>
+<a class="flex items-center gap-3 px-4 py-1.5 text-on-surface-variant text-body-sm hover:bg-surface-container-high/50 rounded-md" href="#s45">
+<span class="text-outline font-bold">4.5</span> Hypothesis Testing
+                        </a>
+<a class="flex items-center gap-3 px-4 py-1.5 text-on-surface-variant text-body-sm hover:bg-surface-container-high/50 rounded-md" href="#s48">
+<span class="text-outline font-bold">4.8</span> Conclusion
+                        </a>
+</nav>
+</div>
+</div>
+<div class="mt-auto space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-caps text-label-caps">Documentation</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+</div>
+</aside>
+<!-- Analysis Canvas (Center) -->
+<section class="ml-panel-sidebar mr-panel-inspector w-full h-full flex flex-col overflow-y-auto bg-background">
+<!-- Context Header -->
+<div class="px-8 pt-8 pb-4 flex justify-between items-end sticky top-0 bg-background/80 backdrop-blur-md z-30">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Auto Bab IV Generator</h2>
+<p class="font-body-sm text-on-surface-variant">Generating Hasil Penelitian dan Pembahasan based on Model V1.2</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant text-primary rounded-lg font-semibold hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+                        Export PDF
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-semibold hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-[18px]">description</span>
+                        Export DOCX
+                    </button>
+</div>
+</div>
+<!-- Editor Workspace -->
+<div class="px-8 py-6 max-w-4xl mx-auto w-full">
+<!-- Academic Page Template -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-16 page-shadow min-h-[1200px] mb-20 text-justify leading-relaxed">
+<h3 class="text-center font-bold text-[18px] uppercase mb-12">BAB IV<br/>HASIL PENELITIAN DAN PEMBAHASAN</h3>
+<div class="mb-10" id="s41">
+<h4 class="font-bold mb-4">4.1 Profil Responden</h4>
+<p class="mb-4">Berdasarkan hasil pengumpulan data melalui kuesioner daring yang disebarkan selama periode Januari hingga Maret 2024, diperoleh total 150 responden valid. Karakteristik responden dalam penelitian ini dikelompokkan berdasarkan jenis kelamin, usia, dan tingkat pendidikan sebagaimana disajikan dalam Tabel 4.1 berikut:</p>
+<!-- Embedded Table -->
+<div class="my-6 overflow-hidden border border-outline-variant rounded">
+<table class="w-full text-sm border-collapse">
+<thead class="bg-[#F1F5F9] font-bold">
+<tr>
+<th class="border-b border-outline-variant p-3 text-left">Karakteristik</th>
+<th class="border-b border-outline-variant p-3 text-left">Kategori</th>
+<th class="border-b border-outline-variant p-3 text-center">Frekuensi</th>
+<th class="border-b border-outline-variant p-3 text-center">Persentase (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="border-b border-outline-variant p-3 align-top" rowspan="2">Jenis Kelamin</td>
+<td class="border-b border-outline-variant p-3">Laki-laki</td>
+<td class="border-b border-outline-variant p-3 text-center font-data-mono">68</td>
+<td class="border-b border-outline-variant p-3 text-center font-data-mono">45.3%</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="border-b border-outline-variant p-3">Perempuan</td>
+<td class="border-b border-outline-variant p-3 text-center font-data-mono">82</td>
+<td class="border-b border-outline-variant p-3 text-center font-data-mono">54.7%</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="border-b border-outline-variant p-3 align-top" rowspan="3">Usia</td>
+<td class="border-b border-outline-variant p-3">18 - 25 Tahun</td>
+<td class="border-b border-outline-variant p-3 text-center font-data-mono">45</td>
+<td class="border-b border-outline-variant p-3 text-center font-data-mono">30.0%</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="border-b border-outline-variant p-3">26 - 35 Tahun</td>
+<td class="border-b border-outline-variant p-3 text-center font-data-mono">72</td>
+<td class="border-b border-outline-variant p-3 text-center font-data-mono">48.0%</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="border-b border-outline-variant p-3">&gt; 35 Tahun</td>
+<td class="border-b border-outline-variant p-3 text-center font-data-mono">33</td>
+<td class="border-b border-outline-variant p-3 text-center font-data-mono">22.0%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="text-center font-body-sm text-[12px] italic mb-6">Sumber: Data diolah (2024)</p>
+</div>
+<div class="mb-10" id="s42">
+<h4 class="font-bold mb-4">4.2 Uji Validitas</h4>
+<p class="mb-4">Uji validitas dilakukan untuk memastikan bahwa instrumen penelitian yang digunakan mampu mengukur variabel penelitian secara akurat. Pengujian dilakukan dengan membandingkan nilai <i>r-count</i> dengan <i>r-table</i> (N=150, alpha=0.05) sebesar 0.159. Hasil pengujian menunjukkan seluruh indikator dinyatakan valid.</p>
+<div class="grid grid-cols-2 gap-8 my-8">
+<!-- Visual Data Card -->
+<div class="border border-outline-variant p-4 rounded-lg bg-surface-container-lowest">
+<p class="font-label-caps text-[10px] text-outline mb-3 uppercase">Distribution Summary</p>
+<div class="flex items-center justify-between mb-4">
+<span class="text-[24px] font-bold text-primary">98.2%</span>
+<span class="bg-tertiary-container/20 text-tertiary text-[10px] font-bold px-2 py-1 rounded uppercase">Valid</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[98.2%]"></div>
+</div>
+</div>
+<div class="border border-outline-variant p-4 rounded-lg bg-surface-container-lowest">
+<p class="font-label-caps text-[10px] text-outline mb-3 uppercase">Reliability Score</p>
+<div class="flex items-center justify-between mb-4">
+<span class="text-[24px] font-bold text-secondary">0.842</span>
+<span class="bg-tertiary-container/20 text-tertiary text-[10px] font-bold px-2 py-1 rounded uppercase">Optimal</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[84%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-10" id="s43">
+<h4 class="font-bold mb-4">4.3 Analisis Regresi Linier</h4>
+<p class="mb-4">Analisis ini digunakan untuk mengetahui pengaruh variabel independen terhadap variabel dependen. Visualisasi tren data menunjukkan adanya korelasi positif yang signifikan antara Kepuasan Kerja (X1) dengan Loyalitas Karyawan (Y).</p>
+<div class="h-64 w-full bg-surface-container-low rounded-lg flex flex-col items-center justify-center border border-dashed border-outline relative overflow-hidden group">
+<img alt="Data Chart" class="absolute inset-0 w-full h-full opacity-10 object-cover" data-alt="A clean, professional academic scatter plot chart showing data points distributed along a clear upward linear trend line. The background is a crisp white with light grey grid lines. Accents of professional blue and soft cyan highlight the correlation. The aesthetic is modern, minimalist, and scientific." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVJ3axA4w9mGp89rOpT4th9cSTUZ__-l71tqINgAALWSi2gmpax-yMWdo11ZPKvkA_Haweq1xbHHAuPAhX9RmxgEsRGYWOMBOKo07OrkOPpHAOtJIY-hLwAyE3MAVcn0lLcMURQleZFs8GqJJ8H7Apeu0TagQs0lLXbkMTSTSxWMY6uUkxZo7TKY3iXNLquQhryOXlxRZWsvwITaQDQYYqMVEoqz1aOR838NiUhBLgTtfXFjww3cVv-bZOCV3wzK7yriHx19aBTcds"/>
+<span class="material-symbols-outlined text-primary text-4xl mb-2 opacity-50">insert_chart</span>
+<p class="text-on-surface-variant font-body-sm">Click to configure chart parameters</p>
+</div>
+<p class="text-center font-body-sm text-[12px] italic mt-2">Gambar 4.1 Visualisasi Koefisien Determinasi</p>
+</div>
+<div class="mb-10" id="s48">
+<h4 class="font-bold mb-4">4.8 Kesimpulan Bab</h4>
+<p>Berdasarkan keseluruhan analisis data yang telah dilakukan, dapat disimpulkan bahwa hipotesis penelitian (H1) diterima. Terdapat pengaruh signifikan antara variabel independen terhadap dependen dengan nilai signifikansi sebesar 0.000 (&lt; 0.05).</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Inspector/Properties Panel (Right) -->
+<aside class="flex flex-col h-full fixed right-0 top-0 pt-20 px-6 z-40 bg-surface-container-lowest dark:bg-inverse-surface w-panel-inspector border-l border-outline-variant dark:border-outline shadow-sm">
+<div class="mb-8">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h3 class="font-title-sm text-title-sm font-semibold text-tertiary">Insight Panel</h3>
+</div>
+<p class="font-body-sm text-on-surface-variant opacity-70">AI Ready</p>
+</div>
+<div class="space-y-6 flex-1 overflow-y-auto pr-2">
+<!-- AI Suggestions Card -->
+<div class="p-4 rounded-xl bg-tertiary-fixed/30 border border-tertiary/20">
+<div class="flex items-center gap-2 mb-2 text-tertiary">
+<span class="material-symbols-outlined text-[18px]">lightbulb</span>
+<span class="font-label-caps text-label-caps">AI Suggestion</span>
+</div>
+<p class="font-body-sm leading-relaxed mb-3">Paragraf 4.1 bisa diperkuat dengan menambahkan narasi tentang outlier pada kelompok usia &gt; 35 tahun.</p>
+<button class="text-tertiary font-bold text-[12px] hover:underline flex items-center gap-1 transition-all">
+                        Apply suggestion <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+<!-- Research Health -->
+<div class="space-y-4">
+<p class="font-label-caps text-label-caps text-on-surface-variant">Research Health</p>
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="font-body-sm">Citation Density</span>
+<span class="font-data-mono text-tertiary font-bold">Optimal</span>
+</div>
+<div class="h-1.5 bg-surface-container rounded-full">
+<div class="h-full bg-tertiary w-[85%] rounded-full"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-sm">Data Consistency</span>
+<span class="font-data-mono text-secondary font-bold">High</span>
+</div>
+<div class="h-1.5 bg-surface-container rounded-full">
+<div class="h-full bg-secondary w-[92%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Anomalies List -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<p class="font-label-caps text-label-caps text-on-surface-variant">Anomalies</p>
+<span class="bg-error-container text-error text-[10px] px-2 py-0.5 rounded-full font-bold">2 FOUND</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-start gap-3 p-3 bg-error-container/10 border border-error/10 rounded-lg group hover:bg-error-container/20 transition-all cursor-help">
+<span class="material-symbols-outlined text-error text-[18px] mt-0.5">warning</span>
+<div>
+<p class="text-body-sm font-semibold">Missing Table Reference</p>
+<p class="text-[11px] text-on-surface-variant">Table 4.3 cited but not found in the source document.</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 bg-error-container/10 border border-error/10 rounded-lg group hover:bg-error-container/20 transition-all cursor-help">
+<span class="material-symbols-outlined text-error text-[18px] mt-0.5">warning</span>
+<div>
+<p class="text-body-sm font-semibold">P-Value Inconsistency</p>
+<p class="text-[11px] text-on-surface-variant">Narrative says 0.000, but SPSS log shows 0.002.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Logs -->
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-3">Live Logs</p>
+<div class="bg-on-background rounded-lg p-4 text-[11px] font-data-mono text-tertiary-fixed leading-relaxed">
+<div class="opacity-50">[14:22:01] Parsing data source: dataset_final_v2.csv</div>
+<div>[14:22:05] Running Validity Analysis (KMO &amp; Bartlett)</div>
+<div>[14:22:09] Generating Bab IV narrative...</div>
+<div class="text-primary-fixed">[14:22:15] Formatting Section 4.1 Respondant Profile</div>
+<div class="animate-pulse">_</div>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Contextual FAB for quick AI generation -->
+<button class="fixed bottom-8 right-panel-inspector mr-12 bg-secondary text-on-secondary w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all z-50 group">
+<span class="material-symbols-outlined">auto_fix_high</span>
+<div class="absolute right-full mr-4 bg-on-background text-background px-3 py-1 rounded text-[12px] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+            Regenerate Selection
+        </div>
+</button>
+<script>
+        // Simple scroll spy behavior for sidebar
+        const sections = document.querySelectorAll('div[id^="s4"]');
+        const navLinks = document.querySelectorAll('nav a[href^="#s4"]');
+
+        window.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-primary', 'font-semibold', 'bg-primary/5');
+                link.classList.add('text-on-surface-variant');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.remove('text-on-surface-variant');
+                    link.classList.add('text-primary', 'font-semibold', 'bg-primary/5');
+                }
+            });
+        }, { passive: true });
+    </script>
+</body></html>

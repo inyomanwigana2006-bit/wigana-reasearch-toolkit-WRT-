@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WRT - Enterprise Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#6ffbbe",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "surface-container-highest": "#d3e4fe",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed": "#001946",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "surface-variant": "#d3e4fe",
+                    "primary-fixed": "#d2e4ff",
+                    "error": "#ba1a1a",
+                    "primary": "#0061a5",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary-container": "#0cb880",
+                    "background": "#f8f9ff",
+                    "surface-container-low": "#eff4ff",
+                    "outline-variant": "#c0c7d4",
+                    "on-surface": "#0b1c30",
+                    "inverse-primary": "#a0caff",
+                    "on-tertiary-fixed": "#002113",
+                    "tertiary": "#006c49",
+                    "surface-container-high": "#dce9ff",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#b1c5ff",
+                    "secondary-fixed": "#dae2ff",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#0061a5",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#a0caff",
+                    "surface": "#f8f9ff",
+                    "on-primary-fixed-variant": "#00497e",
+                    "on-primary-fixed": "#001c37",
+                    "outline": "#707783",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-container": "#036cfb",
+                    "surface-container": "#e5eeff",
+                    "on-primary-container": "#003a67",
+                    "on-secondary-fixed-variant": "#00419e",
+                    "primary-container": "#4da6ff",
+                    "on-secondary-container": "#fefcff",
+                    "on-tertiary-container": "#00412b",
+                    "secondary": "#0055c9",
+                    "on-surface-variant": "#404752",
+                    "on-background": "#0b1c30"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "panel-sidebar": "280px",
+                    "stack-gap": "16px",
+                    "gutter": "24px",
+                    "panel-inspector": "320px",
+                    "panel-content": "1fr",
+                    "container-padding": "32px"
+            },
+            "fontFamily": {
+                    "label-caps": ["Inter"],
+                    "title-sm": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "body-sm": ["Inter"],
+                    "data-mono": ["JetBrains Mono"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "title-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "data-mono": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-pill { font-variation-settings: 'FILL' 1; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-container-padding h-16 z-50 fixed top-0 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg font-bold text-primary tracking-tighter">WRT</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant hover:text-primary font-label-caps text-label-caps" href="#">Datasets</a>
+<a class="text-on-surface-variant hover:text-primary font-label-caps text-label-caps" href="#">Analysis</a>
+<a class="text-on-surface-variant hover:text-primary font-label-caps text-label-caps" href="#">Models</a>
+<a class="text-on-surface-variant hover:text-primary font-label-caps text-label-caps" href="#">Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2 hover:bg-surface-container-low transition-colors rounded-full" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined p-2 bg-primary-container text-on-primary-container transition-colors rounded-full active-pill" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</button>
+<img alt="Researcher Profile" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A professional close-up headshot of a senior research scientist in a high-tech corporate office environment. The scientist has a focused, intelligent expression. The background is a clean, bright minimalist laboratory with subtle hints of blue and white lighting, maintaining a modern light-mode aesthetic with soft diffusion." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg4qUd96CkOZ8jtgUSVZDXNu8D8mTbNoJ1FhtIcmBYSl2T6zjK4mkwhDCMQ0MBZnN4AUqthMsWhMQc9iKCEQbMCrxAICeFH0harjnOqDvGMSJCedBtnVFM3AdI_sGTQGxbp7k8LR4bs6ISHI_cdCGwVNpvtGN0HaS9odJsmEzC3HfK6BVUsztZGeLmUzbCeJ7H9XZOcqkSQedzgu9R06ud-J8m9a6HB1auA3SsLupdc2Q15ebGCDToJjnQX8NcWCHDHJmcj7UMIDgA"/>
+</div>
+</header>
+<div class="flex pt-16">
+<!-- SideNavBar (Left) -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 pt-20 pb-8 px-4 z-40 w-panel-sidebar glass-panel border-r border-outline-variant">
+<div class="mb-8 px-2">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">WRT</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant opacity-70">V2.4 Enterprise</p>
+</div>
+<button class="mb-6 mx-2 py-2.5 bg-primary text-on-primary rounded-lg font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span class="font-label-caps text-label-caps">New Analysis</span>
+</button>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps">Workspace</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="folder_open">folder_open</span>
+<span class="font-label-caps text-label-caps">Active Projects</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="table_chart">table_chart</span>
+<span class="font-label-caps text-label-caps">Raw Data</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-label-caps">Statistical Models</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="ios_share">ios_share</span>
+<span class="font-label-caps text-label-caps">Export Center</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="history">history</span>
+<span class="font-label-caps text-label-caps">Archived</span>
+</a>
+</nav>
+<div class="mt-auto space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps">Documentation</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="contact_support">contact_support</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Analysis Canvas (Center Content) -->
+<main class="ml-panel-sidebar mr-panel-inspector w-full min-h-screen p-container-padding pb-24">
+<header class="mb-10">
+<h1 class="font-headline-md text-headline-md text-on-surface">Settings</h1>
+<p class="text-on-surface-variant font-body-md">Manage your research environment, AI integrations, and system preferences.</p>
+</header>
+<div class="space-y-12">
+<!-- Appearance Section -->
+<section id="appearance">
+<div class="flex items-center gap-2 mb-6 text-primary">
+<span class="material-symbols-outlined" data-icon="palette">palette</span>
+<h3 class="font-title-sm text-title-sm">Appearance</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm hover:shadow-md transition-shadow">
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-4">THEME MODE</label>
+<div class="flex gap-4">
+<button class="flex-1 p-4 border-2 border-primary bg-surface rounded-lg flex flex-col items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-primary" data-icon="light_mode">light_mode</span>
+<span class="font-body-sm">Light</span>
+</button>
+<button class="flex-1 p-4 border border-outline-variant bg-inverse-surface text-inverse-on-surface rounded-lg flex flex-col items-center gap-2 hover:border-outline transition-all opacity-60">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+<span class="font-body-sm">Dark</span>
+</button>
+</div>
+</div>
+<div class="p-6 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-4">ACCENT COLOR</label>
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full bg-primary ring-2 ring-offset-2 ring-primary cursor-pointer"></div>
+<div class="w-10 h-10 rounded-full bg-tertiary cursor-pointer hover:scale-105 transition-transform"></div>
+<div class="w-10 h-10 rounded-full bg-[#E91E63] cursor-pointer hover:scale-105 transition-transform"></div>
+<div class="w-10 h-10 rounded-full bg-[#9C27B0] cursor-pointer hover:scale-105 transition-transform"></div>
+<div class="w-10 h-10 rounded-full bg-[#4CAF50] cursor-pointer hover:scale-105 transition-transform"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- AI Providers Section (Bento Style) -->
+<section id="ai-providers">
+<div class="flex items-center gap-2 mb-6 text-primary">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<h3 class="font-title-sm text-title-sm">AI Providers</h3>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+<div class="lg:col-span-1 p-6 bg-white border border-outline-variant rounded-xl flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2">
+<img alt="OpenAI" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGgMqqcJ860x4e3_rveAlck1lBn307rHQaDdfRurIFbQLZSMXyn1q-4zV9eLqixYCzmTuduk7pHvpOh6AYxS0U7WVV6OsJacmqlyLC_q5_naD9fa7O_12H05i4idAaHAQsTJ658O1fCOPaL0oit0k9KgIQvEvEmiX-M2YZc2AUsPKzph61AiqMJIMCN6w9csUkLcaO28TjMxFMa6SmGwxavM9rhg0LVtvzRHVIxCawFIwoLu9-ZbUTwW0BB4mdjm_tFBYIR2ZanDI3"/>
+<span class="font-title-sm">OpenAI</span>
+</div>
+<span class="bg-tertiary/10 text-tertiary text-[10px] font-bold px-2 py-0.5 rounded-full">ACTIVE</span>
+</div>
+<input class="w-full bg-surface-container border border-outline-variant rounded px-3 py-2 text-sm focus:ring-2 focus:ring-primary-container outline-none transition-all" placeholder="sk-••••••••••••••••" type="password"/>
+<select class="w-full bg-surface-container border border-outline-variant rounded px-3 py-2 text-sm outline-none">
+<option>GPT-4o (Default)</option>
+<option>GPT-4 Turbo</option>
+<option>GPT-3.5</option>
+</select>
+</div>
+<div class="lg:col-span-1 p-6 bg-white border border-outline-variant rounded-xl flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2">
+<img alt="Claude" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYXxZ1vY7kRuTGxl3VlhFdWwKUOxId-mxO0dQPijOFRD8uEDDxYllA_D7QhSP75N_sGni5LyYIabSPBM_tYgkY9vpAVbYN1F7-RGNM3zuYoc_FaU_s9yAYllPNiEVZmurYqlOq1lO1wwKO93DkeVs6Y2vcAKhKD49WTzUfAXu4hJ_Jedi2pmjHShn-3Rb0YZr4x-gXMNbTINJe6rEkubZY31h8wDWZVu2KRutdwf0AbuyIGsdv5tr8miiPssgympqvNC50tPyjB6U5"/>
+<span class="font-title-sm">Claude</span>
+</div>
+<span class="bg-outline-variant/30 text-on-surface-variant text-[10px] font-bold px-2 py-0.5 rounded-full">CONFIGURED</span>
+</div>
+<input class="w-full bg-surface-container border border-outline-variant rounded px-3 py-2 text-sm outline-none" type="password" value="••••••••••••••••"/>
+<select class="w-full bg-surface-container border border-outline-variant rounded px-3 py-2 text-sm outline-none">
+<option>Claude 3.5 Sonnet</option>
+<option>Claude 3 Opus</option>
+</select>
+</div>
+<div class="lg:col-span-1 p-6 bg-white border border-outline-variant rounded-xl flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2">
+<img alt="Ollama" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLoP3vA5B2ArabTPxn7lRS0OM5t4IoGE5KEZvrpBO9aFJ40QvF94J-Itzg8iTy-ZUaThh55qo_ZlqXBsWu1UtqgsSmwLUmonrnkWrq7zIzbvCSRRtAaXZHg7Y_5Q5mRhOwDx1Gip6f2lEDQN-D-RKrxCoa86hjIz8q3XsqRYW3VDkbL6y9VpoyYmxeA_nAljEKp0oA3kbASiy4ShL-kMOqfInx8m0pz8cWU8lo6YV92xFihMo7Doigu86vOP9paRXz7btY0rOnq609"/>
+<span class="font-title-sm">Ollama</span>
+</div>
+<span class="bg-secondary-container/20 text-secondary text-[10px] font-bold px-2 py-0.5 rounded-full">LOCAL</span>
+</div>
+<input class="w-full bg-surface-container border border-outline-variant rounded px-3 py-2 text-sm outline-none" type="text" value="http://localhost:11434"/>
+<div class="flex gap-2">
+<span class="text-xs font-data-mono bg-surface-container-high px-2 py-1 rounded">llama3:8b</span>
+<span class="text-xs font-data-mono bg-surface-container-high px-2 py-1 rounded">mistral</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Configuration Clusters -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Export Settings -->
+<div class="space-y-6">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined" data-icon="ios_share">ios_share</span>
+<h3 class="font-title-sm text-title-sm">Export Settings</h3>
+</div>
+<div class="bg-white p-6 rounded-xl border border-outline-variant space-y-4">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-body-md font-semibold">Automatic CSV Header Generation</p>
+<p class="text-xs text-on-surface-variant">Includes metadata in all raw exports</p>
+</div>
+<div class="w-10 h-5 bg-primary rounded-full relative cursor-pointer">
+<div class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full"></div>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<p class="font-body-md font-semibold">Encryption (AES-256)</p>
+<p class="text-xs text-on-surface-variant">Encrypt files before cloud upload</p>
+</div>
+<div class="w-10 h-5 bg-outline-variant rounded-full relative cursor-pointer">
+<div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- OCR & Analysis -->
+<div class="space-y-6">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined" data-icon="document_scanner">document_scanner</span>
+<h3 class="font-title-sm text-title-sm">Analysis &amp; OCR</h3>
+</div>
+<div class="bg-white p-6 rounded-xl border border-outline-variant space-y-4">
+<div class="flex items-center gap-4">
+<div class="flex-1">
+<label class="font-label-caps text-label-caps block mb-1">OCR LANGUAGE</label>
+<select class="w-full bg-surface-container border border-outline-variant rounded px-3 py-2 text-sm outline-none">
+<option>English (US)</option>
+<option>German</option>
+<option>Mandarin</option>
+</select>
+</div>
+<div class="flex-1">
+<label class="font-label-caps text-label-caps block mb-1">DATA DENSITY</label>
+<select class="w-full bg-surface-container border border-outline-variant rounded px-3 py-2 text-sm outline-none">
+<option>Standard</option>
+<option>High Performance</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- License & Footer Info -->
+<section class="pt-8 border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between items-start gap-8">
+<div class="max-w-md">
+<div class="flex items-center gap-2 text-on-surface-variant mb-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="verified">verified</span>
+<h4 class="font-label-caps text-label-caps">LICENSE INFORMATION</h4>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-4">Enterprise Edition — Lifetime License (Academic Track). Registered to: <b>University of Advanced Research</b>.</p>
+<button class="text-primary font-label-caps text-label-caps border border-primary px-4 py-1.5 rounded hover:bg-primary-container transition-colors">Manage Subscription</button>
+</div>
+<div class="flex gap-12">
+<div>
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-2">BACKUP STATUS</h4>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span>
+<span class="font-data-mono text-data-mono">LAST SYNC: 12 MIN AGO</span>
+</div>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-2">LANGUAGE</h4>
+<div class="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">language</span>
+<span class="font-body-sm">English (US)</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- SideNavBar (Right / Insight Panel) -->
+<aside class="flex flex-col h-screen fixed right-0 top-0 pt-20 px-6 z-40 w-panel-inspector glass-panel border-l border-outline-variant">
+<div class="mb-6">
+<h3 class="font-title-sm text-title-sm font-semibold text-tertiary">Insight Panel</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant opacity-70">AI Ready</p>
+</div>
+<div class="space-y-4">
+<div class="p-4 bg-tertiary/5 border-l-4 border-tertiary rounded-r-lg">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-tertiary text-[20px]" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-caps text-label-caps text-tertiary">AI Suggestions</span>
+</div>
+<p class="font-body-sm text-on-surface-variant">Your API latency is higher than usual. Consider switching to the "High Performance" data density setting for faster processing.</p>
+</div>
+<div class="p-4 bg-surface-container-high/40 rounded-lg">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">System Health</span>
+</div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] font-data-mono">CPU USAGE</span>
+<span class="text-[10px] font-data-mono">14%</span>
+</div>
+<div class="w-full bg-outline-variant h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[14%]"></div>
+</div>
+</div>
+<div class="p-4 bg-error-container/20 border-l-4 border-error rounded-r-lg">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-error text-[20px]" data-icon="warning">warning</span>
+<span class="font-label-caps text-label-caps text-error">Anomalies</span>
+</div>
+<p class="font-body-sm text-on-error-container">2 background sync failures detected in the last 24h.</p>
+</div>
+</div>
+<div class="mt-auto pb-8">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">LIVE LOGS</span>
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+</div>
+<div class="bg-inverse-surface rounded p-3 font-data-mono text-[10px] text-tertiary-fixed h-48 overflow-y-auto">
+<p>&gt; [14:22:01] GET /v1/api/config</p>
+<p class="text-white/60">&gt; [14:22:02] HTTP 200 OK</p>
+<p>&gt; [14:23:45] SYNC started...</p>
+<p>&gt; [14:23:51] Chunk 4/12 exported</p>
+<p>&gt; [14:24:00] Cloud handshake verified</p>
+<p class="text-white/40">&gt; [14:25:12] Idle</p>
+</div>
+</div>
+</aside>
+</div>
+<!-- Global Action Bar (Floating Bottom) -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-on-background/90 text-white px-6 py-3 rounded-full flex items-center gap-8 shadow-2xl backdrop-blur-md z-50 border border-white/10">
+<div class="flex items-center gap-3">
+<span class="font-body-md">Unsaved changes in 'Analysis'</span>
+<div class="h-4 w-[1px] bg-white/20"></div>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-label-caps text-label-caps text-white/60 hover:text-white transition-colors">Discard</button>
+<button class="bg-primary text-white font-label-caps text-label-caps px-5 py-1.5 rounded-full hover:bg-primary-container transition-all scale-105 active:scale-95">Save Changes</button>
+</div>
+</div>
+<script>
+        // Simple interactivity for demonstration
+        document.querySelectorAll('nav a, aside nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Simulation of active state change
+            });
+        });
+
+        // Micro-interaction for accent color selection
+        document.querySelectorAll('.w-10.h-10.rounded-full').forEach(pill => {
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('.w-10.h-10.rounded-full').forEach(p => p.classList.remove('ring-2', 'ring-offset-2', 'ring-primary'));
+                this.classList.add('ring-2', 'ring-offset-2', 'ring-primary');
+            });
+        });
+    </script>
+</body></html>

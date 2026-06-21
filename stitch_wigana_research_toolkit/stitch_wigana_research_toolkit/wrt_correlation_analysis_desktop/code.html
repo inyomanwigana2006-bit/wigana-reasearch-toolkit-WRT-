@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WRT - Correlation Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#003ea8",
+                        "surface-container-highest": "#d8e3fb",
+                        "on-tertiary-fixed": "#2a1700",
+                        "surface": "#f9f9ff",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#0053db",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "secondary-fixed-dim": "#4edea3",
+                        "secondary": "#006c49",
+                        "on-surface": "#111c2d",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#996100",
+                        "surface-bright": "#f9f9ff",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#2563eb",
+                        "secondary-container": "#6cf8bb",
+                        "on-primary-container": "#eeefff",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#cfdaf2",
+                        "primary": "#004ac6",
+                        "on-surface-variant": "#434655",
+                        "on-secondary-fixed": "#002113",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#dbe1ff",
+                        "on-secondary-container": "#00714d",
+                        "tertiary-fixed": "#ffddb8",
+                        "on-tertiary-container": "#ffeedd",
+                        "on-secondary-fixed-variant": "#005236",
+                        "surface-variant": "#d8e3fb",
+                        "inverse-surface": "#263143",
+                        "surface-container": "#e7eeff",
+                        "surface-container-low": "#f0f3ff",
+                        "inverse-primary": "#b4c5ff",
+                        "outline-variant": "#c3c6d7",
+                        "secondary-fixed": "#6ffbbe",
+                        "outline": "#737686",
+                        "inverse-on-surface": "#ecf1ff",
+                        "tertiary": "#784b00",
+                        "surface-container-high": "#dee8ff",
+                        "background": "#f9f9ff",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#00174b",
+                        "error": "#ba1a1a",
+                        "on-background": "#111c2d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "container-padding": "16px",
+                        "base": "4px",
+                        "gutter": "12px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["JetBrains Mono"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .status-stripe-valid { border-left: 4px solid #4edea3; }
+        .status-stripe-anomaly { border-left: 4px solid #ffb95f; }
+        .status-stripe-invalid { border-left: 4px solid #ba1a1a; }
+        
+        .gradient-fab {
+            background: linear-gradient(135deg, #2563eb 0%, #006c49 100%);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d8e3fb; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden">
+<!-- Top Navigation Anchor -->
+<header class="w-full h-16 sticky top-0 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md flex justify-between items-center px-lg z-40 shadow-sm">
+<div class="flex items-center gap-md">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">WRT - Correlation Analysis</span>
+<nav class="hidden md:flex ml-lg gap-lg">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Team</a>
+<a class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1" href="#">Reports</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative">
+<input class="bg-surface-container-low border-none rounded-xl px-md py-sm text-body-md w-64 focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search correlation matrices..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-transform active:scale-95">notifications</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFBPA5aSazOztaNEkNDtYgdgcb_1TBMBRiNRnakt-ov0Bln94muTt-sE0GXC1U-Pr3T3P2cjj7n1VvGLni2PIvQlyEm8qJSnVyi9N8IGdA4kZVwdXCenu_nHr0sTlWWRIabmpTOtX7u1Rno8RveRKc4GXQ-STVvYCy41-P-2WA2LU1kvBWz3t_Bw6wORCMg0kXwhfMXW9GdYbDX-0EK27N77zotj63iVzycSgIquKkU8Vl5flcc6ub5ARIv4EUw8d7dGnDNOJCx9IQ"/>
+</div>
+</div>
+</header>
+<div class="flex h-[calc(100vh-64px)] overflow-hidden">
+<!-- Sidebar Navigation (JSON mapping) -->
+<aside class="flex flex-col h-full bg-surface-container dark:bg-surface-container-low shadow-sm h-screen w-64 border-r-0 z-30 transition-all duration-200 ease-in-out">
+<div class="p-lg">
+<div class="flex items-center gap-sm mb-lg">
+<span class="material-symbols-outlined text-primary text-headline-md font-bold">query_stats</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">WRT</span>
+</div>
+<button class="w-full py-md px-lg bg-primary-container text-on-primary-container rounded-xl font-bold mb-xl flex items-center justify-center gap-sm hover:brightness-110 transition-all">
+<span class="material-symbols-outlined">add</span>
+                    New Research
+                </button>
+<nav class="space-y-1">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="font-body-md text-body-md">Projects</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary font-bold border-l-4 border-primary bg-primary-container/10 transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Analysis</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-body-md text-body-md">Datasets</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md text-body-md">Archives</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-lg border-t border-outline-variant/20">
+<nav class="space-y-1">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-md text-body-md">Help</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-body-md text-body-md">Support</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Main Content Area (Center) -->
+<main class="flex-1 overflow-y-auto p-lg flex flex-col gap-lg bg-background relative">
+<!-- Controls & Visualization Section -->
+<section class="grid grid-cols-1 gap-lg">
+<div class="bg-surface-container-lowest p-lg rounded-xl shadow-sm flex flex-col gap-md">
+<div class="flex justify-between items-center">
+<div>
+<h2 class="font-headline-md text-headline-md">Bivariate Relationship Matrix</h2>
+<p class="text-on-surface-variant text-body-md">Visualizing interactions across 12 quantitative variables.</p>
+</div>
+<div class="bg-surface-container p-1 rounded-lg flex gap-1">
+<button class="px-md py-1 bg-surface-container-lowest rounded shadow-sm text-primary font-bold text-label-md">Pearson</button>
+<button class="px-md py-1 hover:bg-surface-container-high rounded text-on-surface-variant text-label-md transition-colors">Spearman</button>
+</div>
+</div>
+<!-- Heatmap / Scatter Plot Matrix Visualization Placeholder -->
+<div class="relative h-96 w-full bg-surface-container-low rounded-lg overflow-hidden flex items-center justify-center">
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<!-- Subtle grid pattern -->
+<div class="w-full h-full" style="background-image: linear-gradient(#434655 1px, transparent 1px), linear-gradient(90deg, #434655 1px, transparent 1px); background-size: 40px 40px;"></div>
+</div>
+<!-- Mock Heatmap -->
+<div class="grid grid-cols-8 grid-rows-8 gap-1 w-full h-full p-md">
+<!-- JS will generate this for a visual effect -->
+<script>
+                                const container = document.currentScript.parentElement;
+                                const colors = ['#004ac6', '#2563eb', '#b4c5ff', '#eeefff', '#f9f9ff', '#6cf8bb', '#006c49'];
+                                for(let i=0; i<64; i++) {
+                                    const cell = document.createElement('div');
+                                    const val = Math.random();
+                                    cell.style.backgroundColor = colors[Math.floor(val * colors.length)];
+                                    cell.className = "rounded-sm opacity-80 hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center text-[8px] font-label-md text-white/50";
+                                    cell.innerText = (val * 2 - 1).toFixed(2);
+                                    container.appendChild(cell);
+                                }
+                            </script>
+</div>
+</div>
+</div>
+<!-- Results Table -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<div class="p-md border-b border-outline-variant/30 flex justify-between items-center">
+<h3 class="font-headline-sm text-headline-sm">Detailed Statistical Output</h3>
+<div class="flex gap-sm">
+<button class="p-sm hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined text-on-surface-variant">filter_list</span></button>
+<button class="p-sm hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined text-on-surface-variant">download</span></button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-label-md text-on-surface-variant border-b border-outline-variant/30">
+<th class="p-md font-bold uppercase tracking-wider">Correlated Pairs</th>
+<th class="p-md font-bold uppercase tracking-wider">Coefficient (r)</th>
+<th class="p-md font-bold uppercase tracking-wider">P-Value</th>
+<th class="p-md font-bold uppercase tracking-wider">AI Status</th>
+<th class="p-md font-bold uppercase tracking-wider"></th>
+</tr>
+</thead>
+<tbody class="text-body-md">
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container/20 transition-colors status-stripe-valid">
+<td class="p-md font-medium">Daily Active Users / Retention Rate</td>
+<td class="p-md font-label-md">0.894</td>
+<td class="p-md font-label-md">< 0.001</td>
+<td class="p-md">
+<span class="px-sm py-xs bg-secondary-container/20 text-on-secondary-container text-label-md rounded-full border border-secondary-container/30">Valid</span>
+</td>
+<td class="p-md text-right"><span class="material-symbols-outlined text-on-surface-variant cursor-pointer">chevron_right</span></td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container/20 transition-colors status-stripe-anomaly">
+<td class="p-md font-medium">Latency (ms) / Server Cost</td>
+<td class="p-md font-label-md">-0.122</td>
+<td class="p-md font-label-md">0.432</td>
+<td class="p-md">
+<span class="px-sm py-xs bg-tertiary-fixed text-tertiary text-label-md rounded-full border border-tertiary-fixed-dim/30">Anomaly</span>
+</td>
+<td class="p-md text-right"><span class="material-symbols-outlined text-on-surface-variant cursor-pointer">chevron_right</span></td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container/20 transition-colors status-stripe-valid">
+<td class="p-md font-medium">Session Length / Revenue Per User</td>
+<td class="p-md font-label-md">0.654</td>
+<td class="p-md font-label-md">0.012</td>
+<td class="p-md">
+<span class="px-sm py-xs bg-secondary-container/20 text-on-secondary-container text-label-md rounded-full border border-secondary-container/30">Valid</span>
+</td>
+<td class="p-md text-right"><span class="material-symbols-outlined text-on-surface-variant cursor-pointer">chevron_right</span></td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container/20 transition-colors status-stripe-invalid">
+<td class="p-md font-medium">System Uptime / Error Count</td>
+<td class="p-md font-label-md">0.003</td>
+<td class="p-md font-label-md">0.988</td>
+<td class="p-md">
+<span class="px-sm py-xs bg-error-container/40 text-error text-label-md rounded-full border border-error-container">Invalid</span>
+</td>
+<td class="p-md text-right"><span class="material-symbols-outlined text-on-surface-variant cursor-pointer">chevron_right</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Analyze Automatically FAB (Using Gradient from Brand) -->
+<button class="fixed bottom-lg left-1/2 -translate-x-1/2 gradient-fab text-white px-xl py-md rounded-full flex items-center gap-md font-bold transition-all hover:scale-105 active:scale-95 z-50">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                Analyze Automatically
+            </button>
+</main>
+<!-- AI Assistant Sidebar (Right Panel) -->
+<aside class="w-80 h-full border-l border-outline-variant/20 glass-panel p-lg flex flex-col gap-lg z-30">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">AI Insights</h3>
+</div>
+<div class="flex flex-col gap-md flex-1 overflow-y-auto">
+<!-- AI Insight Card 1 -->
+<div class="p-md bg-secondary-container/10 border-l-4 border-secondary rounded-r-xl shadow-sm">
+<div class="flex items-center justify-between mb-sm">
+<span class="text-label-md font-bold text-secondary">Strong Correlation</span>
+<span class="material-symbols-outlined text-secondary text-sm">trending_up</span>
+</div>
+<p class="text-body-md text-on-surface-variant">A significant positive relationship (r=0.89) was detected between <strong>DAU</strong> and <strong>Retention</strong>. This suggests that current user engagement strategies are effectively driving long-term stickiness.</p>
+</div>
+<!-- AI Insight Card 2 (Anomaly) -->
+<div class="p-md bg-tertiary-fixed/10 border-l-4 border-tertiary rounded-r-xl shadow-sm">
+<div class="flex items-center justify-between mb-sm">
+<span class="text-label-md font-bold text-tertiary">Statistical Anomaly</span>
+<span class="material-symbols-outlined text-tertiary text-sm">warning</span>
+</div>
+<p class="text-body-md text-on-surface-variant">High <strong>Latency</strong> variance detected. Despite the low correlation coefficient, local clusters show significant performance degradation for Asia-Pacific node users.</p>
+</div>
+<!-- AI Insight Card 3 (Actionable) -->
+<div class="p-md bg-primary-container/10 border-l-4 border-primary rounded-r-xl shadow-sm">
+<div class="flex items-center justify-between mb-sm">
+<span class="text-label-md font-bold text-primary">Recommendation</span>
+<span class="material-symbols-outlined text-primary text-sm">tips_and_updates</span>
+</div>
+<p class="text-body-md text-on-surface-variant">The <strong>Revenue/Session</strong> correlation is weakening. We recommend investigating segment-specific checkout abandonment rates using the Spearman rank model for non-linear detection.</p>
+</div>
+</div>
+<!-- AI Input Box -->
+<div class="mt-auto pt-md border-t border-outline-variant/20">
+<div class="relative">
+<textarea class="w-full bg-surface-container-low border-none rounded-xl p-md text-body-md resize-none h-24 focus:ring-2 focus:ring-secondary/20 transition-all" placeholder="Ask about these correlations..."></textarea>
+<button class="absolute bottom-3 right-3 p-sm bg-secondary text-white rounded-lg hover:brightness-110 transition-all">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</aside>
+</div>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Simple ripple effect or hover logic for table rows
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.querySelector('.material-symbols-outlined')?.classList.add('translate-x-1');
+            });
+            row.addEventListener('mouseleave', () => {
+                row.querySelector('.material-symbols-outlined')?.classList.remove('translate-x-1');
+            });
+        });
+
+        // Toggle logic placeholder for Pearson/Spearman
+        const toggleButtons = document.querySelectorAll('.bg-surface-container button');
+        toggleButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                toggleButtons.forEach(b => {
+                    b.className = "px-md py-1 hover:bg-surface-container-high rounded text-on-surface-variant text-label-md transition-colors";
+                });
+                btn.className = "px-md py-1 bg-surface-container-lowest rounded shadow-sm text-primary font-bold text-label-md";
+            });
+        });
+    </script>
+</body></html>

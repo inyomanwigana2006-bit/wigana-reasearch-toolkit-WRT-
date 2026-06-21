@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WRT | SPSS Output Reader</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#6ffbbe",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "surface-container-highest": "#d3e4fe",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed": "#001946",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "surface-variant": "#d3e4fe",
+                    "primary-fixed": "#d2e4ff",
+                    "error": "#ba1a1a",
+                    "primary": "#0061a5",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary-container": "#0cb880",
+                    "background": "#f8f9ff",
+                    "surface-container-low": "#eff4ff",
+                    "outline-variant": "#c0c7d4",
+                    "on-surface": "#0b1c30",
+                    "inverse-primary": "#a0caff",
+                    "on-tertiary-fixed": "#002113",
+                    "tertiary": "#006c49",
+                    "surface-container-high": "#dce9ff",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#b1c5ff",
+                    "secondary-fixed": "#dae2ff",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#0061a5",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#a0caff",
+                    "surface": "#f8f9ff",
+                    "on-primary-fixed-variant": "#00497e",
+                    "on-primary-fixed": "#001c37",
+                    "outline": "#707783",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-container": "#036cfb",
+                    "surface-container": "#e5eeff",
+                    "on-primary-container": "#003a67",
+                    "on-secondary-fixed-variant": "#00419e",
+                    "primary-container": "#4da6ff",
+                    "on-secondary-container": "#fefcff",
+                    "on-tertiary-container": "#00412b",
+                    "secondary": "#0055c9",
+                    "on-surface-variant": "#404752",
+                    "on-background": "#0b1c30"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "panel-sidebar": "280px",
+                    "stack-gap": "16px",
+                    "gutter": "24px",
+                    "panel-inspector": "320px",
+                    "panel-content": "1fr",
+                    "container-padding": "32px"
+            },
+            "fontFamily": {
+                    "label-caps": ["Inter"],
+                    "title-sm": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "body-sm": ["Inter"],
+                    "data-mono": ["JetBrains Mono"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "title-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "data-mono": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #f8f9ff; color: #0b1c30; }
+        .glass-sidebar { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .card-shadow { box-shadow: 0 4px 20px rgba(13, 110, 253, 0.04); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .scanning-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: #036cfb;
+            box-shadow: 0 0 15px #036cfb;
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-outline-variant flex justify-between items-center w-full px-container-padding h-16 z-50 fixed top-0">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg font-bold text-primary tracking-tighter">WRT</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors" href="#">Datasets</a>
+<a class="text-primary font-bold border-b-2 border-primary font-body-md text-body-md" href="#">Analysis</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors" href="#">Models</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors" href="#">Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full">notifications</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full">settings</button>
+<img alt="Researcher Profile" class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant" data-alt="A professional high-resolution profile headshot of a senior academic researcher in a modern, brightly lit university laboratory setting. The background is softly blurred, showing glimpses of glass equipment and clean, white workspace. The lighting is crisp and cool, reflecting a professional and intelligent atmosphere consistent with a high-end enterprise software application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZrMJhcmkHjY-i3UOT3GULRwlPcNaJiEiOcEP2ovGpQjib2OOXXkAu5fj34BRcCCZ5l678tAVc13L-WpA9D2f_QF35dYS3dgMPvgfG2Pmzi64q4ur15LgHbB9TK-RHTHkNy9fNrpd2JZYRsDJ_KieosPZ3juqPT-IpIb7mDkPjCC2iPqSHgD5V_zrOK-mkSx19Yz_razBHu_rb3L3K7QnRyIq8QdY4CQYHIofZ0AtfiUzB3Nv93kNrPh7CEF0Rr45noVbjtGf9SsQ0"/>
+</div>
+</header>
+<!-- SideNavBar (Left) -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 pt-20 pb-8 px-4 z-40 bg-surface-container-low/60 glass-sidebar border-r border-outline-variant w-panel-sidebar">
+<div class="mb-8 px-4">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">WRT</h2>
+<p class="text-on-surface-variant font-label-caps text-label-caps opacity-70">V2.4 Enterprise</p>
+</div>
+<button class="mx-2 mb-6 py-2.5 px-4 bg-primary text-on-primary rounded-lg font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>New Analysis</span>
+</button>
+<nav class="flex-1 space-y-1">
+<div class="px-4 py-2 text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider mb-2">Main Menu</div>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">dashboard</span>
+<span class="font-label-caps text-label-caps">Workspace</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 bg-secondary-container text-on-secondary-container rounded-lg font-semibold transition-all scale-[0.98]" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="font-label-caps text-label-caps">Active Projects</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">table_chart</span>
+<span class="font-label-caps text-label-caps">Raw Data</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">query_stats</span>
+<span class="font-label-caps text-label-caps">Statistical Models</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">ios_share</span>
+<span class="font-label-caps text-label-caps">Export Center</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-body-sm text-body-sm">Documentation</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-body-sm text-body-sm">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-panel-sidebar mr-panel-inspector pt-20 px-8 pb-8 h-screen overflow-y-auto no-scrollbar">
+<div class="max-w-5xl mx-auto space-y-gutter">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-4">
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface">SPSS Output Reader</h1>
+<p class="text-on-surface-variant font-body-md text-body-md">Advanced OCR and AI-driven interpretation for statistical results.</p>
+</div>
+<div class="flex gap-3">
+<span class="flex items-center gap-1.5 px-3 py-1 bg-tertiary-container/10 text-tertiary rounded-full font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        AI ACTIVE
+                    </span>
+</div>
+</div>
+<!-- Upload Zone & Preview Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-stack-gap">
+<!-- Dropzone Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-8 card-shadow flex flex-col items-center justify-center text-center group cursor-pointer border-dashed hover:border-primary transition-colors">
+<div class="w-16 h-16 bg-primary-container/20 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
+</div>
+<h3 class="font-title-sm text-title-sm mb-2">Upload SPSS Output</h3>
+<p class="text-on-surface-variant font-body-sm text-body-sm max-w-xs mb-6">Drag and drop PNG, JPG, or PDF screenshots of your SPSS output viewer here.</p>
+<button class="px-6 py-2 border border-primary text-primary rounded-lg font-semibold hover:bg-primary-container/10 transition-colors">Select Files</button>
+<div class="mt-8 flex gap-4 opacity-40">
+<span class="material-symbols-outlined">picture_as_pdf</span>
+<span class="material-symbols-outlined">image</span>
+<span class="material-symbols-outlined">description</span>
+</div>
+</div>
+<!-- OCR Live Preview Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden card-shadow flex flex-col h-[340px]">
+<div class="px-6 py-4 border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">visibility</span>
+<span class="font-label-caps text-label-caps uppercase">OCR RAW PREVIEW</span>
+</div>
+<span class="font-data-mono text-data-mono text-primary">SCANNED_OUTPUT_01.PNG</span>
+</div>
+<div class="relative flex-1 bg-surface-dim overflow-hidden p-4">
+<div class="scanning-line"></div>
+<div class="w-full h-full bg-white shadow-inner rounded-sm p-6 overflow-hidden">
+<!-- Mock Scanned Image Content -->
+<div class="space-y-3 opacity-60">
+<div class="h-4 bg-on-surface-variant/10 rounded w-3/4"></div>
+<div class="h-4 bg-on-surface-variant/10 rounded w-1/2"></div>
+<div class="border border-on-surface-variant/10 p-2 rounded">
+<div class="grid grid-cols-4 gap-2">
+<div class="h-3 bg-on-surface-variant/20 rounded"></div>
+<div class="h-3 bg-on-surface-variant/20 rounded"></div>
+<div class="h-3 bg-on-surface-variant/20 rounded"></div>
+<div class="h-3 bg-on-surface-variant/20 rounded"></div>
+</div>
+<div class="grid grid-cols-4 gap-2 mt-2">
+<div class="h-3 bg-on-surface-variant/10 rounded"></div>
+<div class="h-3 bg-on-surface-variant/10 rounded"></div>
+<div class="h-3 bg-on-surface-variant/10 rounded"></div>
+<div class="h-3 bg-on-surface-variant/10 rounded"></div>
+</div>
+</div>
+<div class="h-4 bg-on-surface-variant/10 rounded w-5/6"></div>
+<div class="h-4 bg-on-surface-variant/10 rounded w-2/3"></div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="px-4 py-2 bg-primary/90 text-on-primary text-body-sm font-semibold rounded shadow-lg backdrop-blur-md">
+                                    Detecting Tables... 82%
+                                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Detected Tables Section -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 px-2">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<h2 class="font-title-sm text-title-sm">Extracted Analytical Tables</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-gap">
+<!-- Table Card: Reliability -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 card-shadow hover:translate-y-[-4px] transition-transform cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<span class="px-2 py-0.5 bg-tertiary-container/10 text-tertiary rounded text-[10px] font-bold uppercase tracking-wider">RELIABILITY</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary">open_in_new</span>
+</div>
+<h4 class="font-body-md text-body-md font-bold mb-1">Cronbach's Alpha</h4>
+<div class="font-data-mono text-data-mono text-on-surface-variant mb-4">Case Processing Summary (N=420)</div>
+<div class="flex items-center justify-between py-2 border-t border-outline-variant border-dashed">
+<span class="font-label-caps text-label-caps opacity-70 uppercase">Score</span>
+<span class="font-data-mono text-title-sm font-bold text-tertiary">0.842</span>
+</div>
+</div>
+<!-- Table Card: ANOVA -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 card-shadow hover:translate-y-[-4px] transition-transform cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<span class="px-2 py-0.5 bg-secondary-container/10 text-secondary rounded text-[10px] font-bold uppercase tracking-wider">VARIANCE</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary">open_in_new</span>
+</div>
+<h4 class="font-body-md text-body-md font-bold mb-1">ANOVA (One-Way)</h4>
+<div class="font-data-mono text-data-mono text-on-surface-variant mb-4">Sum of Squares / Df / Mean Square</div>
+<div class="flex items-center justify-between py-2 border-t border-outline-variant border-dashed">
+<span class="font-label-caps text-label-caps opacity-70 uppercase">Sig. (p)</span>
+<span class="font-data-mono text-title-sm font-bold text-primary">.000***</span>
+</div>
+</div>
+<!-- Table Card: Coefficients -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 card-shadow hover:translate-y-[-4px] transition-transform cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<span class="px-2 py-0.5 bg-primary-container/10 text-on-primary-container rounded text-[10px] font-bold uppercase tracking-wider">REGRESSION</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary">open_in_new</span>
+</div>
+<h4 class="font-body-md text-body-md font-bold mb-1">Coefficients</h4>
+<div class="font-data-mono text-data-mono text-on-surface-variant mb-4">Unstandardized B / Beta</div>
+<div class="flex items-center justify-between py-2 border-t border-outline-variant border-dashed">
+<span class="font-label-caps text-label-caps opacity-70 uppercase">Beta Max</span>
+<span class="font-data-mono text-title-sm font-bold text-on-surface">.458</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Interpretation Canvas -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-8 card-shadow">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<div>
+<h3 class="font-title-sm text-title-sm">AI Analytical Interpretation</h3>
+<p class="text-on-surface-variant font-body-sm text-body-sm">Automated synthesis of extracted findings</p>
+</div>
+</div>
+<div class="text-right">
+<div class="font-label-caps text-label-caps uppercase opacity-60 mb-1">Confidence Indicator</div>
+<div class="flex items-center gap-2">
+<div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="w-[94%] h-full bg-tertiary"></div>
+</div>
+<span class="font-data-mono text-data-mono font-bold text-tertiary">94%</span>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<div class="p-6 bg-surface-container-low rounded-lg border-l-4 border-primary">
+<p class="font-body-md text-body-md leading-relaxed">
+                            The extracted <span class="font-bold text-primary">Reliability Analysis</span> reveals a Cronbach’s Alpha of <span class="font-data-mono bg-white px-1.5 rounded border">0.842</span> across 12 items, suggesting high internal consistency. In the <span class="font-bold text-primary">ANOVA</span> model, the F-statistic (24.12) is significant at the <span class="italic">p &lt; .001</span> level, indicating that the main effect of "Treatment Condition" is robust.
+                        </p>
+<p class="font-body-md text-body-md mt-4 leading-relaxed">
+                            Regression coefficients suggest that "Pre-test Score" is the strongest predictor (β = .458, p &lt; .01), while "Age" did not reach statistical significance in this model.
+                        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex gap-4 p-4 rounded-lg bg-tertiary-container/5 border border-tertiary/10">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+<div>
+<h5 class="font-label-caps text-label-caps uppercase text-tertiary">Statistical Strength</h5>
+<p class="font-body-sm text-body-sm">Findings align with hypothesized directions. Effect sizes (η²) are medium-to-large.</p>
+</div>
+</div>
+<div class="flex gap-4 p-4 rounded-lg bg-error-container/5 border border-error/10">
+<span class="material-symbols-outlined text-error">warning</span>
+<div>
+<h5 class="font-label-caps text-label-caps uppercase text-error">Potential Anomaly</h5>
+<p class="font-body-sm text-body-sm">Levene's Test (p=.041) suggests slight heterogeneity of variance; consider Welch correction.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- SideNavBar (Right / Insight Panel) -->
+<aside class="flex flex-col h-screen fixed right-0 top-0 pt-20 px-6 z-40 bg-surface-container-lowest border-l border-outline-variant shadow-sm w-panel-inspector">
+<div class="mb-6">
+<h3 class="font-title-sm text-title-sm font-semibold text-tertiary">Insight Panel</h3>
+<p class="text-on-surface-variant font-body-sm text-body-sm opacity-70 uppercase tracking-tighter">AI READY</p>
+</div>
+<nav class="flex-1 space-y-4">
+<div class="group border-l-4 border-tertiary pl-2 transition-transform active:translate-x-[-2px]">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-tertiary text-[20px]">auto_awesome</span>
+<span class="font-label-caps text-label-caps text-tertiary uppercase">AI Suggestions</span>
+</div>
+<p class="text-on-surface-variant font-body-sm text-body-sm leading-snug">Generate a summary paragraph for your methodology section.</p>
+</div>
+<div class="opacity-70 hover:bg-surface-container transition-all p-2 rounded-md group">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">analytics</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Research Health</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2">
+<div class="bg-tertiary h-full w-4/5 rounded-full"></div>
+</div>
+</div>
+<div class="opacity-70 hover:bg-surface-container transition-all p-2 rounded-md group">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">warning</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Anomalies</span>
+</div>
+<p class="text-on-surface-variant font-body-sm text-body-sm">1 Potential Outlier in ANOVA data detected.</p>
+</div>
+<div class="pt-6 mt-6 border-t border-outline-variant">
+<h4 class="font-label-caps text-label-caps uppercase opacity-60 mb-4">Live Logs</h4>
+<div class="font-data-mono text-data-mono space-y-2 text-[11px] bg-on-background p-3 rounded text-inverse-on-surface h-48 overflow-y-auto no-scrollbar">
+<div class="flex gap-2"><span class="text-tertiary-fixed">[OCR]</span> Scanning pixels...</div>
+<div class="flex gap-2"><span class="text-tertiary-fixed">[OCR]</span> Table grid detected</div>
+<div class="flex gap-2"><span class="text-primary-fixed">[AI]</span> Mapping SPSS tokens</div>
+<div class="flex gap-2"><span class="text-primary-fixed">[AI]</span> Context: Correlation</div>
+<div class="flex gap-2 opacity-50"><span class="text-outline-variant">[SYS]</span> Memory optimized</div>
+<div class="flex gap-2 text-tertiary-fixed animate-pulse">_ Processing ANOVA...</div>
+</div>
+</div>
+</nav>
+<footer class="mt-auto pb-8">
+<button class="w-full py-3 bg-secondary text-on-secondary rounded-lg font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined">description</span>
+<span>Export Report</span>
+</button>
+</footer>
+</aside>
+<script>
+        // Micro-interactions for the upload zone
+        const dropzone = document.querySelector('.cursor-pointer');
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('bg-primary-container/10');
+            dropzone.classList.add('border-primary');
+        });
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('bg-primary-container/10');
+            dropzone.classList.remove('border-primary');
+        });
+    </script>
+</body></html>

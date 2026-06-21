@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WTR Toolkit - Mobile Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#eeefff",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#996100",
+                        "on-error": "#ffffff",
+                        "on-surface": "#111c2d",
+                        "on-background": "#111c2d",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#005236",
+                        "tertiary-fixed": "#ffddb8",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f9f9ff",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "primary-fixed": "#dbe1ff",
+                        "surface-container": "#e7eeff",
+                        "inverse-surface": "#263143",
+                        "surface-container-highest": "#d8e3fb",
+                        "outline": "#737686",
+                        "secondary-container": "#6cf8bb",
+                        "secondary-fixed": "#6ffbbe",
+                        "inverse-primary": "#b4c5ff",
+                        "outline-variant": "#c3c6d7",
+                        "primary": "#004ac6",
+                        "on-surface-variant": "#434655",
+                        "on-secondary-container": "#00714d",
+                        "on-tertiary-fixed": "#2a1700",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#00174b",
+                        "secondary": "#006c49",
+                        "inverse-on-surface": "#ecf1ff",
+                        "background": "#f9f9ff",
+                        "surface-tint": "#0053db",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "tertiary": "#784b00",
+                        "on-secondary-fixed": "#002113",
+                        "primary-container": "#2563eb",
+                        "surface-dim": "#cfdaf2",
+                        "on-tertiary-container": "#ffeedd",
+                        "surface-container-low": "#f0f3ff",
+                        "surface-variant": "#d8e3fb",
+                        "surface-container-high": "#dee8ff",
+                        "surface-bright": "#f9f9ff",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding": "16px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "base": "4px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "gutter": "12px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .status-stripe-valid { border-left: 4px solid #006c49; }
+        .status-stripe-anomaly { border-left: 4px solid #784b00; }
+        .status-stripe-invalid { border-left: 4px solid #ba1a1a; }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c3c6d7;
+            border-radius: 10px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed">
+<!-- Top App Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-container-padding h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container overflow-hidden">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="A professional studio portrait of a research scientist with glasses, looking directly at the camera with a confident expression. The lighting is soft and even, typical of a corporate environment. The background is a blurred office space with modern architecture and cool blue and emerald color tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTJoO6pJLSU6vO3IPuTbVFPRKrvd4DLk_7QW1foxycIZGj8uaKdKaRmTBEiIK8IZuNxdQlC2Y-8G7gv6rNS7J0zgOK45_w8kgYgxdNLSpjqIkMxI-Iv9frdstfJAzLnCjYdI7oxiHWruTHuDntSP9_HO0MXjhPOX9y47S5BA5mJaBnylr0j7r1sKIHDBsiCEAOfP39TkgwBaD2aN6Ewf7ZMp55l9UFLgFdDVDg7QMJ7ORlG8_jjLYHKj2HErobs2x1Kk29halPvv6N"/>
+</div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">WTR Toolkit</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-primary active:scale-95 duration-200 hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined">unfold_more</span>
+</button>
+</header>
+<main class="pt-20 pb-24 px-container-padding max-w-md mx-auto">
+<!-- Header Section -->
+<section class="mb-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-xs">Research Analysis</h2>
+<p class="text-on-surface-variant font-body-md">Project Alpha: Key Performance Indicators &amp; Data Integrity</p>
+</section>
+<!-- Bento Grid / Cards Layout -->
+<div class="flex flex-col gap-gutter">
+<!-- Summary Dashboard Card -->
+<div class="bg-surface-container-low rounded-xl p-md shadow-sm border border-outline-variant/20 animate-fade-in">
+<div class="flex justify-between items-start mb-md">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Overall Reliability</p>
+<h3 class="font-headline-md text-headline-md text-primary">94.2%</h3>
+</div>
+<div class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase">
+                        High Confidence
+                    </div>
+</div>
+<div class="h-2 w-full bg-outline-variant/30 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary-fixed-dim" style="width: 94.2%"></div>
+</div>
+</div>
+<!-- Analysis Result Card: Valid -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden status-stripe-valid animate-fade-in [animation-delay:100ms]">
+<button class="w-full text-left p-md focus:outline-none transition-colors hover:bg-surface-container-low" onclick="toggleCard(this)">
+<div class="flex justify-between items-center mb-base">
+<span class="font-label-md text-label-md text-secondary font-bold">STAT_ID: 08-XJ</span>
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-md text-label-md font-bold uppercase">Valid</span>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Mean Variance</h4>
+<p class="text-[24px] font-bold text-on-surface">0.142 <span class="text-body-md font-normal text-on-surface-variant">σ</span></p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant chevron-icon transition-transform">expand_more</span>
+</div>
+</button>
+<div class="card-details hidden px-md pb-md border-t border-outline-variant/10">
+<div class="py-md">
+<p class="font-body-md text-on-surface-variant mb-md">The variance levels remain within the expected theoretical threshold, indicating high data consistency across the temporal samples.</p>
+<div class="bg-secondary-container/20 rounded-lg p-sm border border-secondary/10 flex gap-sm mb-md">
+<span class="material-symbols-outlined text-secondary text-[20px]">smart_toy</span>
+<p class="font-body-md text-on-secondary-container"><span class="font-bold">AI Rec:</span> Proceed to Phase 2 modeling. No recalibration required for this dataset.</p>
+</div>
+<!-- Mini Chart Simulation -->
+<div class="flex items-end gap-1 h-12 px-base">
+<div class="bg-secondary/40 w-full rounded-t-sm" style="height: 40%"></div>
+<div class="bg-secondary/40 w-full rounded-t-sm" style="height: 60%"></div>
+<div class="bg-secondary w-full rounded-t-sm" style="height: 85%"></div>
+<div class="bg-secondary/40 w-full rounded-t-sm" style="height: 55%"></div>
+<div class="bg-secondary/40 w-full rounded-t-sm" style="height: 45%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Analysis Result Card: Anomaly -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden status-stripe-anomaly animate-fade-in [animation-delay:200ms]">
+<button class="w-full text-left p-md focus:outline-none transition-colors hover:bg-surface-container-low" onclick="toggleCard(this)">
+<div class="flex justify-between items-center mb-base">
+<span class="font-label-md text-label-md text-tertiary font-bold">STAT_ID: 12-TR</span>
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-label-md text-label-md font-bold uppercase">Anomaly</span>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Outlier Frequency</h4>
+<p class="text-[24px] font-bold text-on-surface">4.8 <span class="text-body-md font-normal text-on-surface-variant">events/min</span></p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant chevron-icon transition-transform">expand_more</span>
+</div>
+</button>
+<div class="card-details hidden px-md pb-md border-t border-outline-variant/10">
+<div class="py-md">
+<p class="font-body-md text-on-surface-variant mb-md">Significant deviation detected in the 14:00 window. Patterns do not align with historical norms for research project Alpha.</p>
+<div class="bg-tertiary-container/10 rounded-lg p-sm border border-tertiary/10 flex gap-sm mb-md">
+<span class="material-symbols-outlined text-tertiary text-[20px]">lightbulb</span>
+<p class="font-body-md text-on-tertiary-fixed-variant"><span class="font-bold">AI Rec:</span> Isolate samples from 14:00-14:15. Review environmental sensors for potential interference.</p>
+</div>
+<!-- Box Plot Simulation -->
+<div class="relative h-16 w-full flex items-center justify-center">
+<div class="w-full h-[1px] bg-outline-variant"></div>
+<div class="absolute w-24 h-6 bg-tertiary/20 border border-tertiary rounded-sm left-1/4"></div>
+<div class="absolute w-[2px] h-8 bg-tertiary left-1/2"></div>
+<div class="absolute w-2 h-2 bg-error rounded-full right-8" title="Anomaly"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Analysis Result Card: Invalid -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden status-stripe-invalid animate-fade-in [animation-delay:300ms]">
+<button class="w-full text-left p-md focus:outline-none transition-colors hover:bg-surface-container-low" onclick="toggleCard(this)">
+<div class="flex justify-between items-center mb-base">
+<span class="font-label-md text-label-md text-error font-bold">STAT_ID: 99-ER</span>
+<div class="flex items-center gap-1 text-error">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">error</span>
+<span class="font-label-md text-label-md font-bold uppercase">Invalid</span>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Input Integrity</h4>
+<p class="text-[24px] font-bold text-on-surface">Critical <span class="text-body-md font-normal text-on-surface-variant">Null Values</span></p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant chevron-icon transition-transform">expand_more</span>
+</div>
+</button>
+<div class="card-details hidden px-md pb-md border-t border-outline-variant/10">
+<div class="py-md">
+<p class="font-body-md text-on-surface-variant mb-md">Data stream interrupted. Missing critical metadata prevents a reliable calculation of this specific metric.</p>
+<div class="bg-error-container/20 rounded-lg p-sm border border-error/10 flex gap-sm">
+<span class="material-symbols-outlined text-error text-[20px]">gpp_maybe</span>
+<p class="font-body-md text-on-error-container"><span class="font-bold">AI Rec:</span> Immediate re-sync of the Database Toolkit required. Check connection logs for error 404/500.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Visual Insight Hero -->
+<div class="bg-inverse-surface rounded-xl p-md overflow-hidden relative min-h-[160px] animate-fade-in [animation-delay:400ms]">
+<div class="relative z-10">
+<h4 class="font-headline-sm text-headline-sm text-inverse-on-surface mb-xs">Research Topology</h4>
+<p class="text-body-md text-outline-variant mb-md">Real-time correlation mapping of all research nodes.</p>
+<button class="bg-secondary-fixed text-on-secondary-fixed font-label-md px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-secondary-fixed-dim transition-colors">
+                        Explore Map
+                        <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+<!-- Background decoration -->
+<div class="absolute -bottom-8 -right-8 w-40 h-40 bg-primary/20 blur-3xl rounded-full"></div>
+<div class="absolute top-0 right-0 p-md opacity-20">
+<span class="material-symbols-outlined text-[100px] text-secondary-fixed">hub</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface/80 backdrop-blur-xl border-t border-outline-variant/20 shadow-lg rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors px-4 py-1 rounded-full group" href="#">
+<span class="material-symbols-outlined group-active:scale-90 transition-transform">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 group" href="#">
+<span class="material-symbols-outlined group-active:scale-90 transition-transform">database</span>
+<span class="font-label-md text-label-md">Data</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors px-4 py-1 rounded-full group" href="#">
+<span class="material-symbols-outlined group-active:scale-90 transition-transform">analytics</span>
+<span class="font-label-md text-label-md">Analysis</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors px-4 py-1 rounded-full group" href="#">
+<span class="material-symbols-outlined group-active:scale-90 transition-transform">description</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors px-4 py-1 rounded-full group" href="#">
+<span class="material-symbols-outlined group-active:scale-90 transition-transform">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<!-- FAB (Suppressed for Details/Analysis page as per logic, but adding a "New Entry" contextual FAB for Dashboard-like intent) -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-br from-primary to-secondary rounded-2xl shadow-xl flex items-center justify-center text-white active:scale-90 transition-transform duration-150 z-40">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'wght' 600;">add</span>
+</button>
+<script>
+        function toggleCard(button) {
+            const card = button.parentElement;
+            const details = card.querySelector('.card-details');
+            const icon = button.querySelector('.chevron-icon');
+            
+            const isExpanded = !details.classList.contains('hidden');
+            
+            // Toggle visibility
+            details.classList.toggle('hidden');
+            
+            // Rotate icon
+            if (isExpanded) {
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Add some atmospheric micro-interactions
+        document.querySelectorAll('.bg-surface-container-lowest').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+                card.style.transition = 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

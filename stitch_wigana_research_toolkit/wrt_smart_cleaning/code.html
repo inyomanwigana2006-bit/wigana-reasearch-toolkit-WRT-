@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WRT | Smart Cleaning</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e4edf8;
+            border-radius: 10px;
+        }
+        .diff-added {
+            background-color: rgba(78, 222, 163, 0.1);
+            color: #005236;
+        }
+        .diff-removed {
+            background-color: rgba(186, 26, 26, 0.1);
+            color: #ba1a1a;
+            text-decoration: line-through;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#6ffbbe",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#213145",
+                        "surface-container-highest": "#d3e4fe",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#001946",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "surface-variant": "#d3e4fe",
+                        "primary-fixed": "#d2e4ff",
+                        "error": "#ba1a1a",
+                        "primary": "#0061a5",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "tertiary-container": "#0cb880",
+                        "background": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "outline-variant": "#c0c7d4",
+                        "on-surface": "#0b1c30",
+                        "inverse-primary": "#a0caff",
+                        "on-tertiary-fixed": "#002113",
+                        "tertiary": "#006c49",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#b1c5ff",
+                        "secondary-fixed": "#dae2ff",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#0061a5",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#a0caff",
+                        "surface": "#f8f9ff",
+                        "on-primary-fixed-variant": "#00497e",
+                        "on-primary-fixed": "#001c37",
+                        "outline": "#707783",
+                        "inverse-on-surface": "#eaf1ff",
+                        "secondary-container": "#036cfb",
+                        "surface-container": "#e5eeff",
+                        "on-primary-container": "#003a67",
+                        "on-secondary-fixed-variant": "#00419e",
+                        "primary-container": "#4da6ff",
+                        "on-secondary-container": "#fefcff",
+                        "on-tertiary-container": "#00412b",
+                        "secondary": "#0055c9",
+                        "on-surface-variant": "#404752",
+                        "on-background": "#0b1c30"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "panel-sidebar": "280px",
+                        "stack-gap": "16px",
+                        "gutter": "24px",
+                        "panel-inspector": "320px",
+                        "panel-content": "1fr",
+                        "container-padding": "32px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "title-sm": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"],
+                        "data-mono": ["JetBrains Mono"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "title-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "data-mono": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="bg-surface border-b border-outline-variant flex justify-between items-center w-full px-container-padding h-16 z-50 fixed top-0 left-0">
+<div class="flex items-center gap-8">
+<h1 class="font-display-lg text-display-lg font-bold text-primary tracking-tighter">WRT</h1>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-primary font-label-caps text-label-caps transition-colors" href="#">Datasets</a>
+<a class="text-primary font-bold border-b-2 border-primary font-label-caps text-label-caps transition-colors" href="#">Analysis</a>
+<a class="text-on-surface-variant hover:text-primary font-label-caps text-label-caps transition-colors" href="#">Models</a>
+<a class="text-on-surface-variant hover:text-primary font-label-caps text-label-caps transition-colors" href="#">Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-container overflow-hidden">
+<img alt="Researcher Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF4PktkvMxNJ9MlWSZKBKhFkQhjF7bS_uki5e2BmDu-gBx8xFrTjikQYu0qdqiRkFqb0v4YUDKyfcxzk5tTzKN2VOJQ9lBzxAE5pK8rAOOxJo_4x8R9_NsmPs9cEJcv-n4esJaLbPYKWLMtX4deFnpKkaVtGOruFqffev-UuPFFYRvCNF-daA47B2_g29Ua3CoHSCwlRVUmFeN9El_6fks3zsQvEZNy3PuuDt7jhawP-W_7uTZuNuevDvAAd-BypjpxRE5fuV1NmtL"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation (Left) -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 pt-20 pb-8 px-4 z-40 bg-surface-container-low/60 glass-panel border-r border-outline-variant w-panel-sidebar">
+<div class="mb-8 px-2">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">WRT</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">V2.4 Enterprise</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">dashboard</span> Workspace
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 bg-secondary-container text-on-secondary-container rounded-lg font-semibold scale-[0.98] transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">auto_fix_high</span> Smart Cleaning
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">table_chart</span> Raw Data
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">query_stats</span> Statistical Models
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">ios_share</span> Export Center
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">history</span> Archived
+            </a>
+</nav>
+<button class="mt-4 w-full bg-primary text-on-primary py-3 px-4 rounded-lg font-semibold text-body-md hover:opacity-90 transition-opacity">
+            New Analysis
+        </button>
+<div class="mt-8 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">menu_book</span> Documentation
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">contact_support</span> Support
+            </a>
+</div>
+</aside>
+<!-- Main Analysis Canvas (Center) -->
+<main class="ml-[280px] mr-[320px] mt-16 p-8 h-[calc(100vh-64px)] overflow-y-auto custom-scrollbar">
+<header class="mb-8 flex justify-between items-end">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Smart Cleaning</h2>
+<p class="text-on-surface-variant">Automated resolution of data inconsistencies and quality issues.</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-semibold flex items-center gap-2 shadow-sm hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-[20px]">play_arrow</span>
+                Clean Data
+            </button>
+</header>
+<!-- Action Cards Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+<!-- Missing Values -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(13,110,253,0.04)] hover:border-primary/30 transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary/10 text-primary rounded-lg group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">rule</span>
+</div>
+<span class="bg-error-container text-on-error-container px-2 py-0.5 rounded-full font-label-caps text-[10px] uppercase">142 Issues</span>
+</div>
+<h3 class="font-title-sm text-title-sm mb-1">Missing Values</h3>
+<p class="text-body-sm text-on-surface-variant mb-4">Impute using mean/median or remove incomplete records.</p>
+<div class="flex items-center gap-2 text-primary text-body-sm font-semibold">
+                    Configure <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+<!-- Duplicates -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(13,110,253,0.04)] hover:border-primary/30 transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-secondary/10 text-secondary rounded-lg group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined">content_copy</span>
+</div>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded-full font-label-caps text-[10px] uppercase">12 Matches</span>
+</div>
+<h3 class="font-title-sm text-title-sm mb-1">Duplicates</h3>
+<p class="text-body-sm text-on-surface-variant mb-4">Identify and merge identical or near-duplicate entries.</p>
+<div class="flex items-center gap-2 text-primary text-body-sm font-semibold">
+                    Review Matches <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+<!-- Outliers -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(13,110,253,0.04)] hover:border-primary/30 transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-error/10 text-error rounded-lg group-hover:bg-error group-hover:text-on-error transition-colors">
+<span class="material-symbols-outlined">monitoring</span>
+</div>
+<span class="bg-error-container text-on-error-container px-2 py-0.5 rounded-full font-label-caps text-[10px] uppercase">8 Critical</span>
+</div>
+<h3 class="font-title-sm text-title-sm mb-1">Outliers</h3>
+<p class="text-body-sm text-on-surface-variant mb-4">Detect statistical anomalies using Z-score or IQR methods.</p>
+<div class="flex items-center gap-2 text-primary text-body-sm font-semibold">
+                    View Plot <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+<!-- Invalid Values -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(13,110,253,0.04)] hover:border-primary/30 transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-tertiary/10 text-tertiary rounded-lg group-hover:bg-tertiary group-hover:text-on-tertiary transition-colors">
+<span class="material-symbols-outlined">format_shapes</span>
+</div>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded-full font-label-caps text-[10px] uppercase">Validating</span>
+</div>
+<h3 class="font-title-sm text-title-sm mb-1">Invalid Values</h3>
+<p class="text-body-sm text-on-surface-variant mb-4">Correct format mismatches, negative ages, or invalid dates.</p>
+<div class="flex items-center gap-2 text-primary text-body-sm font-semibold">
+                    Set Rules <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+<!-- Header Issues -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(13,110,253,0.04)] hover:border-primary/30 transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary/10 text-primary rounded-lg group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">title</span>
+</div>
+<span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded-full font-label-caps text-[10px] uppercase">Clean</span>
+</div>
+<h3 class="font-title-sm text-title-sm mb-1">Header Issues</h3>
+<p class="text-body-sm text-on-surface-variant mb-4">Standardize naming conventions and fix encoding errors.</p>
+<div class="flex items-center gap-2 text-primary text-body-sm font-semibold">
+                    Edit Headers <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+<!-- Column Issues -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(13,110,253,0.04)] hover:border-primary/30 transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-secondary/10 text-secondary rounded-lg group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined">view_column</span>
+</div>
+<span class="bg-error-container text-on-error-container px-2 py-0.5 rounded-full font-label-caps text-[10px] uppercase">2 Unaligned</span>
+</div>
+<h3 class="font-title-sm text-title-sm mb-1">Column Issues</h3>
+<p class="text-body-sm text-on-surface-variant mb-4">Fix misaligned columns and unexpected type conversions.</p>
+<div class="flex items-center gap-2 text-primary text-body-sm font-semibold">
+                    Realign <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Preview Section -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden mb-8">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h3 class="font-title-sm text-title-sm">Before vs After Preview</h3>
+<div class="flex gap-2">
+<span class="bg-error/10 text-error px-2 py-1 rounded text-[10px] font-bold uppercase">Changes: 24</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-2 py-1 rounded text-[10px] font-bold uppercase">Accuracy: +14%</span>
+</div>
+</div>
+<div class="grid grid-cols-2 divide-x divide-outline-variant">
+<!-- Original -->
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left font-data-mono text-data-mono">
+<thead class="bg-surface-container-low text-on-surface-variant">
+<tr>
+<th class="p-3 border-b border-outline-variant">ID</th>
+<th class="p-3 border-b border-outline-variant">NAME</th>
+<th class="p-3 border-b border-outline-variant">AGE</th>
+<th class="p-3 border-b border-outline-variant">SCORE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant hover:bg-surface">
+<td class="p-3">#001</td>
+<td class="p-3">John Doe</td>
+<td class="p-3">28</td>
+<td class="p-3">92.5</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface">
+<td class="p-3">#002</td>
+<td class="p-3">Jane Smith</td>
+<td class="p-3 diff-removed">N/A</td>
+<td class="p-3">88.0</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface">
+<td class="p-3">#003</td>
+<td class="p-3">Bob Johnson</td>
+<td class="p-3">45</td>
+<td class="p-3 diff-removed">999</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface">
+<td class="p-3 diff-removed">#001</td>
+<td class="p-3">John Doe</td>
+<td class="p-3">28</td>
+<td class="p-3">92.5</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Cleaned -->
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left font-data-mono text-data-mono">
+<thead class="bg-tertiary-fixed/30 text-on-tertiary-fixed-variant">
+<tr>
+<th class="p-3 border-b border-outline-variant">ID</th>
+<th class="p-3 border-b border-outline-variant">NAME</th>
+<th class="p-3 border-b border-outline-variant">AGE</th>
+<th class="p-3 border-b border-outline-variant">SCORE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant hover:bg-surface">
+<td class="p-3">#001</td>
+<td class="p-3">John Doe</td>
+<td class="p-3">28</td>
+<td class="p-3">92.5</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface">
+<td class="p-3">#002</td>
+<td class="p-3">Jane Smith</td>
+<td class="p-3 diff-added">31</td>
+<td class="p-3">88.0</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface">
+<td class="p-3">#003</td>
+<td class="p-3">Bob Johnson</td>
+<td class="p-3">45</td>
+<td class="p-3 diff-added">90.2</td>
+</tr>
+<tr class="border-b border-outline-variant bg-tertiary-fixed/10">
+<td class="p-3 text-center text-tertiary font-bold" colspan="4">[ROW REMOVED - DUPLICATE]</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Recommendations List -->
+<section>
+<h3 class="font-title-sm text-title-sm mb-4">Cleaning Recommendations</h3>
+<div class="space-y-3">
+<div class="bg-surface-container p-4 rounded-lg flex items-center justify-between border-l-4 border-tertiary">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-tertiary">lightbulb</span>
+<div>
+<p class="font-semibold text-body-md">Impute 142 missing values in 'Customer_Age'</p>
+<p class="text-body-sm text-on-surface-variant">Recommended strategy: Median imputation (24.5)</p>
+</div>
+</div>
+<button class="text-primary font-bold font-label-caps text-label-caps hover:underline">Apply Action</button>
+</div>
+<div class="bg-surface-container p-4 rounded-lg flex items-center justify-between border-l-4 border-secondary">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">merge</span>
+<div>
+<p class="font-semibold text-body-md">Consolidate 'Revenue' and 'Total_Spend' columns</p>
+<p class="text-body-sm text-on-surface-variant">Identified as redundant fields (98% correlation)</p>
+</div>
+</div>
+<button class="text-primary font-bold font-label-caps text-label-caps hover:underline">Merge Fields</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Side Panel (Right) - AI Insight Panel -->
+<aside class="flex flex-col h-screen fixed right-0 top-0 pt-20 px-6 z-40 bg-surface-container-lowest border-l border-outline-variant shadow-sm w-panel-inspector">
+<div class="mb-6">
+<h3 class="font-title-sm text-title-sm font-semibold text-tertiary">Insight Panel</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">AI Ready</p>
+</div>
+<div class="space-y-8">
+<!-- Data Health Score -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Data Health Score</label>
+<span class="font-data-mono text-data-mono text-tertiary">84% (+14.2)</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[84%] rounded-full"></div>
+</div>
+</div>
+<!-- Health Improvements -->
+<div class="space-y-4">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant uppercase border-b border-outline-variant pb-2">Improvements</h4>
+<div class="flex gap-4">
+<div class="p-2 bg-tertiary-fixed text-on-tertiary-fixed rounded h-fit">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</div>
+<div>
+<p class="font-semibold text-body-sm">Precision Increase</p>
+<p class="text-body-sm text-on-surface-variant">Removing 8 outliers reduced variance by 22%.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="p-2 bg-secondary-fixed text-on-secondary-fixed rounded h-fit">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+</div>
+<div>
+<p class="font-semibold text-body-sm">Format Stability</p>
+<p class="text-body-sm text-on-surface-variant">Date normalization achieved across 4 source clusters.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="p-2 bg-surface-variant text-primary rounded h-fit">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+</div>
+<div>
+<p class="font-semibold text-body-sm">Schema Aligned</p>
+<p class="text-body-sm text-on-surface-variant">98.4% row compliance with target DB schema.</p>
+</div>
+</div>
+</div>
+<!-- Live Logs -->
+<div class="space-y-4">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant uppercase border-b border-outline-variant pb-2">Live Logs</h4>
+<div class="font-data-mono text-data-mono text-on-surface-variant space-y-2 opacity-70">
+<p class="text-[11px]">[14:02:11] AI: Parsing outliers...</p>
+<p class="text-[11px]">[14:02:14] AI: Normalizing headers...</p>
+<p class="text-[11px]">[14:02:18] SYS: Preview refreshed.</p>
+<p class="text-[11px] text-tertiary">[14:02:22] AI: Ready for cleaning.</p>
+</div>
+</div>
+</div>
+<!-- Animation Placeholder -->
+<div class="mt-auto mb-8 relative rounded-lg overflow-hidden h-32">
+
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent flex items-end p-3">
+<span class="text-[10px] font-label-caps text-on-surface-variant">Active Intelligence Processing</span>
+</div>
+</div>
+</aside>
+<script>
+        // Interactive states for cards
+        document.querySelectorAll('.cursor-pointer').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('scale-[1.01]');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('scale-[1.01]');
+            });
+        });
+    </script>
+</body></html>

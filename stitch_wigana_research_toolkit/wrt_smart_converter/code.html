@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SMART CONVERTER | WRT V2.4</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#6ffbbe",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#213145",
+                        "surface-container-highest": "#d3e4fe",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#001946",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "surface-variant": "#d3e4fe",
+                        "primary-fixed": "#d2e4ff",
+                        "error": "#ba1a1a",
+                        "primary": "#0061a5",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "tertiary-container": "#0cb880",
+                        "background": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "outline-variant": "#c0c7d4",
+                        "on-surface": "#0b1c30",
+                        "inverse-primary": "#a0caff",
+                        "on-tertiary-fixed": "#002113",
+                        "tertiary": "#006c49",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#b1c5ff",
+                        "secondary-fixed": "#dae2ff",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#0061a5",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#a0caff",
+                        "surface": "#f8f9ff",
+                        "on-primary-fixed-variant": "#00497e",
+                        "on-primary-fixed": "#001c37",
+                        "outline": "#707783",
+                        "inverse-on-surface": "#eaf1ff",
+                        "secondary-container": "#036cfb",
+                        "surface-container": "#e5eeff",
+                        "on-primary-container": "#003a67",
+                        "on-secondary-fixed-variant": "#00419e",
+                        "primary-container": "#4da6ff",
+                        "on-secondary-container": "#fefcff",
+                        "on-tertiary-container": "#00412b",
+                        "secondary": "#0055c9",
+                        "on-surface-variant": "#404752",
+                        "on-background": "#0b1c30"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "panel-sidebar": "280px",
+                        "stack-gap": "16px",
+                        "gutter": "24px",
+                        "panel-inspector": "320px",
+                        "panel-content": "1fr",
+                        "container-padding": "32px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "title-sm": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"],
+                        "data-mono": ["JetBrains Mono"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "title-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "data-mono": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-sidebar {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.6);
+        }
+        .shadow-soft {
+            box-shadow: 0 4px 20px rgba(13, 110, 253, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full h-16 z-50 flex justify-between items-center px-container-padding bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg font-bold text-primary tracking-tighter">WRT</span>
+<nav class="hidden md:flex gap-6">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Datasets</a>
+<a class="font-label-caps text-label-caps text-primary font-bold border-b-2 border-primary" href="#">Analysis</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Models</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-low transition-colors rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low transition-colors rounded-full">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Researcher Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpRvkb-oQ5HwpYJ5ZJVgduYuHVW-m3AUeZDWBJCquHfoSpwaG45pxssj0ceVahcKa8drHR2MeKI0wGanwE8OFxXfv0pSA6IVYQJZm6slIwz_303Fn9mXZt4URgvoyoyOhSTxFZbPFn8aM1zDaOXVfUoXkd1s8B25LTfjVkAxADx6KEMNSmks5tGwjvuYydfidfgd4dmNzcsAK61aezkT5CD28hfKcj9rvbaGoPMjPr4-35qbOpO1gkUVN-j0tuzol9MFqQR9mHT71b"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation (Left) -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 pt-20 pb-8 px-4 w-panel-sidebar z-40 glass-sidebar border-r border-outline-variant">
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="w-10 h-10 bg-primary text-white flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined">data_thresholding</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface leading-tight">WRT</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">V2.4 Enterprise</p>
+</div>
+</div>
+<button class="w-full py-3 px-4 bg-primary text-white rounded-lg font-semibold flex items-center justify-center gap-2 mb-6 hover:opacity-90 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined">add</span>
+            New Analysis
+        </button>
+<nav class="space-y-1 overflow-y-auto flex-grow">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps">Workspace</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="font-label-caps text-label-caps">Active Projects</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg font-semibold transition-all scale-[0.98]" href="#">
+<span class="material-symbols-outlined">table_chart</span>
+<span class="font-label-caps text-label-caps">Raw Data</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-caps text-label-caps">Statistical Models</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">ios_share</span>
+<span class="font-label-caps text-label-caps">Export Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-caps text-label-caps">Archived</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-body-sm text-body-sm">Documentation</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-body-sm text-body-sm">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Analysis Canvas -->
+<main class="ml-panel-sidebar mr-panel-inspector pt-20 p-container-padding h-screen overflow-y-auto">
+<header class="mb-8">
+<div class="flex items-center gap-2 text-primary mb-2">
+<span class="material-symbols-outlined text-sm">auto_fix_high</span>
+<span class="font-label-caps text-label-caps">Module: Smart Converter</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-2">Convert Non-Numeric Data</h1>
+<p class="text-on-surface-variant max-w-2xl font-body-md">Transform qualitative responses and ordinal strings into normalized numerical vectors for quantitative processing. AI detection active.</p>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Comparison Table Container -->
+<div class="col-span-12 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-soft overflow-hidden">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/30">
+<h3 class="font-title-sm text-title-sm">Live Preview: Transformation Logic</h3>
+<div class="flex gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface rounded border border-outline-variant">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="font-label-caps text-label-caps">Validation Active</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 divide-x divide-outline-variant">
+<!-- Left: Original -->
+<div class="p-0">
+<div class="bg-surface-container-high/40 px-4 py-2 font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant">Original Data Preview</div>
+<table class="w-full text-left">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="px-4 py-3 font-label-caps text-label-caps text-on-surface-variant">ID</th>
+<th class="px-4 py-3 font-label-caps text-label-caps text-on-surface-variant">Scale Resp.</th>
+<th class="px-4 py-3 font-label-caps text-label-caps text-on-surface-variant">Confirmation</th>
+</tr>
+</thead>
+<tbody class="font-data-mono text-data-mono">
+<tr class="border-b border-surface-container-low hover:bg-background transition-colors">
+<td class="px-4 py-3">R_001</td>
+<td class="px-4 py-3">Strongly Agree</td>
+<td class="px-4 py-3 text-on-surface-variant">Yes</td>
+</tr>
+<tr class="border-b border-surface-container-low hover:bg-background transition-colors">
+<td class="px-4 py-3">R_002</td>
+<td class="px-4 py-3">Agree</td>
+<td class="px-4 py-3 text-on-surface-variant">No</td>
+</tr>
+<tr class="border-b border-surface-container-low hover:bg-background transition-colors">
+<td class="px-4 py-3">R_003</td>
+<td class="px-4 py-3">Neutral</td>
+<td class="px-4 py-3 text-on-surface-variant">Yes</td>
+</tr>
+<tr class="border-b border-surface-container-low hover:bg-background transition-colors">
+<td class="px-4 py-3">R_004</td>
+<td class="px-4 py-3">Disagree</td>
+<td class="px-4 py-3 text-on-surface-variant">No</td>
+</tr>
+<tr class="border-b border-surface-container-low hover:bg-background transition-colors">
+<td class="px-4 py-3">R_005</td>
+<td class="px-4 py-3">Strongly Disagree</td>
+<td class="px-4 py-3 text-on-surface-variant">Yes</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Right: Converted -->
+<div class="p-0">
+<div class="bg-surface-container-high/40 px-4 py-2 font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant">Converted Data Preview</div>
+<table class="w-full text-left">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="px-4 py-3 font-label-caps text-label-caps text-on-surface-variant">ID</th>
+<th class="px-4 py-3 font-label-caps text-label-caps text-on-surface-variant">Scale Resp. [V1]</th>
+<th class="px-4 py-3 font-label-caps text-label-caps text-on-surface-variant">Confirmation [V2]</th>
+</tr>
+</thead>
+<tbody class="font-data-mono text-data-mono">
+<tr class="border-b border-surface-container-low hover:bg-background transition-colors">
+<td class="px-4 py-3">R_001</td>
+<td class="px-4 py-3 text-primary font-bold">5</td>
+<td class="px-4 py-3 text-primary font-bold">1</td>
+</tr>
+<tr class="border-b border-surface-container-low hover:bg-background transition-colors">
+<td class="px-4 py-3">R_002</td>
+<td class="px-4 py-3 text-primary font-bold">4</td>
+<td class="px-4 py-3 text-primary font-bold">0</td>
+</tr>
+<tr class="border-b border-surface-container-low hover:bg-background transition-colors">
+<td class="px-4 py-3">R_003</td>
+<td class="px-4 py-3 text-primary font-bold">3</td>
+<td class="px-4 py-3 text-primary font-bold">1</td>
+</tr>
+<tr class="border-b border-surface-container-low hover:bg-background transition-colors">
+<td class="px-4 py-3">R_004</td>
+<td class="px-4 py-3 text-primary font-bold">2</td>
+<td class="px-4 py-3 text-primary font-bold">0</td>
+</tr>
+<tr class="border-b border-surface-container-low hover:bg-background transition-colors">
+<td class="px-4 py-3">R_005</td>
+<td class="px-4 py-3 text-primary font-bold">1</td>
+<td class="px-4 py-3 text-primary font-bold">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Mapping Detection Panel -->
+<div class="col-span-8 grid grid-cols-2 gap-gutter">
+<div class="col-span-2 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-soft">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h4 class="font-title-sm text-title-sm mb-1">Mapping Detection Engine</h4>
+<p class="text-on-surface-variant font-body-sm">Automated scale identification based on semantic density.</p>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-tertiary/10 text-tertiary rounded-full font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+                            98.2% Confidence
+                        </div>
+</div>
+<div class="space-y-4">
+<div class="p-4 border border-outline-variant rounded-lg bg-surface-container-low">
+<div class="flex justify-between items-center mb-3">
+<span class="font-label-caps text-label-caps text-primary">Detected Scale: Likert 5-Point</span>
+<span class="text-on-surface-variant text-[11px] font-label-caps">Detected in Column "Scale Resp."</span>
+</div>
+<div class="flex gap-2 flex-wrap">
+<span class="px-3 py-1 bg-white border border-outline-variant rounded text-[11px] font-data-mono">STS → 1</span>
+<span class="px-3 py-1 bg-white border border-outline-variant rounded text-[11px] font-data-mono">TS → 2</span>
+<span class="px-3 py-1 bg-white border border-outline-variant rounded text-[11px] font-data-mono">N → 3</span>
+<span class="px-3 py-1 bg-white border border-outline-variant rounded text-[11px] font-data-mono">S → 4</span>
+<span class="px-3 py-1 bg-white border border-outline-variant rounded text-[11px] font-data-mono">SS → 5</span>
+</div>
+</div>
+<div class="p-4 border border-outline-variant rounded-lg bg-surface-container-low">
+<div class="flex justify-between items-center mb-3">
+<span class="font-label-caps text-label-caps text-primary">Detected Scale: Dichotomous</span>
+<span class="text-on-surface-variant text-[11px] font-label-caps">Detected in Column "Confirmation"</span>
+</div>
+<div class="flex gap-2 flex-wrap">
+<span class="px-3 py-1 bg-white border border-outline-variant rounded text-[11px] font-data-mono">Yes → 1</span>
+<span class="px-3 py-1 bg-white border border-outline-variant rounded text-[11px] font-data-mono">No → 0</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Detected Scale Types Stats -->
+<div class="col-span-2 grid grid-cols-4 gap-4">
+<div class="p-4 bg-white border border-outline-variant rounded-lg shadow-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-1">Likert</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-md text-headline-md text-primary">12</span>
+<span class="text-[10px] bg-green-100 text-green-700 px-1 rounded mb-1 font-bold">STABLE</span>
+</div>
+</div>
+<div class="p-4 bg-white border border-outline-variant rounded-lg shadow-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-1">Guttman</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-md text-headline-md text-primary">02</span>
+<span class="text-[10px] bg-amber-100 text-amber-700 px-1 rounded mb-1 font-bold">REVIEW</span>
+</div>
+</div>
+<div class="p-4 bg-white border border-outline-variant rounded-lg shadow-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-1">Dichotomous</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-md text-headline-md text-primary">08</span>
+<span class="text-[10px] bg-green-100 text-green-700 px-1 rounded mb-1 font-bold">STABLE</span>
+</div>
+</div>
+<div class="p-4 bg-white border border-outline-variant rounded-lg shadow-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-1">Rating</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-md text-headline-md text-primary">05</span>
+<span class="text-[10px] bg-green-100 text-green-700 px-1 rounded mb-1 font-bold">STABLE</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Conversion Log & Action -->
+<div class="col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-soft flex-grow">
+<h4 class="font-title-sm text-title-sm mb-4">Conversion Log</h4>
+<div class="space-y-3 max-h-[300px] overflow-y-auto pr-2">
+<div class="flex gap-3 text-[12px]">
+<span class="font-data-mono text-outline">14:02:11</span>
+<span class="text-on-surface">Scanning headers... Found 25 columns.</span>
+</div>
+<div class="flex gap-3 text-[12px]">
+<span class="font-data-mono text-outline">14:02:13</span>
+<span class="text-on-surface">Normalizing ordinal strings for <code>scale_resp</code>...</span>
+</div>
+<div class="flex gap-3 text-[12px]">
+<span class="font-data-mono text-outline">14:02:15</span>
+<span class="text-tertiary">Success: "Strongly Agree" mapped to 5.</span>
+</div>
+<div class="flex gap-3 text-[12px]">
+<span class="font-data-mono text-outline">14:02:18</span>
+<span class="text-on-surface">Anomaly check on <code>confirmation</code>: No outliers.</span>
+</div>
+<div class="flex gap-3 text-[12px]">
+<span class="font-data-mono text-outline">14:02:22</span>
+<span class="text-primary font-bold">Ready for conversion execution.</span>
+</div>
+</div>
+</div>
+<button class="w-full h-16 bg-secondary text-on-secondary rounded-xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-primary transition-all shadow-lg active:scale-95 group">
+<span class="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform">autorenew</span>
+                    Execute Conversion
+                </button>
+</div>
+</div>
+</main>
+<!-- Side Inspection Panel (Right) -->
+<aside class="flex flex-col h-screen fixed right-0 top-0 pt-20 px-6 w-panel-inspector z-40 bg-surface-container-lowest border-l border-outline-variant shadow-sm">
+<div class="flex items-center gap-2 mb-8">
+<span class="material-symbols-outlined text-tertiary">auto_awesome</span>
+<h3 class="font-title-sm text-title-sm font-semibold text-tertiary">Insight Panel</h3>
+</div>
+<nav class="space-y-4 mb-8">
+<div class="border-l-4 border-tertiary pl-4">
+<div class="flex items-center gap-2 text-tertiary-fixed-dim mb-1">
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+<span class="font-label-caps text-label-caps">AI Suggestions</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">Recommended: Map 'Not Applicable' to NULL for robust ANOVA results.</p>
+</div>
+<div class="pl-4 opacity-70 group hover:opacity-100 transition-opacity cursor-pointer">
+<div class="flex items-center gap-2 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-sm">analytics</span>
+<span class="font-label-caps text-label-caps">Research Health</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5">
+<div class="bg-tertiary h-1.5 rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<div class="pl-4 opacity-70 group hover:opacity-100 transition-opacity cursor-pointer">
+<div class="flex items-center gap-2 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span class="font-label-caps text-label-caps">Anomalies</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">03 values found outside predicted Likert range.</p>
+</div>
+<div class="pl-4 opacity-70 group hover:opacity-100 transition-opacity cursor-pointer">
+<div class="flex items-center gap-2 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-sm">data_object</span>
+<span class="font-label-caps text-label-caps">Live Logs</span>
+</div>
+<div class="font-data-mono text-[10px] text-on-surface-variant bg-surface-container p-2 rounded">
+                    CONVERT -&gt; RAW[412] -&gt; VEC[1.0]
+                </div>
+</div>
+</nav>
+<!-- Contextual Help Image -->
+<div class="mt-auto mb-6 rounded-lg overflow-hidden border border-outline-variant relative aspect-video">
+<img alt="Data Analysis Preview" class="w-full h-full object-cover" data-alt="A clean and professional digital workspace showing complex data visualizations on a high-resolution screen in a brightly lit modern office. The image has a light-mode aesthetic with soft blue and grey tones, emphasizing analytical precision and corporate modernity. Focus is on clarity of data and sophisticated user interface elements." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAX39rND7jectE61HMT5lIDBVe4RRfayuLp-FS_dtAikjfSm7ZEHgUim6IbhtykeaRnqLQSN3Pl0jTxGInIhMT2g2hYWvc_9Ca17yqx0qO6By_WtyBX6MNl65V-wxH9A9KdDGbS-m8XmR4qMVoygsQ3a3ULf9Tv4NlT7eNkueq6wFztcMXCUZUkvLrTwajDQwJWe_uvEsBGgp6Pv2EVa4p4M1THYCMkbNHlb9j9nL-vZw3Z8p7CGrntFL4mnwOLNPGKlB9sUJxR7UcA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-4">
+<p class="text-white font-label-caps text-[10px]">Conversion Visualization</p>
+<p class="text-white/80 text-[11px]">How mapping affects distributions.</p>
+</div>
+</div>
+</aside>
+<!-- Interactive Layer for Feedback -->
+<div class="fixed bottom-8 right-[340px] bg-inverse-surface text-inverse-on-surface px-6 py-4 rounded-lg shadow-2xl flex items-center gap-4 translate-y-24 transition-transform duration-300 z-50" id="conversion-toast">
+<span class="material-symbols-outlined text-tertiary-fixed">check_circle</span>
+<div>
+<p class="font-bold text-sm">Conversion Complete</p>
+<p class="text-xs opacity-80">Dataset 402B has been successfully mapped to numeric vectors.</p>
+</div>
+</div>
+<script>
+        // Micro-interaction: Execute Conversion simulation
+        const convertBtn = document.querySelector('button.bg-secondary');
+        const toast = document.getElementById('conversion-toast');
+
+        convertBtn.addEventListener('click', () => {
+            convertBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Processing...';
+            convertBtn.classList.add('opacity-80', 'pointer-events-none');
+            
+            setTimeout(() => {
+                convertBtn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Conversion Success';
+                convertBtn.classList.replace('bg-secondary', 'bg-tertiary');
+                
+                toast.classList.remove('translate-y-24');
+                
+                setTimeout(() => {
+                    toast.classList.add('translate-y-24');
+                    convertBtn.innerHTML = '<span class="material-symbols-outlined text-2xl group-hover:rotate-12">autorenew</span> Execute Conversion';
+                    convertBtn.classList.replace('bg-tertiary', 'bg-secondary');
+                    convertBtn.classList.remove('opacity-80', 'pointer-events-none');
+                }, 4000);
+            }, 2000);
+        });
+    </script>
+</body></html>

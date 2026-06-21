@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WRT - Validity Analysis</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "tertiary-fixed": "#6ffbbe",
+                "surface-container-lowest": "#ffffff",
+                "inverse-surface": "#213145",
+                "surface-container-highest": "#d3e4fe",
+                "error-container": "#ffdad6",
+                "on-secondary-fixed": "#001946",
+                "on-error-container": "#93000a",
+                "on-error": "#ffffff",
+                "tertiary-fixed-dim": "#4edea3",
+                "surface-variant": "#d3e4fe",
+                "primary-fixed": "#d2e4ff",
+                "error": "#ba1a1a",
+                "primary": "#0061a5",
+                "on-tertiary-fixed-variant": "#005236",
+                "on-secondary": "#ffffff",
+                "surface-dim": "#cbdbf5",
+                "tertiary-container": "#0cb880",
+                "background": "#f8f9ff",
+                "surface-container-low": "#eff4ff",
+                "outline-variant": "#c0c7d4",
+                "on-surface": "#0b1c30",
+                "inverse-primary": "#a0caff",
+                "on-tertiary-fixed": "#002113",
+                "tertiary": "#006c49",
+                "surface-container-high": "#dce9ff",
+                "on-tertiary": "#ffffff",
+                "secondary-fixed-dim": "#b1c5ff",
+                "secondary-fixed": "#dae2ff",
+                "on-primary": "#ffffff",
+                "surface-tint": "#0061a5",
+                "surface-bright": "#f8f9ff",
+                "primary-fixed-dim": "#a0caff",
+                "surface": "#f8f9ff",
+                "on-primary-fixed-variant": "#00497e",
+                "on-primary-fixed": "#001c37",
+                "outline": "#707783",
+                "inverse-on-surface": "#eaf1ff",
+                "secondary-container": "#036cfb",
+                "surface-container": "#e5eeff",
+                "on-primary-container": "#003a67",
+                "on-secondary-fixed-variant": "#00419e",
+                "primary-container": "#4da6ff",
+                "on-secondary-container": "#fefcff",
+                "on-tertiary-container": "#00412b",
+                "secondary": "#0055c9",
+                "on-surface-variant": "#404752",
+                "on-background": "#0b1c30"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "panel-sidebar": "280px",
+                "stack-gap": "16px",
+                "gutter": "24px",
+                "panel-inspector": "320px",
+                "panel-content": "1fr",
+                "container-padding": "32px"
+            },
+            "fontFamily": {
+                "label-caps": ["Inter"],
+                "title-sm": ["Hanken Grotesk"],
+                "headline-md": ["Hanken Grotesk"],
+                "display-lg": ["Hanken Grotesk"],
+                "body-sm": ["Inter"],
+                "data-mono": ["JetBrains Mono"],
+                "body-md": ["Inter"]
+            },
+            "fontSize": {
+                "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                "title-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+                "data-mono": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+                "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f8f9ff;
+            color: #0b1c30;
+            overflow-x: hidden;
+        }
+        .glass-sidebar {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .data-card {
+            box-shadow: 0 4px 20px rgba(13, 110, 253, 0.04);
+            border: 1px solid #E4EDF8;
+            transition: all 0.3s ease;
+        }
+        .data-card:hover {
+            box-shadow: 0 8px 30px rgba(13, 110, 253, 0.08);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .status-pill {
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md">
+<!-- TopNavBar -->
+<header class="bg-surface fixed top-0 w-full px-container-padding h-16 z-50 flex justify-between items-center border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg font-bold text-primary tracking-tighter">WRT</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-primary font-label-caps text-label-caps transition-colors" href="#">Datasets</a>
+<a class="text-primary font-bold border-b-2 border-primary font-label-caps text-label-caps py-5" href="#">Analysis</a>
+<a class="text-on-surface-variant hover:text-primary font-label-caps text-label-caps transition-colors" href="#">Models</a>
+<a class="text-on-surface-variant hover:text-primary font-label-caps text-label-caps transition-colors" href="#">Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-low transition-colors rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low transition-colors rounded-full">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container overflow-hidden">
+<img alt="Researcher Profile" data-alt="A professional researcher profile avatar, a minimalist headshot silhouette against a soft gradient background of scientific blues and whites, representing corporate academic identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyb9oHY5MQSixUNGm33tqvxlQ6J82idsygJ4S6zbVvUaxU7L_k5sYSOs6HMM4BazBQ7GOPAwqSAUX6W58_vCxiqx9tZJ4t_h9OM815PVcVLZLtQUusKXvfnS3w4mTSKLm9eH5K_93URBJR-mttY7GPKa7kUrX3kC7kdACV3HZRrqBS0MUeD4R0sUoQF8quGtloUx9GZSOCBBxTIaL7QC-NuGLIUC7jY5V2GmokW9KQI9oE3UE-LSL-53zQYuAiKtQ6UeRz8SBFmlee"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Left) -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 pt-20 pb-8 px-4 w-panel-sidebar z-40 bg-surface-container-low/60 glass-sidebar border-r border-outline-variant">
+<div class="mb-8 px-2">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">WRT</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">V2.4 Enterprise</p>
+</div>
+<button class="mb-6 w-full py-3 bg-primary text-on-primary rounded-lg font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined">add</span>
+            New Analysis
+        </button>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps">Workspace</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="font-label-caps text-label-caps">Active Projects</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-secondary-container text-on-secondary-container rounded-lg font-semibold scale-[0.98]" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-caps text-label-caps">Analysis Center</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">table_chart</span>
+<span class="font-label-caps text-label-caps">Raw Data</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">ios_share</span>
+<span class="font-label-caps text-label-caps">Export Center</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-caps text-label-caps">Archived</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-caps text-label-caps">Documentation</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-panel-sidebar mr-panel-inspector pt-24 px-container-padding pb-12 min-h-screen">
+<header class="mb-8">
+<div class="flex items-center gap-2 text-primary font-label-caps text-label-caps mb-2">
+<span class="material-symbols-outlined text-[14px]">shield_lock</span>
+                QUALITY ASSURANCE
+            </div>
+<h1 class="font-display-lg text-display-lg text-on-surface">Validity Analysis</h1>
+<p class="text-on-surface-variant max-w-2xl">Examine the psychometric properties of individual items. This report highlights construct validity through Pearson correlations and Corrected Item-Total Correlations (CITC).</p>
+</header>
+<!-- Summary Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-gutter">
+<!-- Valid Items -->
+<div class="bg-surface-container-lowest data-card p-6 rounded-lg border-l-4 border-l-tertiary-container">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">VALID ITEMS</span>
+<span class="material-symbols-outlined text-tertiary-container">check_circle</span>
+</div>
+<div class="font-display-lg text-display-lg text-tertiary-container">42</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-[10px] font-bold text-tertiary-container bg-tertiary-fixed/30 px-2 py-0.5 rounded">84% TOTAL</span>
+<span class="text-body-sm font-body-sm text-outline">Statistically significant</span>
+</div>
+</div>
+<!-- Anomaly Items -->
+<div class="bg-surface-container-lowest data-card p-6 rounded-lg border-l-4 border-l-primary-container">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ANOMALIES</span>
+<span class="material-symbols-outlined text-primary-container">warning</span>
+</div>
+<div class="font-display-lg text-display-lg text-primary-container">06</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-[10px] font-bold text-primary-container bg-primary-fixed/30 px-2 py-0.5 rounded">12% TOTAL</span>
+<span class="text-body-sm font-body-sm text-outline">Action recommended</span>
+</div>
+</div>
+<!-- Invalid Items -->
+<div class="bg-surface-container-lowest data-card p-6 rounded-lg border-l-4 border-l-error">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">INVALID ITEMS</span>
+<span class="material-symbols-outlined text-error">error</span>
+</div>
+<div class="font-display-lg text-display-lg text-error">02</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-[10px] font-bold text-error bg-error-container/30 px-2 py-0.5 rounded">04% TOTAL</span>
+<span class="text-body-sm font-body-sm text-outline">Significant outliers</span>
+</div>
+</div>
+</section>
+<!-- Charts Section -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-gutter mb-gutter">
+<div class="bg-surface-container-lowest data-card p-6 rounded-lg">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-title-sm text-title-sm text-on-surface">Validity Distribution</h3>
+<button class="text-primary material-symbols-outlined">more_vert</button>
+</div>
+<div class="h-48 flex items-end gap-2 px-2 border-b border-outline-variant">
+<div class="flex-1 bg-tertiary-container/20 rounded-t h-[90%] relative group cursor-pointer">
+<div class="absolute inset-x-0 bottom-full mb-2 bg-on-surface text-surface text-[10px] p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity text-center">84% Valid</div>
+<div class="absolute inset-0 bg-tertiary-container rounded-t h-full"></div>
+</div>
+<div class="flex-1 bg-primary-container/20 rounded-t h-[40%] relative group cursor-pointer">
+<div class="absolute inset-x-0 bottom-full mb-2 bg-on-surface text-surface text-[10px] p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity text-center">12% Anomaly</div>
+<div class="absolute inset-0 bg-primary-container rounded-t h-full"></div>
+</div>
+<div class="flex-1 bg-error/20 rounded-t h-[15%] relative group cursor-pointer">
+<div class="absolute inset-x-0 bottom-full mb-2 bg-on-surface text-surface text-[10px] p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity text-center">4% Invalid</div>
+<div class="absolute inset-0 bg-error rounded-t h-full"></div>
+</div>
+</div>
+<div class="flex justify-between mt-2 font-label-caps text-label-caps text-outline px-2">
+<span>Construct Alpha</span>
+<span>Item Skew</span>
+<span>Outliers</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest data-card p-6 rounded-lg">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-title-sm text-title-sm text-on-surface">Item Performance</h3>
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-primary-container"></div>
+<span class="text-[10px] font-label-caps">Pearson R</span>
+</div>
+</div>
+<div class="h-48 flex items-center justify-center">
+
+</div>
+</div>
+</section>
+<!-- Main Data Table -->
+<section class="bg-surface-container-lowest data-card rounded-lg overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/30">
+<h3 class="font-title-sm text-title-sm text-on-surface">Statistical Breakdown</h3>
+<div class="flex gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input class="pl-8 pr-4 py-1.5 bg-white border border-outline-variant rounded-lg text-body-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all w-64" placeholder="Filter items..." type="text"/>
+</div>
+<button class="flex items-center gap-2 px-3 py-1.5 border border-outline-variant rounded-lg text-body-sm hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                        Filter
+                    </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant">ITEM REFERENCE</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant">CITC</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant">PEARSON R</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant">P-VALUE</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant">STATUS</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low/20 transition-colors">
+<td class="px-6 py-4 font-body-md text-on-surface font-semibold">Q1_Engagement_Score</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.842</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.789</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">&lt; 0.001</td>
+<td class="px-6 py-4">
+<span class="status-pill bg-tertiary-fixed text-on-tertiary-fixed">VALID</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined">analytics</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/20 transition-colors">
+<td class="px-6 py-4 font-body-md text-on-surface font-semibold">Q2_Retention_Time</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.751</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.692</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">&lt; 0.001</td>
+<td class="px-6 py-4">
+<span class="status-pill bg-tertiary-fixed text-on-tertiary-fixed">VALID</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined">analytics</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/20 transition-colors">
+<td class="px-6 py-4 font-body-md text-on-surface font-semibold">Q3_Feedback_Sentiment</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.245</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.112</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.054</td>
+<td class="px-6 py-4">
+<span class="status-pill bg-primary-fixed text-on-primary-fixed">ANOMALY</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined">analytics</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/20 transition-colors">
+<td class="px-6 py-4 font-body-md text-on-surface font-semibold">Q4_User_Efficiency</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.688</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.540</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">&lt; 0.001</td>
+<td class="px-6 py-4">
+<span class="status-pill bg-tertiary-fixed text-on-tertiary-fixed">VALID</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined">analytics</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/20 transition-colors">
+<td class="px-6 py-4 font-body-md text-on-surface font-semibold">Q5_Navigation_Speed</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">-0.042</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">-0.110</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.820</td>
+<td class="px-6 py-4">
+<span class="status-pill bg-error-container text-error">INVALID</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined">analytics</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-outline-variant flex items-center justify-between">
+<span class="text-body-sm text-on-surface-variant">Showing 1 to 5 of 50 items</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded-lg text-body-sm opacity-50 cursor-not-allowed">Previous</button>
+<button class="px-3 py-1 bg-primary text-on-primary rounded-lg text-body-sm">1</button>
+<button class="px-3 py-1 border border-outline-variant rounded-lg text-body-sm hover:bg-surface-container-high transition-all">2</button>
+<button class="px-3 py-1 border border-outline-variant rounded-lg text-body-sm hover:bg-surface-container-high transition-all">Next</button>
+</div>
+</div>
+</section>
+</main>
+<!-- SideNavBar (Right) / Insight Panel -->
+<aside class="flex flex-col h-screen fixed right-0 top-0 pt-20 px-6 w-panel-inspector z-40 bg-surface-container-lowest border-l border-outline-variant shadow-sm overflow-y-auto">
+<div class="mb-6">
+<h2 class="font-title-sm text-title-sm font-semibold text-tertiary flex items-center gap-2">
+<span class="material-symbols-outlined">auto_awesome</span>
+                AI Interpretation
+            </h2>
+<p class="font-body-sm text-body-sm text-outline-variant mt-1">AI Ready Analysis</p>
+</div>
+<div class="space-y-6">
+<!-- Recommendation 1 -->
+<div class="p-4 bg-surface-container-low rounded-lg border-l-4 border-l-tertiary">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-tertiary text-[18px]">verified</span>
+<span class="font-label-caps text-label-caps text-tertiary">HIGH CONSTRUCT FIT</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">Items <span class="font-data-mono">Q1, Q2, Q4</span> show exceptionally high internal consistency. These form a stable core for your latent variable estimation.</p>
+</div>
+<!-- Recommendation 2 -->
+<div class="p-4 bg-error-container/20 rounded-lg border-l-4 border-l-error">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-error text-[18px]">warning</span>
+<span class="font-label-caps text-label-caps text-error">RED-FLAG: Q5</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">Item <span class="font-data-mono">Q5</span> exhibits a negative CITC (-0.042). This suggests it may be reverse-coded or conceptually unrelated. Recommend exclusion.</p>
+</div>
+<!-- Recommendation 3 -->
+<div class="p-4 bg-primary-container/10 rounded-lg border-l-4 border-l-primary">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-[18px]">lightbulb</span>
+<span class="font-label-caps text-label-caps text-primary">OPTIMIZATION TIP</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">Item <span class="font-data-mono">Q3</span> is on the significance boundary (p=0.054). Review sample variance or consider slight re-phrasing for the next study iteration.</p>
+</div>
+<div class="pt-4 border-t border-outline-variant">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-3">MODEL DIAGNOSTICS</h4>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="text-body-sm font-body-sm text-outline">Cronbach's Alpha</span>
+<span class="font-data-mono text-data-mono text-tertiary font-bold">0.892</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-body-sm font-body-sm text-outline">KMO Sampling</span>
+<span class="font-data-mono text-data-mono text-primary font-bold">0.764</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-body-sm font-body-sm text-outline">Bartlett's Sig.</span>
+<span class="font-data-mono text-data-mono text-on-surface">p &lt; 0.001</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto pb-8 pt-6">
+<button class="w-full py-3 bg-inverse-surface text-inverse-on-surface rounded-lg font-label-caps text-label-caps flex items-center justify-center gap-2 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                EXPORT INSIGHT REPORT
+            </button>
+</div>
+</aside>
+<!-- Interactive Layer for Row Hovers -->
+<script>
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.classList.add('translate-x-1');
+            });
+            row.addEventListener('mouseleave', () => {
+                row.classList.remove('translate-x-1');
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wigana Research Toolkit - Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Hanken+Grotesk:wght@600;700;900&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-low": "#eff4ff",
+                    "on-primary-container": "#003a67",
+                    "secondary-fixed-dim": "#b1c5ff",
+                    "secondary-fixed": "#dae2ff",
+                    "outline-variant": "#c0c7d4",
+                    "outline": "#707783",
+                    "on-secondary-fixed-variant": "#00419e",
+                    "inverse-surface": "#213145",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#0cb880",
+                    "on-primary-fixed-variant": "#00497e",
+                    "secondary-container": "#036cfb",
+                    "surface-container": "#e5eeff",
+                    "surface-dim": "#cbdbf5",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#00412b",
+                    "surface": "#f8f9ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-tint": "#0061a5",
+                    "surface-variant": "#d3e4fe",
+                    "on-background": "#0b1c30",
+                    "secondary": "#0055c9",
+                    "primary-container": "#4da6ff",
+                    "on-secondary-fixed": "#001946",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#a0caff",
+                    "background": "#f8f9ff",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#006c49",
+                    "on-surface": "#0b1c30",
+                    "primary-fixed-dim": "#a0caff",
+                    "primary": "#0061a5",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#d2e4ff",
+                    "surface-container-high": "#dce9ff",
+                    "on-tertiary-fixed": "#002113",
+                    "on-secondary-container": "#fefcff",
+                    "surface-bright": "#f8f9ff",
+                    "tertiary-fixed": "#6ffbbe",
+                    "surface-container-highest": "#d3e4fe",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "on-surface-variant": "#404752",
+                    "on-primary-fixed": "#001c37",
+                    "on-error-container": "#93000a",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "panel-content": "1fr",
+                    "panel-inspector": "320px",
+                    "gutter": "24px",
+                    "container-padding": "32px",
+                    "panel-sidebar": "280px",
+                    "stack-gap": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "title-sm": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "label-caps": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "data-mono": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "title-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "data-mono": ["12px", {"lineHeight": "18px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #F8FBFF;
+            color: #0b1c30;
+            overflow: hidden;
+        }
+        .glass-sidebar {
+            backdrop-filter: blur(20px);
+            background: rgba(229, 238, 255, 0.6);
+        }
+        .analytics-card {
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(13, 110, 253, 0.04);
+            border: 1px solid #E4EDF8;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .analytics-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(13, 110, 253, 0.08);
+        }
+        .primary-glow {
+            box-shadow: 0 0 25px rgba(3, 108, 251, 0.4);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d3e4fe;
+            border-radius: 10px;
+        }
+        .status-valid { background-color: #E6F4EA; color: #1E7E34; }
+        .status-anomaly { background-color: #FFF4E5; color: #B26A06; }
+        .status-invalid { background-color: #FCE8E6; color: #C62828; }
+    </style>
+</head>
+<body class="font-body-md text-body-md h-screen flex">
+<!-- Left Sidebar -->
+<aside class="fixed left-0 top-0 h-full w-panel-sidebar glass-sidebar border-r border-outline-variant z-40 flex flex-col">
+<div class="p-6">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">ResearchCloud</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant tracking-wider mt-1 uppercase">Enterprise Analytics</p>
+</div>
+<nav class="flex-1 overflow-y-auto custom-scrollbar px-4 pb-4 space-y-1">
+<!-- Active State Navigation -->
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg font-bold scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dataset</span>
+<span class="font-body-md text-body-md">Data Import</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">auto_fix_high</span>
+<span class="font-body-md text-body-md">Smart Converter</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">cleaning_services</span>
+<span class="font-body-md text-body-md">Smart Cleaning</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">verified</span>
+<span class="font-body-md text-body-md">Validity Analysis</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">shield_lock</span>
+<span class="font-body-md text-body-md">Reliability Analysis</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">calculate</span>
+<span class="font-body-md text-body-md">Statistical Tests</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-body-md text-body-md">AI Interpretation</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">file_open</span>
+<span class="font-body-md text-body-md">SPSS Reader</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-body-md text-body-md">Auto BAB IV</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-body-md text-body-md">Reports</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-variant/50 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-variant/50 transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="ml-[280px] mr-[320px] flex-1 flex flex-col h-screen overflow-y-auto custom-scrollbar bg-surface">
+<!-- Top App Bar -->
+<header class="h-16 px-container-padding flex items-center justify-between sticky top-0 bg-surface z-30">
+<div class="flex items-center gap-8">
+<span class="font-title-sm text-title-sm font-black text-on-surface">Wigana Analytics Pro</span>
+<nav class="hidden lg:flex gap-6">
+<a class="text-primary border-b-2 border-primary font-bold pb-2" href="#">Data View</a>
+<a class="text-on-surface-variant pb-2 hover:text-primary transition-all" href="#">Variable View</a>
+<a class="text-on-surface-variant pb-2 hover:text-primary transition-all" href="#">Output View</a>
+<a class="text-on-surface-variant pb-2 hover:text-primary transition-all" href="#">Report View</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 rounded-lg border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary-container outline-none text-body-sm w-64" placeholder="Search analytics..." type="text"/>
+</div>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-variant rounded-full">notifications</button>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-xs">PR</div>
+</div>
+</header>
+<div class="p-container-padding space-y-8">
+<!-- Welcome Banner -->
+<section class="relative h-48 rounded-xl overflow-hidden flex items-center px-12 group">
+<img alt="Abstract data visualization" class="absolute inset-0 w-full h-full object-cover" data-alt="A sophisticated abstract background featuring translucent, flowing data streams in shades of deep blue and professional azure. The composition is clean and expansive, with soft bokeh lights and delicate geometric patterns that evoke a sense of high-level academic research and digital precision. High-key cinematic lighting ensures a modern, professional aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjjkaGUNDv2Gmn1i6P0xF2OeznsnhjQt4R6WqYKhDsF5IMyklsolPeX8eZZQweatLotMoodZlhjjnQt2G2fwNZtmyS10T6kkBbp4pZeE2WCBHA4YXJq552ni-nik1qy1kq6VenDVwZwkhM3c5Hqcvs2i9VsVtobS02W9fkPGoklPvAjvfqgnbepOhovC-G-4CyLIX7c3RFlnt-isDOb39iMl5dH_-hoqdZEhKYmm2FDsn6UokaoFwX1RfWvVALbHXMz5b5RAf15mI9"/>
+<div class="absolute inset-0 bg-gradient-to-r from-on-background/80 via-on-background/40 to-transparent"></div>
+<div class="relative z-10 text-on-primary">
+<h2 class="font-display-lg text-display-lg">Welcome back, Dr. Julian</h2>
+<p class="font-body-md text-body-md opacity-90 mt-2 max-w-lg">Your current research project "Consumer Behavior in Digital Fintech" is 78% processed. All primary variables are mapped.</p>
+</div>
+</section>
+<!-- Research Summary Grid -->
+<section class="grid grid-cols-12 gap-6">
+<!-- Main Summary Card -->
+<div class="col-span-8 analytics-card rounded-xl p-6">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-title-sm text-title-sm">Current Research Summary</h3>
+<span class="material-symbols-outlined text-outline cursor-help">info</span>
+</div>
+<div class="flex gap-8 items-end">
+<div class="flex-1 h-32 flex items-end gap-2">
+<div class="bg-primary/20 w-full rounded-t-lg h-[40%]"></div>
+<div class="bg-primary/40 w-full rounded-t-lg h-[65%]"></div>
+<div class="bg-primary/60 w-full rounded-t-lg h-[85%]"></div>
+<div class="bg-primary w-full rounded-t-lg h-[95%]"></div>
+<div class="bg-primary/80 w-full rounded-t-lg h-[75%]"></div>
+</div>
+<div class="w-48 space-y-4">
+<div>
+<p class="text-label-caps font-label-caps text-outline uppercase">Target Sample</p>
+<p class="text-headline-md font-headline-md font-black">1,250</p>
+</div>
+<div>
+<p class="text-label-caps font-label-caps text-outline uppercase">Active Duration</p>
+<p class="text-headline-md font-headline-md font-black text-primary">14 Days</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Reliability & Quality Scores -->
+<div class="col-span-4 grid grid-rows-2 gap-6">
+<div class="analytics-card rounded-xl p-6 flex flex-col justify-between">
+<p class="text-label-caps font-label-caps text-outline uppercase">Reliability Score</p>
+<div class="flex items-baseline gap-2">
+<span class="text-[36px] font-black leading-none text-tertiary">0.892</span>
+<span class="text-body-sm font-bold text-tertiary uppercase">Cronbach's α</span>
+</div>
+<div class="w-full bg-surface-variant h-1 rounded-full overflow-hidden">
+<div class="bg-tertiary w-[89%] h-full"></div>
+</div>
+</div>
+<div class="analytics-card rounded-xl p-6 flex flex-col justify-between">
+<p class="text-label-caps font-label-caps text-outline uppercase">Research Quality Score</p>
+<div class="flex items-baseline gap-2">
+<span class="text-[36px] font-black leading-none text-primary">A+</span>
+<span class="text-body-sm font-bold text-on-surface-variant">Validated</span>
+</div>
+<p class="text-body-sm text-outline">Highly consistent data structure detected.</p>
+</div>
+</div>
+</section>
+<!-- Statistics Cards Bento -->
+<section class="grid grid-cols-5 gap-6">
+<div class="analytics-card rounded-xl p-6 text-center">
+<p class="text-label-caps font-label-caps text-outline uppercase mb-2">Total Respondents</p>
+<p class="font-headline-md text-headline-md font-black">1,104</p>
+</div>
+<div class="analytics-card rounded-xl p-6 text-center">
+<p class="text-label-caps font-label-caps text-outline uppercase mb-2">Total Variables</p>
+<p class="font-headline-md text-headline-md font-black">42</p>
+</div>
+<div class="analytics-card rounded-xl p-6 text-center">
+<div class="inline-block px-2 py-1 rounded-full status-valid text-[10px] font-bold uppercase mb-2">Valid</div>
+<p class="font-headline-md text-headline-md font-black">1,082</p>
+</div>
+<div class="analytics-card rounded-xl p-6 text-center">
+<div class="inline-block px-2 py-1 rounded-full status-anomaly text-[10px] font-bold uppercase mb-2">Anomaly</div>
+<p class="font-headline-md text-headline-md font-black">18</p>
+</div>
+<div class="analytics-card rounded-xl p-6 text-center">
+<div class="inline-block px-2 py-1 rounded-full status-invalid text-[10px] font-bold uppercase mb-2">Invalid</div>
+<p class="font-headline-md text-headline-md font-black">4</p>
+</div>
+</section>
+<!-- Data Table View Sample -->
+<section class="analytics-card rounded-xl overflow-hidden">
+<div class="p-6 border-b border-outline-variant flex items-center justify-between">
+<h3 class="font-title-sm text-title-sm">Recent Data Entries</h3>
+<button class="text-primary font-bold text-body-sm hover:underline">View All Dataset</button>
+</div>
+<table class="w-full text-left">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-6 py-3 font-label-caps text-label-caps uppercase text-outline">ID</th>
+<th class="px-6 py-3 font-label-caps text-label-caps uppercase text-outline">Submission Time</th>
+<th class="px-6 py-3 font-label-caps text-label-caps uppercase text-outline">Respondent Age</th>
+<th class="px-6 py-3 font-label-caps text-label-caps uppercase text-outline">Status</th>
+<th class="px-6 py-3 font-label-caps text-label-caps uppercase text-outline">Completeness</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="px-6 py-4 font-data-mono text-data-mono">#RESP-0982</td>
+<td class="px-6 py-4 font-body-sm text-body-sm">Oct 24, 2023 14:22</td>
+<td class="px-6 py-4 font-body-sm text-body-sm">24</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full status-valid text-[10px] font-bold uppercase">Valid</span>
+</td>
+<td class="px-6 py-4">
+<div class="w-24 bg-surface-variant h-1 rounded-full overflow-hidden">
+<div class="bg-primary w-full h-full"></div>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="px-6 py-4 font-data-mono text-data-mono">#RESP-0983</td>
+<td class="px-6 py-4 font-body-sm text-body-sm">Oct 24, 2023 14:35</td>
+<td class="px-6 py-4 font-body-sm text-body-sm">--</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full status-anomaly text-[10px] font-bold uppercase">Missing Value</span>
+</td>
+<td class="px-6 py-4">
+<div class="w-24 bg-surface-variant h-1 rounded-full overflow-hidden">
+<div class="bg-secondary-container w-[70%] h-full"></div>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="px-6 py-4 font-data-mono text-data-mono">#RESP-0984</td>
+<td class="px-6 py-4 font-body-sm text-body-sm">Oct 24, 2023 15:01</td>
+<td class="px-6 py-4 font-body-sm text-body-sm">31</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full status-valid text-[10px] font-bold uppercase">Valid</span>
+</td>
+<td class="px-6 py-4">
+<div class="w-24 bg-surface-variant h-1 rounded-full overflow-hidden">
+<div class="bg-primary w-full h-full"></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<!-- Floating Action Button -->
+<button class="fixed bottom-10 right-[350px] z-50 flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary to-secondary text-on-primary rounded-full font-bold primary-glow hover:scale-105 active:scale-95 transition-all shadow-xl group">
+<span class="material-symbols-outlined group-hover:rotate-180 transition-transform duration-500" style="font-variation-settings: 'FILL' 1;">auto_fix_high</span>
+<span class="font-title-sm text-title-sm">Analyze Automatically</span>
+</button>
+</main>
+<!-- Right Insight Panel -->
+<aside class="fixed right-0 top-0 h-full w-panel-inspector glass-sidebar border-l border-outline-variant z-40 p-6 flex flex-col gap-6">
+<h3 class="font-title-sm text-title-sm border-b border-outline-variant pb-4">Insight Panel</h3>
+<!-- AI Assistant Area -->
+<div class="flex-1 bg-surface-container-low rounded-xl p-5 border border-outline-variant/30 flex flex-col overflow-hidden">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+</div>
+<span class="font-bold text-body-sm">AI Research Assistant</span>
+</div>
+<div class="flex-1 text-body-sm text-on-surface-variant space-y-4 overflow-y-auto pr-2 custom-scrollbar">
+<p class="p-3 bg-on-primary rounded-lg border border-outline-variant/20 italic">"I've analyzed your reliability metrics. The Cronbach's Alpha (0.892) indicates excellent internal consistency for your Likert scale items."</p>
+<div class="p-3 bg-secondary-container/10 border-l-4 border-secondary-container rounded">
+<p class="font-bold text-xs text-secondary uppercase mb-1">Recommendation</p>
+<p class="text-xs">Consider checking Variable Q7 and Q12; they show high multicollinearity which might bias your regression output.</p>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant/20">
+<input class="w-full px-4 py-2 text-xs rounded-lg border border-outline-variant bg-on-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Ask Wigana AI..." type="text"/>
+</div>
+</div>
+<!-- Data Quality Alerts -->
+<div class="space-y-3">
+<p class="font-label-caps text-label-caps text-outline uppercase">Quality Alerts (3)</p>
+<div class="flex items-start gap-3 p-3 bg-error-container/20 rounded-lg border border-error/10">
+<span class="material-symbols-outlined text-error text-lg">warning</span>
+<div>
+<p class="font-bold text-xs text-error">Outlier Detected</p>
+<p class="text-[11px] text-on-surface-variant">4 values in 'Annual_Income' exceed the normal range (3σ).</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 bg-secondary-fixed/30 rounded-lg border border-secondary/10">
+<span class="material-symbols-outlined text-secondary text-lg">info</span>
+<div>
+<p class="font-bold text-xs text-secondary">Normality Alert</p>
+<p class="text-[11px] text-on-surface-variant">Shapiro-Wilk test suggests non-normal distribution in Age.</p>
+</div>
+</div>
+</div>
+<!-- Confidence Score -->
+<div class="mt-auto pt-6 border-t border-outline-variant">
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-caps text-label-caps text-outline uppercase">Research Confidence</span>
+<span class="font-bold text-primary">94%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-tertiary-container w-[94%]"></div>
+</div>
+<p class="text-[11px] text-outline mt-2 text-center">Based on validity and sample adequacy (KMO).</p>
+</div>
+</aside>
+<script>
+        // Micro-interactions for analytics cards
+        document.querySelectorAll('.analytics-card').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+
+        // Simple tab switching logic simulation
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (link.closest('aside')) {
+                    document.querySelectorAll('aside nav a').forEach(l => {
+                        l.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'font-bold', 'scale-95');
+                        l.classList.add('text-on-surface-variant', 'hover:bg-surface-variant/50');
+                    });
+                    link.classList.remove('text-on-surface-variant', 'hover:bg-surface-variant/50');
+                    link.classList.add('bg-secondary-container', 'text-on-secondary-container', 'font-bold', 'scale-95');
+                }
+            });
+        });
+    </script>
+</body></html>

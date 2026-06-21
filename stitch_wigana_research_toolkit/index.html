@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Wigana Research Toolkit (WRT) - Enterprise Desktop</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hanken+Grotesk:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SheetJS (xlsx) -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0061a5",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#4da6ff",
+                        "on-primary-container": "#003a67",
+                        "secondary": "#0055c9",
+                        "secondary-container": "#036cfb",
+                        "on-secondary-container": "#fefcff",
+                        "tertiary": "#006c49",
+                        "tertiary-container": "#0cb880",
+                        "on-tertiary-container": "#00412b",
+                        "background": "#f8f9ff",
+                        "on-background": "#0b1c30",
+                        "surface": "#f8f9ff",
+                        "surface-dim": "#cbdbf5",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container": "#e5eeff",
+                        "surface-container-high": "#dce9ff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-surface": "#0b1c30",
+                        "on-surface-variant": "#404752",
+                        "outline": "#707783",
+                        "outline-variant": "#c0c7d4",
+                        "inverse-surface": "#213145",
+                        "inverse-on-surface": "#eaf1ff",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "panel-sidebar": "280px",
+                        "panel-inspector": "320px",
+                        "gutter": "24px",
+                        "container-padding": "32px",
+                        "stack-gap": "16px"
+                    },
+                    fontFamily: {
+                        "body-md": ["Inter"],
+                        "title-sm": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-caps": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "data-mono": ["JetBrains Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F8FBFF;
+            color: #0b1c30;
+            overflow: hidden;
+        }
+        .glass-sidebar {
+            backdrop-filter: blur(20px);
+            background: rgba(229, 238, 255, 0.6);
+        }
+        .analytics-card {
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(13, 110, 253, 0.04);
+            border: 1px solid #E4EDF8;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .analytics-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(13, 110, 253, 0.08);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd8f0;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a5bada;
+        }
+        .spss-grid-cell {
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .status-badge-pill {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+        }
+        .status-valid { background-color: #E6F4EA; color: #1E7E34; }
+        .status-anomaly { background-color: #FFF4E5; color: #B26A06; }
+        .status-invalid { background-color: #FCE8E6; color: #C62828; }
+        
+        .tab-btn-active {
+            color: #0061a5;
+            border-bottom: 2px solid #0061a5;
+            font-weight: 700;
+        }
+        .tab-btn-inactive {
+            color: #404752;
+        }
+        .tab-btn-inactive:hover {
+            color: #0061a5;
+        }
+        .clean-issue-row {
+            transition: background-color 0.15s ease;
+        }
+        .clean-issue-row:hover {
+            background-color: #f1f5f9;
+        }
+
+        /* --- APA & ACADEMIC PDF PRINT STYLES --- */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                font-family: "Times New Roman", Times, serif !important;
+                overflow: visible !important;
+                height: auto !important;
+            }
+            /* Hide sidebar, inspector, header, buttons, and settings */
+            aside, header, button, .no-print, #spss-reader-file-input, .analytics-card button, .pt-4.border-t, .flex.gap-2, #spss-reader-scanner, #spss-reader-status-overlay, #spss-reader-filename, #spss-reader-placeholder-lines {
+                display: none !important;
+            }
+            /* Make main content canvas take 100% width/height */
+            main {
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                overflow: visible !important;
+                height: auto !important;
+                position: static !important;
+            }
+            #view-container {
+                overflow: visible !important;
+                height: auto !important;
+                padding: 0 !important;
+            }
+            section {
+                page-break-before: always;
+                overflow: visible !important;
+                height: auto !important;
+            }
+            section:first-of-type, #view-dashboard, #view-data_import {
+                page-break-before: avoid !important;
+            }
+            /* Clean APA-Style Tables */
+            table {
+                border-collapse: collapse !important;
+                width: 100% !important;
+                margin-top: 15px !important;
+                margin-bottom: 15px !important;
+                page-break-inside: avoid !important;
+            }
+            th, td {
+                border: none !important;
+                border-top: 1px solid black !important;
+                border-bottom: 1px solid black !important;
+                padding: 6px 10px !important;
+                color: black !important;
+                font-size: 11pt !important;
+                background: transparent !important;
+            }
+            th {
+                border-top: 1.5px solid black !important;
+                border-bottom: 1.5px solid black !important;
+                font-weight: bold !important;
+            }
+            tr:last-child td {
+                border-bottom: 1.5px solid black !important;
+            }
+            tr {
+                page-break-inside: avoid !important;
+            }
+            /* Page margins and layout */
+            h1, h2, h3 {
+                page-break-after: avoid !important;
+                color: black !important;
+                font-family: Arial, Helvetica, sans-serif !important;
+            }
+            h1 {
+                font-size: 18pt !important;
+                text-align: center !important;
+                margin-bottom: 25px !important;
+                font-weight: bold !important;
+            }
+            h2 {
+                font-size: 14pt !important;
+                margin-top: 25px !important;
+                border: none !important;
+                padding: 0 !important;
+            }
+            h3 {
+                font-size: 12pt !important;
+            }
+            p {
+                font-size: 12pt !important;
+                line-height: 1.6 !important;
+                text-indent: 0.5in !important;
+                margin-bottom: 12px !important;
+                text-align: justify !important;
+            }
+            ol, ul {
+                padding-left: 20px !important;
+                font-size: 12pt !important;
+                line-height: 1.6 !important;
+            }
+            li {
+                margin-bottom: 6px !important;
+            }
+            @page {
+                size: A4 portrait;
+                margin: 2.5cm;
+            }
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md h-screen flex overflow-hidden bg-background">
+
+    <!-- Left Sidebar (Navigation) -->
+    <aside class="fixed left-0 top-0 h-full w-panel-sidebar glass-sidebar border-r border-outline-variant z-40 flex flex-col justify-between">
+        <div>
+            <!-- Sidebar Header -->
+            <div class="p-6 border-b border-outline-variant flex flex-col">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-[32px] font-bold">query_stats</span>
+                    <span class="font-headline-md text-headline-md font-extrabold text-primary tracking-tight">WIGANA</span>
+                </div>
+                <span class="font-label-caps text-label-caps text-on-surface-variant tracking-widest mt-1 uppercase opacity-85">Research Toolkit</span>
+            </div>
+            
+            <!-- Navigation Items -->
+            <nav class="p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-200px)] custom-scrollbar">
+                <a onclick="switchView('dashboard')" id="nav-dashboard" class="nav-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 hover:text-primary transition-all cursor-pointer">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="font-body-md text-body-md font-medium">Dashboard</span>
+                </a>
+                
+                <div class="px-4 py-2 mt-4 text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider opacity-70">Research Pipeline</div>
+                
+                <a onclick="switchView('data_import')" id="nav-data_import" class="nav-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 hover:text-primary transition-all cursor-pointer">
+                    <span class="material-symbols-outlined">upload_file</span>
+                    <span class="font-body-md text-body-md font-medium">1. Data Import</span>
+                </a>
+                <a onclick="switchView('smart_converter')" id="nav-smart_converter" class="nav-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 hover:text-primary transition-all cursor-pointer">
+                    <span class="material-symbols-outlined">transform</span>
+                    <span class="font-body-md text-body-md font-medium">2. Smart Scale Converter</span>
+                </a>
+                <a onclick="switchView('smart_cleaning')" id="nav-smart_cleaning" class="nav-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 hover:text-primary transition-all cursor-pointer">
+                    <span class="material-symbols-outlined">cleaning_services</span>
+                    <span class="font-body-md text-body-md font-medium">3. Smart Cleaning</span>
+                </a>
+                <a onclick="switchView('construct_builder')" id="nav-construct_builder" class="nav-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 hover:text-primary transition-all cursor-pointer">
+                    <span class="material-symbols-outlined">category</span>
+                    <span class="font-body-md text-body-md font-medium">4. Questionnaire Construct</span>
+                </a>
+                
+                <div class="px-4 py-2 mt-4 text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider opacity-70">SPSS Environment</div>
+                
+                <a onclick="switchView('spss_editor')" id="nav-spss_editor" class="nav-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 hover:text-primary transition-all cursor-pointer">
+                    <span class="material-symbols-outlined">table_chart</span>
+                    <span class="font-body-md text-body-md font-medium">Data & Variable Editor</span>
+                </a>
+                <a onclick="switchView('spss_reader')" id="nav-spss_reader" class="nav-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 hover:text-primary transition-all cursor-pointer">
+                    <span class="material-symbols-outlined">center_focus_strong</span>
+                    <span class="font-body-md text-body-md font-medium">SPSS Output Reader</span>
+                </a>
+                
+                <div class="px-4 py-2 mt-4 text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider opacity-70">Research Output</div>
+                
+                <a onclick="switchView('one_click_analysis')" id="nav-one_click_analysis" class="nav-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 hover:text-primary transition-all cursor-pointer bg-primary/10 text-primary font-bold">
+                    <span class="material-symbols-outlined text-primary font-bold">bolt</span>
+                    <span class="font-body-md text-body-md">One-Click Auto Analyze</span>
+                </a>
+                <a onclick="switchView('output_viewer')" id="nav-output_viewer" class="nav-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 hover:text-primary transition-all cursor-pointer">
+                    <span class="material-symbols-outlined">receipt_long</span>
+                    <span class="font-body-md text-body-md font-medium">Statistical Output Viewer</span>
+                </a>
+                <a onclick="switchView('correlation_regression')" id="nav-correlation_regression" class="nav-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 hover:text-primary transition-all cursor-pointer">
+                    <span class="material-symbols-outlined">analytics</span>
+                    <span class="font-body-md text-body-md font-medium">Correlation &amp; Regression</span>
+                </a>
+                <a onclick="switchView('bab_iv')" id="nav-bab_iv" class="nav-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 hover:text-primary transition-all cursor-pointer">
+                    <span class="material-symbols-outlined">auto_stories</span>
+                    <span class="font-body-md text-body-md font-medium">Auto BAB IV Generator</span>
+                </a>
+                <a onclick="switchView('export_center')" id="nav-export_center" class="nav-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 hover:text-primary transition-all cursor-pointer">
+                    <span class="material-symbols-outlined">ios_share</span>
+                    <span class="font-body-md text-body-md font-medium">Export Center</span>
+                </a>
+            </nav>
+        </div>
+        
+        <!-- Sidebar Footer -->
+        <div class="p-4 border-t border-outline-variant space-y-1">
+            <a onclick="switchView('settings')" id="nav-settings" class="nav-item flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 hover:text-primary transition-all cursor-pointer text-xs">
+                <span class="material-symbols-outlined text-[18px]">settings</span>
+                <span class="font-label-caps text-label-caps uppercase">Settings</span>
+            </a>
+            <div class="px-4 py-2 flex items-center justify-between text-[11px] text-on-surface-variant opacity-60">
+                <span>WRT v2.5.0-Desktop</span>
+                <span>Offline Active</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Canvas (Center Panel) -->
+    <main class="ml-[280px] mr-[320px] flex-1 flex flex-col h-screen overflow-hidden bg-background">
+        
+        <!-- Top App Bar -->
+        <header class="h-16 px-8 flex items-center justify-between border-b border-outline-variant bg-white z-30 shrink-0">
+            <div class="flex items-center gap-8">
+                <span class="font-title-sm text-title-sm font-extrabold text-on-surface" id="app-canvas-title">Wigana Research Toolkit Pro</span>
+                
+                <!-- Quick Navigation Bar for SPSS views if data is loaded -->
+                <nav class="hidden lg:flex gap-6 text-sm" id="quick-spss-tabs" style="display: none;">
+                    <button id="quick-tab-data" onclick="openSpssEditorTab('data')" class="pb-2 px-1 border-b-2 border-transparent hover:text-primary font-semibold transition-all">Data View</button>
+                    <button id="quick-tab-variable" onclick="openSpssEditorTab('variable')" class="pb-2 px-1 border-b-2 border-transparent hover:text-primary font-semibold transition-all">Variable View</button>
+                    <button id="quick-tab-output" onclick="switchView('output_viewer')" class="pb-2 px-1 border-b-2 border-transparent hover:text-primary font-semibold transition-all">Output Viewer</button>
+                    <button id="quick-tab-corr-reg" onclick="switchView('correlation_regression')" class="pb-2 px-1 border-b-2 border-transparent hover:text-primary font-semibold transition-all">Correlation &amp; Regression</button>
+                </nav>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <!-- Status Badge -->
+                <div class="flex items-center gap-2 px-3 py-1 bg-primary-container/20 text-primary rounded-full text-xs font-semibold">
+                    <span class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span>AI Engine Online</span>
+                </div>
+                
+                <button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full text-[20px]" title="Reset Active Workspace" onclick="resetWorkspace()">refresh</button>
+                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-xs">RES</div>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Canvas -->
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-8" id="view-container">
+
+            <!-- 1. VIEW: DASHBOARD -->
+            <section id="view-dashboard" class="space-y-8">
+                <!-- Welcome Banner -->
+                <div class="relative bg-gradient-to-r from-primary to-secondary rounded-xl p-8 text-on-primary overflow-hidden shadow-lg">
+                    <div class="absolute right-0 top-0 h-full w-1/3 opacity-10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[180px]">school</span>
+                    </div>
+                    <div class="relative z-10 max-w-2xl space-y-2">
+                        <h2 class="font-display-lg text-display-lg font-black tracking-tight">Wigana Research Toolkit (WRT)</h2>
+                        <p class="font-body-md text-body-md opacity-90 leading-relaxed">
+                            Welcome to WRT, an advanced desktop statistical workspace. Automate scale conversion, clean raw datasets, map questionnaires, compute validity/reliability matrices, run regression models, and generate complete Indonesian academic reports (BAB IV) with professional AI interpretations in minutes.
+                        </p>
+                        <div class="pt-4 flex gap-4">
+                            <button onclick="loadSampleDataset('employee')" class="px-5 py-2.5 bg-white text-primary hover:bg-primary-container hover:text-on-primary-container font-bold rounded-lg shadow-sm transition-all flex items-center gap-2">
+                                <span class="material-symbols-outlined">science</span> Load Sample Dataset
+                            </button>
+                            <button onclick="switchView('data_import')" class="px-5 py-2.5 bg-primary-container/30 border border-white/20 text-white hover:bg-white/10 font-bold rounded-lg transition-all flex items-center gap-2">
+                                <span class="material-symbols-outlined">upload_file</span> Import Excel / CSV
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Research Quality Dashboard (Requirement 10) -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="analytics-card rounded-xl p-6 flex flex-col justify-between h-36">
+                        <div class="flex justify-between items-center text-on-surface-variant">
+                            <span class="font-label-caps text-label-caps font-bold">Research Confidence</span>
+                            <span class="material-symbols-outlined text-primary">verified_user</span>
+                        </div>
+                        <div class="flex items-baseline gap-2 mt-4">
+                            <span class="text-4xl font-extrabold font-display-lg tracking-tight" id="dash-confidence">0%</span>
+                            <span class="text-xs text-on-surface-variant font-medium">Confidence Score</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-1.5 mt-2">
+                            <div class="bg-primary h-1.5 rounded-full transition-all duration-500" id="dash-confidence-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-card rounded-xl p-6 flex flex-col justify-between h-36">
+                        <div class="flex justify-between items-center text-on-surface-variant">
+                            <span class="font-label-caps text-label-caps font-bold">Data Quality</span>
+                            <span class="material-symbols-outlined text-green-600">query_stats</span>
+                        </div>
+                        <div class="flex items-baseline gap-2 mt-4">
+                            <span class="text-4xl font-extrabold font-display-lg tracking-tight" id="dash-data-quality">0%</span>
+                            <span class="text-xs text-on-surface-variant font-medium">Cleanliness Rating</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-1.5 mt-2">
+                            <div class="bg-green-600 h-1.5 rounded-full transition-all duration-500" id="dash-data-quality-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-card rounded-xl p-6 flex flex-col justify-between h-36">
+                        <div class="flex justify-between items-center text-on-surface-variant">
+                            <span class="font-label-caps text-label-caps font-bold">Instrument Quality</span>
+                            <span class="material-symbols-outlined text-amber-500">rule_folder</span>
+                        </div>
+                        <div class="flex items-baseline gap-2 mt-4">
+                            <span class="text-4xl font-extrabold font-display-lg tracking-tight" id="dash-instrument-quality">0%</span>
+                            <span class="text-xs text-on-surface-variant font-medium">Validity & Reliability</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-1.5 mt-2">
+                            <div class="bg-amber-500 h-1.5 rounded-full transition-all duration-500" id="dash-instrument-quality-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-card rounded-xl p-6 flex flex-col justify-between h-36">
+                        <div class="flex justify-between items-center text-on-surface-variant">
+                            <span class="font-label-caps text-label-caps font-bold">Analysis Quality</span>
+                            <span class="material-symbols-outlined text-purple-600">donut_large</span>
+                        </div>
+                        <div class="flex items-baseline gap-2 mt-4">
+                            <span class="text-4xl font-extrabold font-display-lg tracking-tight" id="dash-analysis-quality">0%</span>
+                            <span class="text-xs text-on-surface-variant font-medium">Assumptions Met</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-1.5 mt-2">
+                            <div class="bg-purple-600 h-1.5 rounded-full transition-all duration-500" id="dash-analysis-quality-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Dataset Overview Panel -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left: Status Cards -->
+                    <div class="lg:col-span-2 analytics-card rounded-xl p-6 space-y-6">
+                        <h3 class="font-title-sm text-title-sm border-b border-outline-variant pb-3 font-bold text-on-surface">Active Workspace Status</h3>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="dash-dataset-stats">
+                            <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg">
+                                <span class="block text-xs text-on-surface-variant font-medium uppercase font-label-caps">Observations</span>
+                                <span class="text-2xl font-bold text-on-surface" id="dash-stat-rows">-</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg">
+                                <span class="block text-xs text-on-surface-variant font-medium uppercase font-label-caps">Total Variables</span>
+                                <span class="text-2xl font-bold text-on-surface" id="dash-stat-cols">-</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg">
+                                <span class="block text-xs text-on-surface-variant font-medium uppercase font-label-caps">Mapped Scales</span>
+                                <span class="text-2xl font-bold text-on-surface" id="dash-stat-scales">-</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg">
+                                <span class="block text-xs text-on-surface-variant font-medium uppercase font-label-caps">Questionnaire Items</span>
+                                <span class="text-2xl font-bold text-on-surface" id="dash-stat-items">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Workflow steps list -->
+                        <div class="space-y-3">
+                            <h4 class="font-body-md text-body-md font-semibold text-on-surface">Research Pipeline Status</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="flex items-center justify-between p-3 rounded-lg border border-slate-100 bg-white" id="step-status-import">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="material-symbols-outlined text-slate-400" id="step-icon-import">radio_button_unchecked</span>
+                                        <span class="text-sm font-medium">1. Data Import</span>
+                                    </div>
+                                    <span class="text-xs text-slate-400 font-semibold" id="step-lbl-import">Pending</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 rounded-lg border border-slate-100 bg-white" id="step-status-convert">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="material-symbols-outlined text-slate-400" id="step-icon-convert">radio_button_unchecked</span>
+                                        <span class="text-sm font-medium">2. Scale Conversion</span>
+                                    </div>
+                                    <span class="text-xs text-slate-400 font-semibold" id="step-lbl-convert">Pending</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 rounded-lg border border-slate-100 bg-white" id="step-status-clean">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="material-symbols-outlined text-slate-400" id="step-icon-clean">radio_button_unchecked</span>
+                                        <span class="text-sm font-medium">3. Data Cleaning</span>
+                                    </div>
+                                    <span class="text-xs text-slate-400 font-semibold" id="step-lbl-clean">Pending</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 rounded-lg border border-slate-100 bg-white" id="step-status-construct">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="material-symbols-outlined text-slate-400" id="step-icon-construct">radio_button_unchecked</span>
+                                        <span class="text-sm font-medium">4. Construct Grouping</span>
+                                    </div>
+                                    <span class="text-xs text-slate-400 font-semibold" id="step-lbl-construct">Pending</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Info Panel -->
+                    <div class="analytics-card rounded-xl p-6 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-title-sm text-title-sm border-b border-outline-variant pb-3 font-bold text-on-surface">One-Click Analysis</h3>
+                            <p class="text-sm text-on-surface-variant mt-3 leading-relaxed">
+                                Ready to analyze your dataset? If you have imported data, configured constructs, and cleaned outliers, you can execute the full statistical pipeline instantly.
+                            </p>
+                            <p class="text-xs text-on-surface-variant bg-slate-50 border border-slate-100 rounded p-3 mt-4">
+                                <strong>Calculates:</strong> Conversion → Cleaning → Reverse Coding → Descriptive Stats → CITC Validity → Cronbach Reliability → Normality, Multicollinearity (VIF), Heteroscedasticity (Glejser) → Multiple Linear Regression → AI Report → Indonesian Chapter 4 (BAB IV).
+                            </p>
+                        </div>
+                        <div class="pt-6">
+                            <button onclick="runOneClickAnalysis()" class="w-full py-3 bg-primary text-white font-bold hover:bg-secondary rounded-lg shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined">bolt</span> RUN AUTOMATIC PIPELINE
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 2. VIEW: DATA IMPORT -->
+            <section id="view-data_import" class="space-y-6" style="display: none;">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <h2 class="font-headline-md text-headline-md font-bold text-on-surface">Data Import Center</h2>
+                        <p class="text-on-surface-variant text-sm mt-1">Upload questionnaire files in Excel (.xlsx, .xls) or CSV format. Variables are loaded into the SPSS Data View automatically.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Drop Zone -->
+                    <div class="lg:col-span-2 border-2 border-dashed border-primary/30 rounded-xl p-10 bg-white flex flex-col items-center justify-center text-center space-y-4 hover:border-primary/60 transition-all cursor-pointer relative" id="dropzone" onclick="document.getElementById('file-input').click()">
+                        <input type="file" id="file-input" class="hidden" accept=".xlsx,.xls,.csv" onchange="handleFileSelect(event)" />
+                        <span class="material-symbols-outlined text-[64px] text-primary/40">upload_file</span>
+                        <div>
+                            <h4 class="font-title-sm text-title-sm font-bold text-on-surface">Drag & Drop Dataset File Here</h4>
+                            <p class="text-xs text-on-surface-variant mt-1">Supports Excel Files (.xlsx, .xls) and Comma-Separated Values (.csv)</p>
+                        </div>
+                        <span class="px-4 py-2 bg-primary/10 text-primary font-bold rounded-lg text-sm group-hover:bg-primary/20 transition-all">Select File From Disk</span>
+                    </div>
+
+                    <!-- Sandbox Samples -->
+                    <div class="analytics-card rounded-xl p-6 space-y-4">
+                        <h3 class="font-title-sm text-title-sm font-bold border-b border-outline-variant pb-2">Predefined Academic Samples</h3>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">
+                            Don't have a dataset ready? Test WRT features immediately using realistic academic questionnaire datasets prepopulated with research issues (missing values, duplicates, outliers, and negative items).
+                        </p>
+                        
+                        <div class="space-y-3 pt-2">
+                            <button onclick="loadSampleDataset('employee')" class="w-full p-4 border border-outline-variant hover:border-primary/50 text-left rounded-lg transition-all group flex flex-col justify-between">
+                                <span class="font-semibold text-primary group-hover:underline">Employee Motivation Study (N=60)</span>
+                                <span class="text-[11px] text-on-surface-variant mt-1 block">Variables: Age, Gend, JS1, JS2, JS3 (negative), JP1, JP2, JP3. Includes missing cells, duplicates, outliers, and reverse items.</span>
+                            </button>
+                            
+                            <button onclick="loadSampleDataset('customer')" class="w-full p-4 border border-outline-variant hover:border-primary/50 text-left rounded-lg transition-all group flex flex-col justify-between">
+                                <span class="font-semibold text-primary group-hover:underline">Customer Loyalty Survey (N=80)</span>
+                                <span class="text-[11px] text-on-surface-variant mt-1 block">Variables: Gender, Sat1, Sat2, Sat3, Loy1, Loy2, Loy3, Rec. High-quality structured Likert 1-5 responses.</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Summary Panel -->
+                <div class="analytics-card rounded-xl p-6" id="upload-status-card" style="display: none;">
+                    <div class="flex items-center justify-between border-b border-outline-variant pb-3 mb-4">
+                        <h3 class="font-title-sm text-title-sm font-bold flex items-center gap-2 text-green-700">
+                            <span class="material-symbols-outlined text-[20px]">check_circle</span> File Loaded Successfully
+                        </h3>
+                        <span class="text-xs text-on-surface-variant font-mono font-bold" id="upload-filename">dataset.xlsx</span>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
+                        <div>
+                            <span class="block text-xs text-on-surface-variant font-semibold uppercase">Total Rows</span>
+                            <span class="text-xl font-bold font-data-mono" id="upload-rows">0</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-on-surface-variant font-semibold uppercase">Total Columns</span>
+                            <span class="text-xl font-bold font-data-mono" id="upload-cols">0</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-on-surface-variant font-semibold uppercase">Dataset Size</span>
+                            <span class="text-xl font-bold font-data-mono" id="upload-size">0 KB</span>
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="switchView('spss_editor')" class="px-4 py-2 bg-primary text-white rounded font-bold hover:bg-secondary text-xs flex items-center gap-1.5 shadow-sm transition-all">
+                                <span class="material-symbols-outlined text-[14px]">grid_on</span> Go to Editor
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 3. VIEW: SMART SCALE CONVERTER -->
+            <section id="view-smart_converter" class="space-y-6" style="display: none;">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <h2 class="font-headline-md text-headline-md font-bold text-on-surface">Smart Scale Converter</h2>
+                        <p class="text-on-surface-variant text-sm mt-1">
+                            Scans text responses for Likert scales, Dichotomous scales, demographics, and rating formats, automatically generating numeric values and SPSS labels.
+                        </p>
+                    </div>
+                    <button onclick="runAutoScaleConversion()" class="px-5 py-2.5 bg-primary text-white font-bold hover:bg-secondary rounded-lg shadow flex items-center gap-2" id="btn-run-scale-conv">
+                        <span class="material-symbols-outlined">auto_fix_high</span> AUTO CONVERT ALL SCALES
+                    </button>
+                </div>
+
+                <!-- Scale conversion panel -->
+                <div class="analytics-card rounded-xl p-6" id="scale-conv-container">
+                    <div class="text-center py-10 text-on-surface-variant" id="scale-conv-empty">
+                        <span class="material-symbols-outlined text-[48px] opacity-45">transform</span>
+                        <p class="mt-2 text-sm">Please import a dataset first to scan for categorical scales.</p>
+                    </div>
+                    
+                    <div id="scale-conv-list" class="space-y-6" style="display: none;">
+                        <h3 class="font-title-sm text-title-sm font-bold border-b border-outline-variant pb-2">Detected Categorical Scale Mappings</h3>
+                        
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left text-sm border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-on-surface-variant border-b border-outline-variant font-semibold text-xs">
+                                        <th class="p-3">Variable Name</th>
+                                        <th class="p-3">Detected Scale Type</th>
+                                        <th class="p-3">Scale Categories Mapping</th>
+                                        <th class="p-3">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="scale-conv-table-body" class="divide-y divide-slate-100">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 4. VIEW: SMART CLEANING -->
+            <section id="view-smart_cleaning" class="space-y-6" style="display: none;">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <h2 class="font-headline-md text-headline-md font-bold text-on-surface">Smart Cleaning Engine</h2>
+                        <p class="text-on-surface-variant text-sm mt-1">Automatically checks for duplicates, missing data cells, outliers (absolute Z-score > 2.50), invalid Likert bounds, and malformed header names.</p>
+                    </div>
+                    <button onclick="runOneClickCleaning()" class="px-5 py-2.5 bg-green-600 text-white font-bold hover:bg-green-700 rounded-lg shadow flex items-center gap-2" id="btn-run-clean">
+                        <span class="material-symbols-outlined">auto_clean</span> ONE-CLICK CLEAN DATA
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <!-- Issue summary cards -->
+                    <div class="analytics-card rounded-xl p-4 flex items-center gap-4 bg-white">
+                        <div class="p-3 bg-red-100 text-red-700 rounded-lg">
+                            <span class="material-symbols-outlined text-[28px] font-bold">report</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-semibold text-on-surface-variant font-label-caps uppercase">Missing Cells</span>
+                            <span class="text-2xl font-bold font-data-mono" id="clean-sum-missing">0</span>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card rounded-xl p-4 flex items-center gap-4 bg-white">
+                        <div class="p-3 bg-amber-100 text-amber-700 rounded-lg">
+                            <span class="material-symbols-outlined text-[28px] font-bold">content_copy</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-semibold text-on-surface-variant font-label-caps uppercase">Duplicate Rows</span>
+                            <span class="text-2xl font-bold font-data-mono" id="clean-sum-dups">0</span>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card rounded-xl p-4 flex items-center gap-4 bg-white">
+                        <div class="p-3 bg-orange-100 text-orange-700 rounded-lg">
+                            <span class="material-symbols-outlined text-[28px] font-bold">warning</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-semibold text-on-surface-variant font-label-caps uppercase">Outliers Flagged</span>
+                            <span class="text-2xl font-bold font-data-mono" id="clean-sum-outliers">0</span>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card rounded-xl p-4 flex items-center gap-4 bg-white">
+                        <div class="p-3 bg-blue-100 text-blue-700 rounded-lg">
+                            <span class="material-symbols-outlined text-[28px] font-bold">title</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-semibold text-on-surface-variant font-label-caps uppercase">Header Issues</span>
+                            <span class="text-2xl font-bold font-data-mono" id="clean-sum-headers">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main issues list -->
+                <div class="analytics-card rounded-xl p-6" id="clean-issues-container">
+                    <div class="text-center py-10 text-on-surface-variant" id="clean-issues-empty">
+                        <span class="material-symbols-outlined text-[48px] opacity-45">cleaning_services</span>
+                        <p class="mt-2 text-sm">Please import a dataset first to scan for data cleaning issues.</p>
+                    </div>
+
+                    <div id="clean-issues-panel" style="display: none;" class="space-y-6">
+                        <h3 class="font-title-sm text-title-sm font-bold border-b border-outline-variant pb-2">Diagnosed Quality Anomalies</h3>
+                        <div class="max-h-96 overflow-y-auto custom-scrollbar border border-outline-variant rounded-lg">
+                            <table class="w-full text-left text-sm border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-on-surface-variant border-b border-outline-variant font-semibold text-xs sticky top-0 z-10">
+                                        <th class="p-3">Issue Type</th>
+                                        <th class="p-3">Location</th>
+                                        <th class="p-3">Description</th>
+                                        <th class="p-3">Proposed Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="clean-issues-tbody" class="divide-y divide-slate-100">
+                                    <!-- Dynamic issues rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 5. VIEW: QUESTIONNAIRE CONSTRUCT BUILDER -->
+            <section id="view-construct_builder" class="space-y-6" style="display: none;">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <h2 class="font-headline-md text-headline-md font-bold text-on-surface">Questionnaire Construct Builder</h2>
+                        <p class="text-on-surface-variant text-sm mt-1">Group question items into composite constructs (e.g. JS1, JS2, JS3 → Job Satisfaction). Autodetect items with reverse correlation and recommend reverse scoring.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="autoDetectConstructs()" class="px-4 py-2 border border-primary text-primary hover:bg-primary/5 rounded-lg font-semibold flex items-center gap-1.5 transition-all text-sm">
+                            <span class="material-symbols-outlined text-[18px]">auto_awesome</span> AUTO GROUP ITEMS
+                        </button>
+                        <button onclick="createNewConstruct()" class="px-4 py-2 bg-primary text-white hover:bg-secondary rounded-lg font-semibold flex items-center gap-1.5 shadow transition-all text-sm">
+                            <span class="material-symbols-outlined text-[18px]">add</span> ADD CONSTRUCT
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Mapped Constructs List -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="analytics-card rounded-xl p-6">
+                            <h3 class="font-title-sm text-title-sm font-bold border-b border-outline-variant pb-2 mb-4">Current Construct Mapping</h3>
+                            <div class="text-center py-10 text-on-surface-variant" id="constructs-empty">
+                                <span class="material-symbols-outlined text-[48px] opacity-45">category</span>
+                                <p class="mt-2 text-sm">No constructs defined. Click "Auto Group Items" or "Add Construct" to begin.</p>
+                            </div>
+                            <div id="constructs-list" class="space-y-4" style="display: none;">
+                                <!-- Dynamic constructs list -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Construct variables pool -->
+                    <div class="analytics-card rounded-xl p-6 space-y-4 h-fit">
+                        <h3 class="font-title-sm text-title-sm font-bold border-b border-outline-variant pb-2">Available Variables Pool</h3>
+                        <p class="text-xs text-on-surface-variant">Drag or select variables to add them to construct groupings. Numeric variables only.</p>
+                        
+                        <div class="border border-outline-variant rounded-lg p-3 max-h-96 overflow-y-auto custom-scrollbar space-y-1 bg-slate-50" id="construct-variables-pool">
+                            <!-- Dynamic variables checkboxes -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 6. VIEW: SPSS DATA EDITOR -->
+            <section id="view-spss_editor" class="space-y-6" style="display: none;">
+                <!-- Tab Headers -->
+                <div class="flex items-center justify-between border-b border-outline-variant bg-white p-3 rounded-lg shadow-sm">
+                    <div class="flex gap-4">
+                        <button onclick="openSpssEditorTab('data')" id="btn-editor-tab-data" class="tab-btn-active pb-2 px-4 font-semibold text-sm transition-all border-b-2">Data View</button>
+                        <button onclick="openSpssEditorTab('variable')" id="btn-editor-tab-variable" class="tab-btn-inactive pb-2 px-4 font-semibold text-sm transition-all border-b-2">Variable View</button>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="addNewVariableRow()" id="btn-editor-add-var" style="display: none;" class="px-3 py-1.5 border border-outline text-on-surface hover:bg-slate-50 rounded text-xs font-semibold flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">add</span> Add Variable
+                        </button>
+                        <button onclick="addNewDataRow()" id="btn-editor-add-row" class="px-3 py-1.5 border border-outline text-on-surface hover:bg-slate-50 rounded text-xs font-semibold flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">add</span> Add Row Case
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Editor Containers -->
+                <div class="analytics-card rounded-xl overflow-hidden bg-white">
+                    
+                    <!-- Tab: Data View -->
+                    <div id="editor-container-data" class="w-full overflow-auto max-h-[60vh] custom-scrollbar">
+                        <table class="w-full text-left text-xs border-collapse font-data-mono">
+                            <thead class="sticky top-0 bg-slate-100 text-on-surface-variant font-semibold border-b border-slate-300 z-10">
+                                <tr id="spss-data-thead-row">
+                                    <th class="p-2 border-r border-slate-300 w-12 text-center bg-slate-200 sticky left-0 z-20">Row</th>
+                                    <!-- Dynamic headers -->
+                                </tr>
+                            </thead>
+                            <tbody id="spss-data-tbody" class="divide-y divide-slate-100">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination Footer (Hanya terlihat saat Tab Data aktif) -->
+                    <div id="spss-data-pagination" class="flex items-center justify-between p-3 bg-slate-50 border-t border-slate-200">
+                        <div class="text-xs text-slate-500 font-medium">
+                            Menampilkan baris <span id="spss-page-start" class="font-bold text-slate-700">0</span> - <span id="spss-page-end" class="font-bold text-slate-700">0</span> dari <span id="spss-page-total" class="font-bold text-slate-700">0</span> responden
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="changeSpssPage(-1)" id="btn-spss-prev" class="px-3 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors disabled:opacity-50 disabled:pointer-events-none">
+                                <span class="material-symbols-outlined text-[14px]">chevron_left</span> Sebelumnya
+                            </button>
+                            <span class="text-xs font-mono font-medium text-slate-600 bg-slate-200/60 px-2.5 py-1 rounded-md" id="spss-page-indicator">Halaman 1</span>
+                            <button onclick="changeSpssPage(1)" id="btn-spss-next" class="px-3 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors disabled:opacity-50 disabled:pointer-events-none">
+                                Selanjutnya <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Variable View -->
+                    <div id="editor-container-variable" class="w-full overflow-auto max-h-[60vh] custom-scrollbar" style="display: none;">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="sticky top-0 bg-slate-100 text-on-surface-variant font-semibold border-b border-slate-300 z-10">
+                                <tr>
+                                    <th class="p-3 border-r border-slate-300 w-12 text-center bg-slate-200">#</th>
+                                    <th class="p-3 border-r border-slate-300">Name</th>
+                                    <th class="p-3 border-r border-slate-300">Type</th>
+                                    <th class="p-3 border-r border-slate-300">Decimals</th>
+                                    <th class="p-3 border-r border-slate-300">Label</th>
+                                    <th class="p-3 border-r border-slate-300">Values Mapping</th>
+                                    <th class="p-3 border-r border-slate-300">Measure</th>
+                                    <th class="p-3 border-r border-slate-300 font-semibold text-center text-red-600">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="spss-variable-tbody" class="divide-y divide-slate-200">
+                                <!-- Dynamic variable rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 7. VIEW: ONE-CLICK ANALYSIS / ENGINE TRIGGER -->
+            <section id="view-one_click_analysis" class="space-y-6" style="display: none;">
+                <div class="max-w-2xl mx-auto text-center space-y-6 py-12">
+                    <span class="material-symbols-outlined text-[80px] text-primary animate-bounce">bolt</span>
+                    <div class="space-y-2">
+                        <h2 class="font-display-lg text-display-lg font-black text-on-surface">Run Automatic Statistical Pipeline</h2>
+                        <p class="text-on-surface-variant text-sm max-w-lg mx-auto">
+                            Our analysis engine calculates raw scale mappings, cleans outliers, handles missing cells, checks construct validity and reliability, validates statistical assumptions (Normality, VIF, Glejser), and builds regressions.
+                        </p>
+                    </div>
+
+                    <div class="border border-outline-variant rounded-xl p-6 bg-white text-left space-y-4 shadow-sm" id="oneclick-run-checklist">
+                        <h3 class="font-semibold text-on-surface flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-[20px]">check_circle_outline</span> Pipeline Analysis Scope
+                        </h3>
+                        <ul class="text-xs text-on-surface-variant space-y-2 font-medium">
+                            <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-primary"></span> Automatic categorical value conversions (Likert, Satisfaction, dichotomous, demographics)</li>
+                            <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-primary"></span> Smart Data Cleaning (resolving outliers, missing elements, duplicates, sanitizing headers)</li>
+                            <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-primary"></span> Construct item mapping and reverse scoring invert calculations</li>
+                            <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-primary"></span> Instrument analysis: Pearson CITC item-level validity & construct Cronbach's Alpha reliability</li>
+                            <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-primary"></span> Descriptive metrics: Mean, standard deviations, variances, range, skewness, kurtosis</li>
+                            <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-primary"></span> Regression assumption checks: Skewness/Kurtosis Normality, VIF Multicollinearity, Glejser Heteroscedasticity</li>
+                            <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-primary"></span> Regression hypothesis tests: R-Square fit, ANOVA F-Test, Coefficients t-Tests</li>
+                            <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-primary"></span> AI academic interpretations generation & Indonesian BAB IV thesis chapter drafting</li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-4 flex gap-4 justify-center">
+                        <button onclick="runOneClickAnalysis()" class="px-8 py-3.5 bg-primary text-white hover:bg-secondary rounded-lg font-bold shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center gap-2">
+                            <span class="material-symbols-outlined">play_arrow</span> EXECUTE ANALYSIS NOW
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 8. VIEW: OUTPUT VIEWER -->
+            <section id="view-output_viewer" class="space-y-8" style="display: none;">
+                <div class="flex justify-between items-end border-b border-outline-variant pb-4">
+                    <div>
+                        <h2 class="font-headline-md text-headline-md font-bold text-on-surface">Statistical Output Viewer</h2>
+                        <p class="text-on-surface-variant text-sm mt-1">Formal SPSS/APA tables, charts, and detailed mathematical outputs.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="switchView('bab_iv')" class="px-4 py-2 border border-primary text-primary hover:bg-primary/5 rounded-lg font-semibold flex items-center gap-1.5 transition-all text-sm">
+                            <span class="material-symbols-outlined text-[18px]">auto_stories</span> Go to BAB IV Generator
+                        </button>
+                        <button onclick="window.print()" class="px-4 py-2 bg-primary text-white hover:bg-secondary rounded-lg font-semibold flex items-center gap-1.5 shadow transition-all text-sm">
+                            <span class="material-symbols-outlined text-[18px]">print</span> Print / Export PDF
+                        </button>
+                    </div>
+                </div>
+
+                <div class="text-center py-20 text-on-surface-variant analytics-card rounded-xl p-8" id="output-empty">
+                    <span class="material-symbols-outlined text-[64px] opacity-45">receipt_long</span>
+                    <p class="mt-3 text-sm">No analysis has been run yet. Upload data and click "Run Automatic Pipeline" to view output.</p>
+                </div>
+
+                <div id="output-panels-container" class="space-y-8" style="display: none;">
+                    <!-- Quick Navigator Inside Output View -->
+                    <div class="flex gap-2 border-b border-outline-variant pb-2 sticky top-0 bg-background z-20">
+                        <a href="#out-section-descriptive" class="text-xs font-semibold px-3 py-1 bg-white border border-slate-200 text-on-surface hover:text-primary rounded shadow-sm">Descriptives</a>
+                        <a href="#out-section-validity" class="text-xs font-semibold px-3 py-1 bg-white border border-slate-200 text-on-surface hover:text-primary rounded shadow-sm">Validity</a>
+                        <a href="#out-section-reliability" class="text-xs font-semibold px-3 py-1 bg-white border border-slate-200 text-on-surface hover:text-primary rounded shadow-sm">Reliability</a>
+                        <a href="#out-section-assumptions" class="text-xs font-semibold px-3 py-1 bg-white border border-slate-200 text-on-surface hover:text-primary rounded shadow-sm">Assumptions</a>
+                    </div>
+
+                    <!-- Output Card: Descriptive Stats -->
+                    <div class="analytics-card rounded-xl p-6 space-y-4 scroll-mt-20" id="out-section-descriptive">
+                        <h3 class="font-title-sm text-title-sm font-bold text-primary flex items-center gap-2 border-b border-slate-100 pb-2">
+                            <span class="material-symbols-outlined">analytics</span> Descriptive Statistics
+                        </h3>
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left text-xs border border-slate-200 border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 border-b border-slate-300 font-semibold">
+                                        <th class="p-2 border-r border-slate-200">Variable</th>
+                                        <th class="p-2 border-r border-slate-200 text-right">N</th>
+                                        <th class="p-2 border-r border-slate-200 text-right">Min</th>
+                                        <th class="p-2 border-r border-slate-200 text-right">Max</th>
+                                        <th class="p-2 border-r border-slate-200 text-right">Mean</th>
+                                        <th class="p-2 border-r border-slate-200 text-right">Std. Dev</th>
+                                        <th class="p-2 border-r border-slate-200 text-right">Variance</th>
+                                        <th class="p-2 border-r border-slate-200 text-right">Skewness</th>
+                                        <th class="p-2 text-right">Kurtosis</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="out-tbody-descriptives" class="divide-y divide-slate-100 font-data-mono">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Output Card: Validity Analysis (Requirement 5) -->
+                    <div class="analytics-card rounded-xl p-6 space-y-4 scroll-mt-20" id="out-section-validity">
+                        <h3 class="font-title-sm text-title-sm font-bold text-primary flex items-center gap-2 border-b border-slate-100 pb-2">
+                            <span class="material-symbols-outlined">rule_folder</span> Instrument Validity Analysis (CITC Engine)
+                        </h3>
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left text-xs border border-slate-200 border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 border-b border-slate-300 font-semibold">
+                                        <th class="p-2 border-r border-slate-200">Construct</th>
+                                        <th class="p-2 border-r border-slate-200">Item Code</th>
+                                        <th class="p-2 border-r border-slate-200">Item Label</th>
+                                        <th class="p-2 border-r border-slate-200 text-right">Pearson r<sub>hitung</sub></th>
+                                        <th class="p-2 border-r border-slate-200 text-right">r<sub>tabel</sub> (N-2, 5%)</th>
+                                        <th class="p-2 border-r border-slate-200 text-right">CITC (r<sub>corrected</sub>)</th>
+                                        <th class="p-2 border-r border-slate-200 text-right">p-value</th>
+                                        <th class="p-2 text-center">Engine Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="out-tbody-validity" class="divide-y divide-slate-100 font-data-mono">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Output Card: Reliability Analysis (Requirement 6) -->
+                    <div class="analytics-card rounded-xl p-6 space-y-4 scroll-mt-20" id="out-section-reliability">
+                        <h3 class="font-title-sm text-title-sm font-bold text-primary flex items-center gap-2 border-b border-slate-100 pb-2">
+                            <span class="material-symbols-outlined">shield_lock</span> Instrument Reliability Analysis (Cronbach's Alpha)
+                        </h3>
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left text-xs border border-slate-200 border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 border-b border-slate-300 font-semibold">
+                                        <th class="p-2 border-r border-slate-200">Construct Name</th>
+                                        <th class="p-2 border-r border-slate-200 text-right">Number of Items</th>
+                                        <th class="p-2 border-r border-slate-200 text-right">Cronbach's Alpha (&alpha;)</th>
+                                        <th class="p-2 text-center">Reliability Level</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="out-tbody-reliability" class="divide-y divide-slate-100 font-data-mono">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <!-- Output Card: Assumption Tests -->
+                    <div class="analytics-card rounded-xl p-6 space-y-6 scroll-mt-20" id="out-section-assumptions">
+                        <h3 class="font-title-sm text-title-sm font-bold text-primary flex items-center gap-2 border-b border-slate-100 pb-2">
+                            <span class="material-symbols-outlined">flaky</span> Regression Assumption Analysis
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Normality -->
+                            <div class="border border-slate-200 rounded p-4 space-y-3">
+                                <h4 class="font-semibold text-sm border-b border-slate-100 pb-2 text-on-surface">1. Normality (Skewness & Kurtosis Checks)</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left text-xs border-collapse">
+                                        <thead>
+                                            <tr class="border-b border-slate-200 font-semibold">
+                                                <th class="py-1">Variable</th>
+                                                <th class="py-1 text-right">Z-Skewness</th>
+                                                <th class="py-1 text-right">Z-Kurtosis</th>
+                                                <th class="py-1 text-center">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="out-tbody-normality" class="divide-y divide-slate-100 font-data-mono">
+                                            <!-- Dynamic rows -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Multicollinearity VIF -->
+                            <div class="border border-slate-200 rounded p-4 space-y-3">
+                                <h4 class="font-semibold text-sm border-b border-slate-100 pb-2 text-on-surface">2. Multicollinearity (Tolerance & VIF)</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left text-xs border-collapse">
+                                        <thead>
+                                            <tr class="border-b border-slate-200 font-semibold">
+                                                <th class="py-1">Predictor Variable</th>
+                                                <th class="py-1 text-right">Tolerance</th>
+                                                <th class="py-1 text-right">VIF</th>
+                                                <th class="py-1 text-center">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="out-tbody-multicollinearity" class="divide-y divide-slate-100 font-data-mono">
+                                            <!-- Dynamic rows -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tests of Normality (Kolmogorov-Smirnov & Shapiro-Wilk) (User Request) -->
+                        <div class="border border-slate-200 rounded p-4 space-y-3">
+                            <h4 class="font-semibold text-sm border-b border-slate-100 pb-2 text-on-surface">1b. Tests of Normality (Kolmogorov-Smirnov & Shapiro-Wilk)</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs border border-slate-200 border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 border-b border-slate-300 font-semibold text-slate-700">
+                                            <th class="p-2 border-r border-slate-200" rowspan="2">Variable</th>
+                                            <th class="p-2 text-center border-b border-r border-slate-200" colspan="3">Kolmogorov-Smirnov<sup>a</sup></th>
+                                            <th class="p-2 text-center border-b border-r border-slate-200" colspan="3">Shapiro-Wilk</th>
+                                            <th class="p-2 text-center" rowspan="2">Rekomendasi Korelasi</th>
+                                        </tr>
+                                        <tr class="bg-slate-50 border-b border-slate-300 text-slate-600">
+                                            <th class="p-1 border-r border-slate-200 text-right pr-2">Statistic</th>
+                                            <th class="p-1 border-r border-slate-200 text-center pr-2">df</th>
+                                            <th class="p-1 border-r border-slate-200 text-right pr-2">Sig.</th>
+                                            <th class="p-1 border-r border-slate-200 text-right pr-2">Statistic</th>
+                                            <th class="p-1 border-r border-slate-200 text-center pr-2">df</th>
+                                            <th class="p-1 border-r border-slate-200 text-right pr-2">Sig.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="out-tbody-normality-kssw" class="divide-y divide-slate-100 font-data-mono">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                                <p class="text-[10px] text-slate-500 mt-2">
+                                    <sup>a</sup> Lilliefors Significance Correction. Sig. &gt; 0.05 menunjukkan data berdistribusi normal (Gunakan Korelasi Pearson). Sig. &le; 0.05 menunjukkan data tidak berdistribusi normal (Gunakan Korelasi Spearman).
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Heteroscedasticity Glejser -->
+                        <div class="border border-slate-200 rounded p-4 space-y-3">
+                            <h4 class="font-semibold text-sm border-b border-slate-100 pb-2 text-on-surface">3. Heteroscedasticity Check (Glejser Test)</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs border border-slate-200 border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 border-b border-slate-300 font-semibold">
+                                            <th class="p-2 border-r border-slate-200">Predictor Variable</th>
+                                            <th class="p-2 border-r border-slate-200 text-right">Glejser Beta (&beta;)</th>
+                                            <th class="p-2 border-r border-slate-200 text-right">t-statistic</th>
+                                            <th class="p-2 border-r border-slate-200 text-right">p-value (Sig)</th>
+                                            <th class="p-2 text-center">Result</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="out-tbody-hetero" class="divide-y divide-slate-100 font-data-mono">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 8b. VIEW: CORRELATION & REGRESSION -->
+            <section id="view-correlation_regression" class="space-y-8" style="display: none;">
+                <div class="flex justify-between items-end border-b border-outline-variant pb-4">
+                    <div>
+                        <h2 class="font-headline-md text-headline-md font-bold text-on-surface">Correlation &amp; Regression Analysis</h2>
+                        <p class="text-on-surface-variant text-sm mt-1">Pearson and Spearman correlation matrices, and multiple linear regression outputs.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="switchView('bab_iv')" class="px-4 py-2 border border-primary text-primary hover:bg-primary/5 rounded-lg font-semibold flex items-center gap-1.5 transition-all text-sm">
+                            <span class="material-symbols-outlined text-[18px]">auto_stories</span> Go to BAB IV Generator
+                        </button>
+                        <button onclick="window.print()" class="px-4 py-2 bg-primary text-white hover:bg-secondary rounded-lg font-semibold flex items-center gap-1.5 shadow transition-all text-sm">
+                            <span class="material-symbols-outlined text-[18px]">print</span> Print / Export PDF
+                        </button>
+                    </div>
+                </div>
+
+                <div class="text-center py-20 text-on-surface-variant analytics-card rounded-xl p-8" id="correlation-regression-empty">
+                    <span class="material-symbols-outlined text-[64px] opacity-45">analytics</span>
+                    <p class="mt-3 text-sm">No analysis has been run yet. Upload data and click "Run Automatic Pipeline" to view output.</p>
+                </div>
+
+                <div id="correlation-regression-container" class="space-y-8" style="display: none;">
+                    <!-- Quick Navigator Inside Correlation & Regression View -->
+                    <div class="flex gap-2 border-b border-outline-variant pb-2 sticky top-0 bg-background z-20">
+                        <a href="#out-section-correlations" class="text-xs font-semibold px-3 py-1 bg-white border border-slate-200 text-on-surface hover:text-primary rounded shadow-sm">Correlations Matrix</a>
+                        <a href="#out-section-regression" class="text-xs font-semibold px-3 py-1 bg-white border border-slate-200 text-on-surface hover:text-primary rounded shadow-sm">Regression Model</a>
+                    </div>
+
+                    <!-- Output Card: Construct Correlations (Pearson & Spearman) -->
+                    <div class="analytics-card rounded-xl p-6 space-y-4 scroll-mt-20" id="out-section-correlations">
+                        <h3 class="font-title-sm text-title-sm font-bold text-primary flex items-center gap-2 border-b border-slate-100 pb-2">
+                            <span class="material-symbols-outlined">join_inner</span> Construct Correlation Analysis (Pearson &amp; Spearman)
+                        </h3>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">
+                            Matriks korelasi di bawah ini menunjukkan tingkat kekuatan dan arah hubungan linier (Pearson) serta hubungan monotonik (Spearman) antar variabel konstruk penelitian. Signifikansi diuji pada taraf <span class="font-bold">&alpha; = 5%</span>. Kode penanda: <span class="font-semibold text-primary">**</span> signifikan pada p &le; 0.01; <span class="font-semibold text-primary">*</span> signifikan pada p &le; 0.05.
+                        </p>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs">grid_on</span> 1. Pearson Product-Moment Correlation Matrix
+                                </h4>
+                                <div class="overflow-x-auto custom-scrollbar">
+                                    <table class="w-full text-left text-xs border border-slate-200 border-collapse" id="out-table-pearson">
+                                        <!-- Dynamic matrix -->
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs">grid_on</span> 2. Spearman Rank Correlation Matrix
+                                </h4>
+                                <div class="overflow-x-auto custom-scrollbar">
+                                    <table class="w-full text-left text-xs border border-slate-200 border-collapse" id="out-table-spearman">
+                                        <!-- Dynamic matrix -->
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Card: Multiple Linear Regression (Requirement 7 & 8) -->
+                    <div class="analytics-card rounded-xl p-6 space-y-6 scroll-mt-20" id="out-section-regression">
+                        <h3 class="font-title-sm text-title-sm font-bold text-primary flex items-center gap-2 border-b border-slate-100 pb-2">
+                            <span class="material-symbols-outlined">monitoring</span> Multiple Linear Regression &amp; Hypothesis Testing
+                        </h3>
+
+                        <!-- Model Summary -->
+                        <div class="space-y-2">
+                            <h4 class="font-semibold text-xs uppercase text-on-surface-variant font-label-caps">Model Summary</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs border border-slate-200 border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 border-b border-slate-300 font-semibold text-center">
+                                            <th class="p-2 border-r border-slate-200 text-left">Model</th>
+                                            <th class="p-2 border-r border-slate-200">R</th>
+                                            <th class="p-2 border-r border-slate-200">R-Square (R<sup>2</sup>)</th>
+                                            <th class="p-2 border-r border-slate-200">Adjusted R-Square</th>
+                                            <th class="p-2">Std. Error of the Estimate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center font-data-mono" id="out-tbody-reg-summary">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- ANOVA F-test -->
+                        <div class="space-y-2">
+                            <h4 class="font-semibold text-xs uppercase text-on-surface-variant font-label-caps">ANOVA (F-Test)</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs border border-slate-200 border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 border-b border-slate-300 font-semibold">
+                                            <th class="p-2 border-r border-slate-200">Model Structure</th>
+                                            <th class="p-2 border-r border-slate-200 text-right">Sum of Squares</th>
+                                            <th class="p-2 border-r border-slate-200 text-center">df</th>
+                                            <th class="p-2 border-r border-slate-200 text-right">Mean Square</th>
+                                            <th class="p-2 border-r border-slate-200 text-right">F-Value</th>
+                                            <th class="p-2 text-right">p-value (Sig)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="out-tbody-reg-anova" class="divide-y divide-slate-100 font-data-mono">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Coefficients t-test -->
+                        <div class="space-y-2">
+                            <h4 class="font-semibold text-xs uppercase text-on-surface-variant font-label-caps">Coefficients (t-Tests)</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs border border-slate-200 border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 border-b border-slate-300 font-semibold text-center">
+                                            <th class="p-2 border-r border-slate-200 text-left" rowspan="2">Model Predictors</th>
+                                            <th class="p-2 border-r border-slate-200" colspan="2">Unstandardized Coefficients</th>
+                                            <th class="p-2 border-r border-slate-200" rowspan="2">Standardized Beta (&beta;)</th>
+                                            <th class="p-2 border-r border-slate-200" rowspan="2">t-value</th>
+                                            <th class="p-2 border-r border-slate-200" rowspan="2">p-value (Sig)</th>
+                                            <th class="p-2" colspan="2">Collinearity Statistics</th>
+                                        </tr>
+                                        <tr class="bg-slate-50 border-b border-slate-300 font-semibold text-center">
+                                            <th class="p-2 border-r border-slate-200">B Weight</th>
+                                            <th class="p-2 border-r border-slate-200">Std. Error</th>
+                                            <th class="p-2 border-r border-slate-200">Tolerance</th>
+                                            <th class="p-2">VIF</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="out-tbody-reg-coefficients" class="divide-y divide-slate-100 font-data-mono">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Classical Assumptions (Multicollinearity & Heteroskedasticity) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+                            <!-- Multicollinearity VIF -->
+                            <div class="space-y-2">
+                                <h4 class="font-semibold text-xs uppercase text-on-surface-variant font-label-caps">Multicollinearity (Tolerance &amp; VIF)</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left text-xs border border-slate-200 border-collapse">
+                                        <thead>
+                                            <tr class="bg-slate-50 border-b border-slate-300 font-semibold">
+                                                <th class="p-2 border-r border-slate-200">Predictor Variable</th>
+                                                <th class="p-2 border-r border-slate-200 text-right">Tolerance</th>
+                                                <th class="p-2 border-r border-slate-200 text-right">VIF</th>
+                                                <th class="p-2 text-center">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="out-tbody-reg-multicollinearity" class="divide-y divide-slate-100 font-data-mono">
+                                            <!-- Dynamic rows -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Heteroscedasticity Glejser -->
+                            <div class="space-y-2">
+                                <h4 class="font-semibold text-xs uppercase text-on-surface-variant font-label-caps">Heteroscedasticity Check (Glejser Test)</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left text-xs border border-slate-200 border-collapse">
+                                        <thead>
+                                            <tr class="bg-slate-50 border-b border-slate-300 font-semibold">
+                                                <th class="p-2 border-r border-slate-200">Predictor Variable</th>
+                                                <th class="p-2 border-r border-slate-200 text-right">Beta Glejser</th>
+                                                <th class="p-2 border-r border-slate-200 text-right">t-value</th>
+                                                <th class="p-2 border-r border-slate-200 text-right">p-value (Sig)</th>
+                                                <th class="p-2 text-center">Result</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="out-tbody-reg-hetero" class="divide-y divide-slate-100 font-data-mono">
+                                            <!-- Dynamic rows -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 9. VIEW: AUTO BAB IV GENERATOR -->
+            <section id="view-bab_iv" class="space-y-6" style="display: none;">
+                <div class="flex justify-between items-end border-b border-outline-variant pb-4">
+                    <div>
+                        <h2 class="font-headline-md text-headline-md font-bold text-on-surface">Auto BAB IV Generator</h2>
+                        <p class="text-on-surface-variant text-sm mt-1">Generates complete Indonesian thesis Chapter 4 ("Hasil Penelitian dan Pembahasan") based on actual statistical calculations.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="copyBabIVMarkdown()" class="px-4 py-2 border border-primary text-primary hover:bg-primary/5 rounded-lg font-semibold flex items-center gap-1.5 transition-all text-sm">
+                            <span class="material-symbols-outlined text-[18px]">content_copy</span> Copy Markdown
+                        </button>
+                        <button onclick="downloadBabIVDocx()" class="px-4 py-2 bg-primary text-white hover:bg-secondary rounded-lg font-semibold flex items-center gap-1.5 shadow transition-all text-sm">
+                            <span class="material-symbols-outlined text-[18px]">download_for_offline</span> Download DOCX (Word)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="text-center py-20 text-on-surface-variant analytics-card rounded-xl p-8" id="bab-empty">
+                    <span class="material-symbols-outlined text-[64px] opacity-45">auto_stories</span>
+                    <p class="mt-3 text-sm">No analysis has been run yet. Run "One-Click Auto Analyze" to draft your BAB IV report.</p>
+                </div>
+
+                <!-- Configuration Card for Optional Quantitative Tests (User Request) -->
+                <div id="bab-config-card" class="analytics-card rounded-xl p-6 bg-white border border-slate-200 max-w-4xl mx-auto space-y-4 shadow-sm" style="display: none;">
+                    <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                        <span class="material-symbols-outlined text-primary text-xl">tune</span>
+                        <h3 class="font-bold text-on-surface text-sm">Pilihan Pengujian Kuantitatif Laporan BAB IV (Optional)</h3>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-xs">
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-2 rounded">
+                            <input type="checkbox" id="cfg-sw-responden" checked onchange="renderBabIV()" class="rounded border-slate-300 text-primary focus:ring-primary" />
+                            <span>Deskripsi Responden</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-2 rounded">
+                            <input type="checkbox" id="cfg-sw-validitas" checked onchange="renderBabIV()" class="rounded border-slate-300 text-primary focus:ring-primary" />
+                            <span>Uji Validitas Butir</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-2 rounded">
+                            <input type="checkbox" id="cfg-sw-reliabilitas" checked onchange="renderBabIV()" class="rounded border-slate-300 text-primary focus:ring-primary" />
+                            <span>Uji Reliabilitas Konstruk</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-2 rounded">
+                            <input type="checkbox" id="cfg-sw-normalitas" checked onchange="renderBabIV()" class="rounded border-slate-300 text-primary focus:ring-primary" />
+                            <span>Uji Normalitas (KS/SW)</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-2 rounded">
+                            <input type="checkbox" id="cfg-sw-multicol" checked onchange="renderBabIV()" class="rounded border-slate-300 text-primary focus:ring-primary" />
+                            <span>Uji Multikolinieritas</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-2 rounded">
+                            <input type="checkbox" id="cfg-sw-hetero" checked onchange="renderBabIV()" class="rounded border-slate-300 text-primary focus:ring-primary" />
+                            <span>Uji Heteroskedastisitas</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-2 rounded">
+                            <input type="checkbox" id="cfg-sw-pearson" checked onchange="renderBabIV()" class="rounded border-slate-300 text-primary focus:ring-primary" />
+                            <span>Korelasi Pearson (Parametrik)</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-2 rounded">
+                            <input type="checkbox" id="cfg-sw-spearman" checked onchange="renderBabIV()" class="rounded border-slate-300 text-primary focus:ring-primary" />
+                            <span>Korelasi Spearman (Non-Parametrik)</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-2 rounded">
+                            <input type="checkbox" id="cfg-sw-regresi" checked onchange="renderBabIV()" class="rounded border-slate-300 text-primary focus:ring-primary" />
+                            <span>Uji Regresi Linier Berganda</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-2 rounded">
+                            <input type="checkbox" id="cfg-sw-pembahasan" checked onchange="renderBabIV()" class="rounded border-slate-300 text-primary focus:ring-primary" />
+                            <span>Pembahasan Hasil Penelitian</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Academic Report Container -->
+                <div id="bab-report-card" class="analytics-card rounded-xl p-8 bg-white font-serif max-w-4xl mx-auto space-y-8 select-text overflow-y-auto max-h-[70vh] shadow-inner text-slate-800 border border-slate-200" style="display: none;">
+                    <!-- Report content is injected here -->
+                </div>
+            </section>
+
+
+            <!-- 10. VIEW: EXPORT CENTER -->
+            <section id="view-export_center" class="space-y-6" style="display: none;">
+                <div>
+                    <h2 class="font-headline-md text-headline-md font-bold text-on-surface">Export Center</h2>
+                    <p class="text-on-surface-variant text-sm mt-1">Download your cleaned dataset, SPSS value labels dictionary, analysis report, or recreation SPSS syntax scripts.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Export Cleaned Data Excel -->
+                    <div class="analytics-card rounded-xl p-6 flex flex-col justify-between h-56 bg-white border border-slate-200">
+                        <div class="space-y-2">
+                            <span class="material-symbols-outlined text-green-600 text-[32px]">table_view</span>
+                            <h3 class="font-semibold text-on-surface">Cleaned Dataset (Excel)</h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">Downloads the active dataset matrix including all numeric conversions and imputed value changes in standard Excel format (.xlsx).</p>
+                        </div>
+                        <button onclick="exportCleanedDataset('xlsx')" class="w-full py-2 bg-green-600 text-white font-bold hover:bg-green-700 rounded text-xs transition-all flex items-center justify-center gap-1 shadow-sm">
+                            <span class="material-symbols-outlined text-[16px]">download</span> Download Excel File
+                        </button>
+                    </div>
+
+                    <!-- Export Cleaned Data CSV -->
+                    <div class="analytics-card rounded-xl p-6 flex flex-col justify-between h-56 bg-white border border-slate-200">
+                        <div class="space-y-2">
+                            <span class="material-symbols-outlined text-slate-600 text-[32px]">csv</span>
+                            <h3 class="font-semibold text-on-surface">Cleaned Dataset (CSV)</h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">Downloads the flat data rows as standard comma-separated text values, ideal for programming languages or R modeling.</p>
+                        </div>
+                        <button onclick="exportCleanedDataset('csv')" class="w-full py-2 bg-slate-600 text-white font-bold hover:bg-slate-700 rounded text-xs transition-all flex items-center justify-center gap-1 shadow-sm">
+                            <span class="material-symbols-outlined text-[16px]">download</span> Download CSV File
+                        </button>
+                    </div>
+
+                    <!-- Export SPSS Syntax sps -->
+                    <div class="analytics-card rounded-xl p-6 flex flex-col justify-between h-56 bg-white border border-slate-200">
+                        <div class="space-y-2">
+                            <span class="material-symbols-outlined text-primary text-[32px]">code</span>
+                            <h3 class="font-semibold text-on-surface">SPSS Setup Script (Syntax)</h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">Generates a recreation script (.sps) containing complete VARIABLE LABELS, VALUE LABELS, and regression routines to rebuild this exact model in SPSS software.</p>
+                        </div>
+                        <button onclick="downloadSpssSyntax()" class="w-full py-2 bg-primary text-white font-bold hover:bg-secondary rounded text-xs transition-all flex items-center justify-center gap-1 shadow-sm">
+                            <span class="material-symbols-outlined text-[16px]">terminal</span> Download SPSS Syntax (.sps)
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 11. VIEW: SETTINGS -->
+            <section id="view-settings" class="space-y-6" style="display: none;">
+                <div>
+                    <h2 class="font-headline-md text-headline-md font-bold text-on-surface">Application Settings</h2>
+                    <p class="text-on-surface-variant text-sm mt-1">Configure statistical significance levels, validity thresholds, and cleaning defaults.</p>
+                </div>
+
+                <div class="analytics-card rounded-xl p-6 space-y-6 bg-white max-w-2xl">
+                    <h3 class="font-title-sm text-title-sm font-bold border-b border-outline-variant pb-2">Statistical Parameters</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                        <div class="space-y-1">
+                            <label class="block text-xs font-bold text-on-surface-variant uppercase font-label-caps">Significance Level (Alpha &alpha;)</label>
+                            <input type="number" id="cfg-alpha" class="w-full p-2 border border-outline-variant rounded focus:ring-1 focus:ring-primary outline-none" value="0.05" step="0.01" min="0.001" max="0.10" />
+                            <span class="text-[11px] text-on-surface-variant">Default: 0.05. Rejection probability for hypothesis tests.</span>
+                        </div>
+                        
+                        <div class="space-y-1">
+                            <label class="block text-xs font-bold text-on-surface-variant uppercase font-label-caps">Validity CITC Threshold</label>
+                            <input type="number" id="cfg-citc" class="w-full p-2 border border-outline-variant rounded focus:ring-1 focus:ring-primary outline-none" value="0.30" step="0.05" min="0.10" max="0.50" />
+                            <span class="text-[11px] text-on-surface-variant">Default: 0.30. Minimum corrected item-total correlation coefficient.</span>
+                        </div>
+                        
+                        <div class="space-y-1">
+                            <label class="block text-xs font-bold text-on-surface-variant uppercase font-label-caps">Missing Value Imputation</label>
+                            <select id="cfg-missing-impute" class="w-full p-2 border border-outline-variant rounded focus:ring-1 focus:ring-primary outline-none">
+                                <option value="mean">Mean Substitution (Scale Variables)</option>
+                                <option value="median">Median Substitution</option>
+                                <option value="exclude">Exclude Case (Listwise Deletion)</option>
+                            </select>
+                            <span class="text-[11px] text-on-surface-variant">How the cleaning engine handles null cells.</span>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="block text-xs font-bold text-on-surface-variant uppercase font-label-caps">Outlier Criteria (Z-Score)</label>
+                            <input type="number" id="cfg-outlier-z" class="w-full p-2 border border-outline-variant rounded focus:ring-1 focus:ring-primary outline-none" value="2.50" step="0.10" min="1.5" max="3.5" />
+                            <span class="text-[11px] text-on-surface-variant">Default: 2.50. Z-score threshold to flag extreme values.</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 flex justify-end">
+                        <button onclick="saveConfiguration()" class="px-5 py-2.5 bg-primary text-white font-bold hover:bg-secondary rounded shadow-sm text-sm">SAVE SETTINGS</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 12. VIEW: SPSS READER -->
+            <section id="view-spss_reader" class="space-y-6" style="display: none;">
+                <div class="flex justify-between items-end border-b border-outline-variant pb-4">
+                    <div>
+                        <h2 class="font-headline-md text-headline-md font-bold text-on-surface">SPSS Output Reader</h2>
+                        <p class="text-on-surface-variant text-sm mt-1">Advanced OCR and AI-driven interpretation for statistical screenshots.</p>
+                    </div>
+                    <span class="flex items-center gap-1.5 px-3 py-1 bg-tertiary-container/10 text-tertiary rounded-full font-label-caps text-label-caps">
+                        <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        AI ACTIVE
+                    </span>
+                </div>
+
+                <!-- Upload & OCR Preview Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Dropzone Card -->
+                    <div id="spss-reader-dropzone" class="analytics-card rounded-xl p-8 flex flex-col items-center justify-center text-center group cursor-pointer border-dashed border-2 border-primary/30 hover:border-primary transition-all bg-white relative" onclick="document.getElementById('spss-reader-file-input').click()">
+                        <input type="file" id="spss-reader-file-input" class="hidden" accept="image/*" onchange="handleSpssImageUpload(event)" />
+                        <div class="w-16 h-16 bg-primary-container/20 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
+                        </div>
+                        <h3 class="font-title-sm text-title-sm mb-2 font-bold text-on-surface">Upload SPSS Screenshot</h3>
+                        <p class="text-on-surface-variant text-xs max-w-xs mb-6">Drag and drop PNG or JPG images of SPSS tables (ANOVA, Coefficients, or Reliability) here.</p>
+                        
+                        <div class="w-full border-t border-slate-100 pt-4 mt-2">
+                            <span class="block text-xs font-bold text-on-surface-variant uppercase font-label-caps mb-3">Or click a sample output to scan:</span>
+                            <div class="flex justify-center gap-3">
+                                <button onclick="loadSpssReaderSample('reliability'); event.stopPropagation();" class="px-3 py-1.5 bg-slate-100 hover:bg-primary hover:text-white rounded text-xs font-semibold transition-all">Reliability Table</button>
+                                <button onclick="loadSpssReaderSample('anova'); event.stopPropagation();" class="px-3 py-1.5 bg-slate-100 hover:bg-primary hover:text-white rounded text-xs font-semibold transition-all">ANOVA Table</button>
+                                <button onclick="loadSpssReaderSample('coefficients'); event.stopPropagation();" class="px-3 py-1.5 bg-slate-100 hover:bg-primary hover:text-white rounded text-xs font-semibold transition-all">Coefficients Table</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OCR Raw Preview Card -->
+                    <div class="analytics-card rounded-xl overflow-hidden flex flex-col h-[340px] bg-white border border-slate-200">
+                        <div class="px-6 py-4 border-b border-outline-variant bg-slate-50 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-on-surface-variant text-sm">visibility</span>
+                                <span class="font-label-caps text-label-caps uppercase text-xs">OCR Raw Preview</span>
+                            </div>
+                            <span class="font-data-mono text-xs text-primary" id="spss-reader-filename">NO_FILE.PNG</span>
+                        </div>
+                        
+                        <div class="relative flex-1 bg-slate-100 overflow-hidden p-6 flex items-center justify-center">
+                            <!-- Scanning line -->
+                            <div class="scanning-line" id="spss-reader-scanner" style="display: none;"></div>
+                            
+                            <!-- Preview Box -->
+                            <div class="w-full h-full bg-white border border-slate-200 shadow-inner rounded p-4 overflow-y-auto custom-scrollbar flex flex-col justify-between" id="spss-reader-preview-box">
+                                <div class="space-y-3 opacity-30" id="spss-reader-placeholder-lines">
+                                    <div class="h-4 bg-slate-400 rounded w-3/4"></div>
+                                    <div class="h-4 bg-slate-400 rounded w-1/2"></div>
+                                    <div class="border border-slate-300 p-2 rounded">
+                                        <div class="grid grid-cols-4 gap-2">
+                                            <div class="h-3 bg-slate-400 rounded"></div>
+                                            <div class="h-3 bg-slate-400 rounded"></div>
+                                            <div class="h-3 bg-slate-400 rounded"></div>
+                                            <div class="h-3 bg-slate-400 rounded"></div>
+                                        </div>
+                                    </div>
+                                    <div class="h-4 bg-slate-400 rounded w-5/6"></div>
+                                </div>
+                                <div class="absolute inset-0 flex items-center justify-center" id="spss-reader-status-overlay" style="display: none;">
+                                    <div class="px-4 py-2 bg-primary/95 text-white text-xs font-semibold rounded shadow-lg backdrop-blur-sm flex items-center gap-2">
+                                        <span class="animate-spin h-3 w-3 border-2 border-white border-t-transparent rounded-full"></span>
+                                        <span id="spss-reader-status-text">Detecting Tables... 0%</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Rendered scanned Image when uploaded -->
+                                <img id="spss-reader-uploaded-img" class="max-h-full max-w-full object-contain mx-auto" style="display: none;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Extracted Analytical Tables -->
+                <div class="space-y-4" id="spss-reader-extracted-section" style="display: none;">
+                    <div class="flex items-center gap-2 px-2">
+                        <span class="material-symbols-outlined text-primary">analytics</span>
+                        <h3 class="font-title-sm text-title-sm font-bold text-on-surface">Extracted Analytical Tables</h3>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Reliability summary -->
+                        <div class="analytics-card rounded-xl p-5 bg-white cursor-pointer border border-slate-200 hover:border-primary" onclick="showSpssReaderTableDetails('reliability')">
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="px-2 py-0.5 bg-green-100 text-green-800 rounded text-[9px] font-bold uppercase tracking-wider">Reliability</span>
+                                <span class="material-symbols-outlined text-slate-400 text-[18px]">open_in_new</span>
+                            </div>
+                            <h4 class="font-semibold text-sm mb-1">Cronbach's Alpha</h4>
+                            <p class="text-xs text-on-surface-variant font-mono" id="spss-reader-rel-summary">Case summary loaded</p>
+                            <div class="flex items-center justify-between py-2 border-t border-slate-100 border-dashed mt-4">
+                                <span class="text-xs text-slate-400 uppercase font-label-caps">Alpha Score</span>
+                                <span class="font-bold font-data-mono text-green-700 text-lg" id="spss-reader-rel-score">-</span>
+                            </div>
+                        </div>
+
+                        <!-- ANOVA summary -->
+                        <div class="analytics-card rounded-xl p-5 bg-white cursor-pointer border border-slate-200 hover:border-primary" onclick="showSpssReaderTableDetails('anova')">
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="px-2 py-0.5 bg-blue-100 text-blue-800 rounded text-[9px] font-bold uppercase tracking-wider">Variance</span>
+                                <span class="material-symbols-outlined text-slate-400 text-[18px]">open_in_new</span>
+                            </div>
+                            <h4 class="font-semibold text-sm mb-1">ANOVA F-Test</h4>
+                            <p class="text-xs text-on-surface-variant font-mono" id="spss-reader-anova-summary">Sum of squares calculated</p>
+                            <div class="flex items-center justify-between py-2 border-t border-slate-100 border-dashed mt-4">
+                                <span class="text-xs text-slate-400 uppercase font-label-caps">Sig. (p)</span>
+                                <span class="font-bold font-data-mono text-primary text-lg" id="spss-reader-anova-score">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Coefficients summary -->
+                        <div class="analytics-card rounded-xl p-5 bg-white cursor-pointer border border-slate-200 hover:border-primary" onclick="showSpssReaderTableDetails('coefficients')">
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="px-2 py-0.5 bg-purple-100 text-purple-800 rounded text-[9px] font-bold uppercase tracking-wider">Regression</span>
+                                <span class="material-symbols-outlined text-slate-400 text-[18px]">open_in_new</span>
+                            </div>
+                            <h4 class="font-semibold text-sm mb-1">Regression Coefficients</h4>
+                            <p class="text-xs text-on-surface-variant font-mono" id="spss-reader-coeff-summary">Predictor weights parsed</p>
+                            <div class="flex items-center justify-between py-2 border-t border-slate-100 border-dashed mt-4">
+                                <span class="text-xs text-slate-400 uppercase font-label-caps">Beta Max</span>
+                                <span class="font-bold font-data-mono text-purple-700 text-lg" id="spss-reader-coeff-score">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interpretation Canvas -->
+                <div class="analytics-card rounded-xl p-8 bg-white" id="spss-reader-interpretation-section" style="display: none;">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+                                <span class="material-symbols-outlined">auto_awesome</span>
+                            </div>
+                            <div>
+                                <h3 class="font-title-sm text-title-sm font-bold">AI Analytical Interpretation</h3>
+                                <p class="text-on-surface-variant text-xs">Automated academic synthesis of scanned output</p>
+                            </div>
+                        </div>
+                        
+                        <div class="text-right">
+                            <span class="block text-[10px] font-bold text-on-surface-variant uppercase font-label-caps">OCR Confidence</span>
+                            <div class="flex items-center gap-2">
+                                <div class="w-20 bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-green-600 h-full w-[94%]" id="spss-reader-confidence-bar"></div>
+                                </div>
+                                <span class="font-data-mono font-bold text-green-700 text-sm" id="spss-reader-confidence-lbl">94%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="p-6 bg-slate-50 border-l-4 border-primary rounded text-sm text-on-surface leading-relaxed space-y-4" id="spss-reader-ai-content">
+                            <!-- Dynamic text description -->
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="flex gap-3 p-4 rounded-lg bg-green-50 border border-green-200">
+                                <span class="material-symbols-outlined text-green-700">check_circle</span>
+                                <div>
+                                    <h5 class="font-bold text-green-800 uppercase font-label-caps">Statistical Strength</h5>
+                                    <p class="text-on-surface-variant mt-1" id="spss-reader-strength-lbl">All indices meet critical thresholds.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3 p-4 rounded-lg bg-amber-50 border border-amber-200">
+                                <span class="material-symbols-outlined text-amber-700">warning</span>
+                                <div>
+                                    <h5 class="font-bold text-amber-800 uppercase font-label-caps">Methodological Warning</h5>
+                                    <p class="text-on-surface-variant mt-1" id="spss-reader-warning-lbl">Assumptions validation suggested.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Import to Workspace Actions -->
+                        <div class="pt-4 border-t border-slate-100 flex justify-end gap-3">
+                            <button onclick="importSpssReaderToActiveOutput()" class="px-5 py-2.5 bg-primary text-white font-bold hover:bg-secondary rounded shadow-sm text-xs flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[16px]">input</span> IMPORT INTO ACTIVE WORKSPACE
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Contextual Inspector (Right Panel - 320px) -->
+    <aside class="fixed right-0 top-0 h-full w-panel-inspector bg-white border-l border-outline-variant z-40 flex flex-col pt-16">
+        <!-- Inspector Title -->
+        <div class="p-6 border-b border-outline-variant shrink-0">
+            <h3 class="font-title-sm text-title-sm font-extrabold text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">analytics</span> Context Inspector
+            </h3>
+            <span class="text-xs text-on-surface-variant">Live information on selection</span>
+        </div>
+
+        <!-- Dynamic Inspector Content -->
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6 select-text" id="inspector-content">
+            <div class="text-center py-20 text-on-surface-variant" id="inspect-empty">
+                <span class="material-symbols-outlined text-[36px] opacity-45">ads_click</span>
+                <p class="mt-2 text-xs leading-relaxed">Click a cell in SPSS Data View, selection row, or run a diagnostic test to inspect parameters in real time.</p>
+            </div>
+            
+            <!-- Dynamic Inspector Panel Templates will be injected here -->
+        </div>
+    </aside>
+
+
+    <!-- JavaScript Client-Side Engine -->
+    <script src="app.js"></script>
+
+    <!-- GLOBAL BOOTING & LOADING OVERLAY -->
+    <div id="wrt-global-loader" class="fixed inset-0 z-[9999] bg-slate-950/90 backdrop-blur-md flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="w-full max-w-xl p-6 mx-4 bg-slate-900 border border-emerald-500/30 rounded-xl shadow-[0_0_50px_rgba(16,185,129,0.15)] flex flex-col space-y-6">
+            <!-- Terminal Header -->
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span class="text-xs text-slate-400 font-mono pl-2">WIGANA RESEARCH TOOLKIT // CORE_ENGINE</span>
+                </div>
+                <div class="flex items-center space-x-1 font-mono text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping mr-1"></span>
+                    <span>AKTIF</span>
+                </div>
+            </div>
+
+            <!-- Spinner & Status -->
+            <div class="flex items-center space-x-4">
+                <div class="relative flex-shrink-0">
+                    <div class="w-14 h-14 rounded-full border-4 border-slate-800 border-t-emerald-500 animate-spin"></div>
+                    <div class="absolute inset-2 rounded-full border-2 border-dashed border-emerald-500/40 animate-[spin_10s_linear_infinite]"></div>
+                </div>
+                <div class="flex-1">
+                    <div id="wrt-loader-title" class="font-title-sm font-bold text-slate-100 text-lg leading-tight">Memproses Data...</div>
+                    <div id="wrt-loader-subtitle" class="font-body-sm text-xs text-slate-400 mt-1">Menginisialisasi sistem analisis statistik.</div>
+                </div>
+                <div class="font-mono text-emerald-400 text-xl font-bold" id="wrt-loader-percent">0%</div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
+                <div id="wrt-loader-progress" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full w-0 transition-all duration-200 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+            </div>
+
+            <!-- Terminal Output -->
+            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800/80 font-mono text-xs text-emerald-400/90 h-36 overflow-y-auto space-y-1.5 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent" id="wrt-loader-terminal">
+                <!-- Terminal logs will print here -->
+            </div>
+
+            <div class="text-[10px] text-slate-500 text-right font-mono">
+                Sistem Komputasi Statistik Wigana • WRT-v3.4.1
+            </div>
+        </div>
+    </div>
+
+    
+</body>
+</html>

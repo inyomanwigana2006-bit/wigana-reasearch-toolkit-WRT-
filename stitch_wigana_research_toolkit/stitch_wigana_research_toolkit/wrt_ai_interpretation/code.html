@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Interpretation | WRT</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#6ffbbe",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "surface-container-highest": "#d3e4fe",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed": "#001946",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "surface-variant": "#d3e4fe",
+                    "primary-fixed": "#d2e4ff",
+                    "error": "#ba1a1a",
+                    "primary": "#0061a5",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary-container": "#0cb880",
+                    "background": "#f8f9ff",
+                    "surface-container-low": "#eff4ff",
+                    "outline-variant": "#c0c7d4",
+                    "on-surface": "#0b1c30",
+                    "inverse-primary": "#a0caff",
+                    "on-tertiary-fixed": "#002113",
+                    "tertiary": "#006c49",
+                    "surface-container-high": "#dce9ff",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#b1c5ff",
+                    "secondary-fixed": "#dae2ff",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#0061a5",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#a0caff",
+                    "surface": "#f8f9ff",
+                    "on-primary-fixed-variant": "#00497e",
+                    "on-primary-fixed": "#001c37",
+                    "outline": "#707783",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-container": "#036cfb",
+                    "surface-container": "#e5eeff",
+                    "on-primary-container": "#003a67",
+                    "on-secondary-fixed-variant": "#00419e",
+                    "primary-container": "#4da6ff",
+                    "on-secondary-container": "#fefcff",
+                    "on-tertiary-container": "#00412b",
+                    "secondary": "#0055c9",
+                    "on-surface-variant": "#404752",
+                    "on-background": "#0b1c30"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "panel-sidebar": "280px",
+                    "stack-gap": "16px",
+                    "gutter": "24px",
+                    "panel-inspector": "320px",
+                    "panel-content": "1fr",
+                    "container-padding": "32px"
+            },
+            "fontFamily": {
+                    "label-caps": ["Inter"],
+                    "title-sm": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "body-sm": ["Inter"],
+                    "data-mono": ["JetBrains Mono"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "title-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "data-mono": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .backdrop-blur-xl {
+            backdrop-filter: blur(20px);
+        }
+        .data-card-shadow {
+            box-shadow: 0 4px 20px rgba(13, 110, 253, 0.04);
+        }
+        .interpretation-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8f9ff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c0c7d4;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary-fixed">
+<!-- TopNavBar -->
+<header class="bg-surface fixed top-0 w-full px-container-padding h-16 z-50 flex justify-between items-center border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg font-bold text-primary tracking-tighter">WRT</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Datasets</a>
+<a class="text-primary font-bold border-b-2 border-primary py-4 font-body-md" href="#">Analysis</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Models</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Researcher Profile" data-alt="Close-up professional portrait of a male researcher in a modern office environment, wearing glasses and a smart casual shirt. The background is softly blurred with cool blue and white tones, reflecting a high-tech academic atmosphere with clean lighting and high-end photographic quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2lmCXXXwCXSAc1M0oaZFxJwQ65KvNgA7t8jy7CirOir8UVS5foT70eeFG-kdO6mfiGJ_ylxx054-FEvaL5MebrV52fEWx5dis0DpiXngsmA8FhhseLSe2w0bOczl8WroE7ierUEYLkFiN46MgtU4mRzTkoD0kesR4RVdtNxnqyRd_-P8qQI82i7p_C3mavVgfQqVT580Z_eNIEbpCIE4w9XM2ASo0CA51uyfeD0XrcXWZIL74spQW0jfp0LN_w3RSLnkOLgbFkkKd"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Left) -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 pt-20 pb-8 px-4 z-40 bg-surface-container-low/60 backdrop-blur-xl border-r border-outline-variant w-panel-sidebar">
+<div class="mb-8 px-4">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">WRT</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">V2.4 Enterprise</p>
+</div>
+<nav class="flex flex-col gap-1 flex-1">
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">dashboard</span> Workspace
+            </a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">folder_open</span> Active Projects
+            </a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">table_chart</span> Raw Data
+            </a>
+<a class="flex items-center gap-3 px-4 py-2.5 bg-secondary-container text-on-secondary-container rounded-lg font-semibold font-label-caps text-label-caps scale-[0.98]" href="#">
+<span class="material-symbols-outlined">query_stats</span> Statistical Models
+            </a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">ios_share</span> Export Center
+            </a>
+<a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">history</span> Archived
+            </a>
+</nav>
+<button class="mt-4 mx-4 py-3 bg-primary text-on-primary rounded-lg font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">add</span> New Analysis
+        </button>
+<div class="mt-8 border-t border-outline-variant pt-4">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">menu_book</span> Documentation
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">contact_support</span> Support
+            </a>
+</div>
+</aside>
+<!-- Main Content Panel -->
+<main class="ml-panel-sidebar mr-panel-inspector pt-24 px-container-padding pb-12 min-h-screen">
+<div class="interpretation-container">
+<!-- Header Section -->
+<div class="mb-10 flex flex-col items-center text-center">
+<div class="inline-flex items-center gap-2 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full font-label-caps text-label-caps mb-4">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                    AI INTERPRETATION ENGINE
+                </div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-2">Humanizing Your Data</h1>
+<p class="text-on-surface-variant max-w-lg">Translating complex statistical variances into meaningful, actionable narratives for diverse stakeholders.</p>
+</div>
+<!-- Audience Tabs -->
+<div class="flex items-center justify-center gap-2 mb-12 p-1.5 bg-surface-container-low rounded-xl border border-outline-variant">
+<button class="tab-btn px-6 py-2 rounded-lg font-label-caps text-label-caps bg-surface-container-lowest text-primary shadow-sm border border-outline-variant transition-all" onclick="switchTab('student')">STUDENT VERSION</button>
+<button class="tab-btn px-6 py-2 rounded-lg font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-all" onclick="switchTab('academic')">ACADEMIC VERSION</button>
+<button class="tab-btn px-6 py-2 rounded-lg font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-all" onclick="switchTab('journal')">JOURNAL VERSION</button>
+<button class="tab-btn px-6 py-2 rounded-lg font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-all" onclick="switchTab('examiner')">EXAMINER VERSION</button>
+</div>
+<!-- Interpretation Canvas -->
+<div class="space-y-6 relative">
+<!-- Action Tools -->
+<div class="absolute -top-16 right-0 flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container transition-all text-body-sm">
+<span class="material-symbols-outlined text-[18px]">download</span> PDF
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg hover:opacity-90 transition-all text-body-sm" id="copy-btn">
+<span class="material-symbols-outlined text-[18px]">content_copy</span> One-click Copy
+                    </button>
+</div>
+<!-- Content Sections -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-8 data-card-shadow transition-all duration-300 transform" id="content-display">
+<!-- Section: Statistical Result -->
+<div class="mb-10">
+<label class="font-label-caps text-label-caps text-primary mb-3 block">STATISTICAL RESULT</label>
+<div class="bg-surface-container rounded-lg p-4 font-data-mono text-data-mono flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<span>F(2, 142) = 15.42, p &lt; .001, η² = .18 (Large effect)</span>
+</div>
+</div>
+<!-- Section: Meaning -->
+<div class="mb-10">
+<label class="font-label-caps text-label-caps text-primary mb-3 block">MEANING</label>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                            There is a highly significant difference between the learning retention scores of the three study groups. The probability of this result occurring by chance is less than 0.1%, indicating a robust finding. The effect size (η² = .18) suggests that study methodology accounts for 18% of the total variance in retention.
+                        </p>
+</div>
+<!-- Section: Interpretation -->
+<div class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+<div>
+<label class="font-label-caps text-label-caps text-primary mb-3 block">INTERPRETATION</label>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                                The "Active Recall" group consistently outperformed both "Passive Review" and "Visual Mapping" cohorts. This suggests that the cognitive strain associated with testing oneself creates deeper neural encoding than traditional highlighting or re-reading techniques.
+                            </p>
+</div>
+<div class="bg-surface-container-low p-6 rounded-lg border border-outline-variant">
+<div class="flex items-center gap-2 text-tertiary font-label-caps text-label-caps mb-4">
+<span class="material-symbols-outlined">insights</span> KEY INSIGHT
+                             </div>
+<p class="text-body-sm italic text-on-surface-variant leading-relaxed">
+                                "The gap between active recall and traditional methods widened by 12% in the 48-hour follow-up test, proving long-term sustainability of the method."
+                             </p>
+</div>
+</div>
+<!-- Section: Recommendation -->
+<div class="mb-10">
+<label class="font-label-caps text-label-caps text-primary mb-3 block">RECOMMENDATION</label>
+<div class="flex flex-col gap-3">
+<div class="flex items-start gap-4 p-4 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+<p class="text-body-md">Integrate weekly low-stakes quizzes into the curriculum to trigger active recall effects.</p>
+</div>
+<div class="flex items-start gap-4 p-4 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+<p class="text-body-md">Reduce reliance on highlighting-based study guides, as they show diminishing returns for retention.</p>
+</div>
+</div>
+</div>
+<!-- Section: Conclusion -->
+<div class="border-t border-outline-variant pt-8">
+<label class="font-label-caps text-label-caps text-primary mb-3 block">CONCLUSION</label>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed font-semibold">
+                            In summary, the data provides strong evidence that active retrieval practices are superior for long-term knowledge consolidation in higher education settings, justifying a shift toward more interactive pedagogical strategies.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Contextual Animation -->
+<div class="mt-16 text-center opacity-50">
+
+<p class="font-label-caps text-label-caps">AUTONOMOUS INTERPRETATION ENGINE ACTIVE</p>
+</div>
+</div>
+</main>
+<!-- SideNavBar (Right) / Insight Panel -->
+<aside class="flex flex-col h-screen fixed right-0 top-0 pt-20 px-6 z-40 bg-surface-container-lowest border-l border-outline-variant shadow-sm w-panel-inspector">
+<div class="mb-8">
+<h3 class="font-title-sm text-title-sm font-semibold text-tertiary">Insight Panel</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">AI Ready</p>
+</div>
+<div class="space-y-6">
+<!-- AI Suggestions -->
+<div class="text-tertiary border-l-4 border-tertiary pl-2 transition-transform">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span class="font-label-caps text-label-caps">AI SUGGESTIONS</span>
+</div>
+<p class="text-body-sm text-on-surface leading-snug">Consider adding a post-hoc Tukey HSD analysis to determine exactly where the differences lie between the Visual Mapping and Passive groups.</p>
+</div>
+<!-- Research Health -->
+<div class="text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+<span class="font-label-caps text-label-caps">RESEARCH HEALTH</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[88%]"></div>
+</div>
+<div class="flex justify-between mt-1 font-data-mono text-data-mono">
+<span>Power: 0.88</span>
+<span>High</span>
+</div>
+</div>
+<!-- Anomalies -->
+<div class="text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity">
+<div class="flex items-center gap-2 mb-2 text-error">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+<span class="font-label-caps text-label-caps">ANOMALIES</span>
+</div>
+<div class="p-3 bg-error-container text-on-error-container rounded-lg text-body-sm">
+                    3 outliers detected in the Visual Mapping group. Removal would increase η² to .21.
+                </div>
+</div>
+<!-- Live Logs -->
+<div class="text-on-surface-variant opacity-70">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-[18px]">data_object</span>
+<span class="font-label-caps text-label-caps uppercase">Live Logs</span>
+</div>
+<div class="bg-inverse-surface text-surface rounded p-3 font-data-mono text-data-mono text-[10px] leading-tight space-y-1 overflow-hidden h-32">
+<div class="text-tertiary-fixed-dim">[10:42:12] Inference started...</div>
+<div>[10:42:13] Mapping semantic tokens...</div>
+<div>[10:42:14] Generating Journal prose...</div>
+<div>[10:42:15] Validating logic chains...</div>
+<div class="animate-pulse">[10:42:16] Ready for review _</div>
+</div>
+</div>
+</div>
+</aside>
+<script>
+        function switchTab(type) {
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(btn => {
+                btn.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm', 'border', 'border-outline-variant');
+                btn.classList.add('text-on-surface-variant', 'hover:bg-surface-container');
+            });
+
+            event.currentTarget.classList.remove('text-on-surface-variant', 'hover:bg-surface-container');
+            event.currentTarget.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm', 'border', 'border-outline-variant');
+
+            // Simulate content change animation
+            const content = document.getElementById('content-display');
+            content.style.opacity = '0';
+            content.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                content.style.opacity = '1';
+                content.style.transform = 'translateY(0)';
+                // In a real app, we would update innerHTML here based on 'type'
+            }, 300);
+        }
+
+        const copyBtn = document.getElementById('copy-btn');
+        copyBtn.addEventListener('click', () => {
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check</span> Copied!';
+            copyBtn.classList.replace('bg-primary', 'bg-tertiary');
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+                copyBtn.classList.replace('bg-tertiary', 'bg-primary');
+            }, 2000);
+        });
+    </script>
+</body></html>

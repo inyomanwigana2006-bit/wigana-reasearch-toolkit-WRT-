@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-panel {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c0c7d4;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #707783;
+    }
+    .analytical-card {
+      box-shadow: 0 4px 20px rgba(13, 110, 253, 0.04);
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "tertiary-fixed": "#6ffbbe",
+                  "surface-container-lowest": "#ffffff",
+                  "inverse-surface": "#213145",
+                  "surface-container-highest": "#d3e4fe",
+                  "error-container": "#ffdad6",
+                  "on-secondary-fixed": "#001946",
+                  "on-error-container": "#93000a",
+                  "on-error": "#ffffff",
+                  "tertiary-fixed-dim": "#4edea3",
+                  "surface-variant": "#d3e4fe",
+                  "primary-fixed": "#d2e4ff",
+                  "error": "#ba1a1a",
+                  "primary": "#0061a5",
+                  "on-tertiary-fixed-variant": "#005236",
+                  "on-secondary": "#ffffff",
+                  "surface-dim": "#cbdbf5",
+                  "tertiary-container": "#0cb880",
+                  "background": "#f8f9ff",
+                  "surface-container-low": "#eff4ff",
+                  "outline-variant": "#c0c7d4",
+                  "on-surface": "#0b1c30",
+                  "inverse-primary": "#a0caff",
+                  "on-tertiary-fixed": "#002113",
+                  "tertiary": "#006c49",
+                  "surface-container-high": "#dce9ff",
+                  "on-tertiary": "#ffffff",
+                  "secondary-fixed-dim": "#b1c5ff",
+                  "secondary-fixed": "#dae2ff",
+                  "on-primary": "#ffffff",
+                  "surface-tint": "#0061a5",
+                  "surface-bright": "#f8f9ff",
+                  "primary-fixed-dim": "#a0caff",
+                  "surface": "#f8f9ff",
+                  "on-primary-fixed-variant": "#00497e",
+                  "on-primary-fixed": "#001c37",
+                  "outline": "#707783",
+                  "inverse-on-surface": "#eaf1ff",
+                  "secondary-container": "#036cfb",
+                  "surface-container": "#e5eeff",
+                  "on-primary-container": "#003a67",
+                  "on-secondary-container": "#fefcff",
+                  "on-tertiary-container": "#00412b",
+                  "secondary": "#0055c9",
+                  "on-surface-variant": "#404752",
+                  "on-background": "#0b1c30"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.125rem",
+                  "lg": "0.25rem",
+                  "xl": "0.5rem",
+                  "full": "0.75rem"
+          },
+          "spacing": {
+                  "panel-sidebar": "280px",
+                  "stack-gap": "16px",
+                  "gutter": "24px",
+                  "panel-inspector": "320px",
+                  "panel-content": "1fr",
+                  "container-padding": "32px"
+          },
+          "fontFamily": {
+                  "label-caps": ["Inter"],
+                  "title-sm": ["Hanken Grotesk"],
+                  "headline-md": ["Hanken Grotesk"],
+                  "display-lg": ["Hanken Grotesk"],
+                  "body-sm": ["Inter"],
+                  "data-mono": ["JetBrains Mono"],
+                  "body-md": ["Inter"]
+          },
+          "fontSize": {
+                  "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                  "title-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                  "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                  "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                  "data-mono": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                  "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-background text-on-background min-h-screen overflow-hidden font-body-md text-body-md">
+<!-- TopNavBar (Shared Component) -->
+<header class="flex justify-between items-center w-full px-container-padding h-16 z-50 fixed top-0 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg font-bold text-primary tracking-tighter">WRT</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Datasets</a>
+<a class="text-primary font-bold border-b-2 border-primary font-body-md" href="#">Analysis</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Models</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">search</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-low p-2 rounded-full transition-colors">settings</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Researcher Profile" data-alt="A professional headshot of a female data scientist with glasses, set against a blurred academic library background. The lighting is soft and natural, emphasizing a high-end corporate modern aesthetic. The color palette is composed of soft blues, greys, and crisp whites to align with the analytical and professional UI of the WRT platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBl7AL7U3NIfmG9sqODiIQpw5BjCA6paP-2sg7EcAKJA1dR3Caivu_RfcnKLQKF2Eh1xHYzfq1Hy7LCR__Ee6tmMnEf1N0Oofem_Z-Q8s-lqoYD3pCgidNNoo8EllqGoU8-3huJqxtj82iF--KRkhEnXpFOjfEX1UTVUr1bkedp7KwiJFWfuAEPAxihqC8DNye7puoAWfUHeTirIvK1vEdrmZlAFtQoUuwO0euuK_WyjiURPoXNNkss3-sCrz6OW8E9AkwIYw_boDS4"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Left) -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 pt-20 pb-8 px-4 z-40 w-panel-sidebar bg-surface-container-low/60 glass-panel border-r border-outline-variant">
+<div class="mb-8 px-2">
+<span class="font-label-caps text-label-caps text-outline uppercase">Active Project</span>
+<div class="flex items-center gap-3 mt-2">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">query_stats</span>
+</div>
+<div>
+<h3 class="font-title-sm text-title-sm text-on-surface leading-tight">V2.4 Enterprise</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Statistical Models</p>
+</div>
+</div>
+</div>
+<div class="flex-1 space-y-1">
+<div class="font-label-caps text-label-caps text-outline uppercase px-2 mb-2">Test Selection</div>
+<button class="w-full flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span class="font-body-md">Normality</span>
+</button>
+<button class="w-full flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">linear_scale</span>
+<span class="font-body-md">Linearity</span>
+</button>
+<button class="w-full flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">scatter_plot</span>
+<span class="font-body-md">Correlation</span>
+</button>
+<button class="w-full flex items-center gap-3 px-3 py-2 bg-secondary-container text-on-secondary-container rounded-lg font-semibold scale-[0.98]">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">insights</span>
+<span class="font-body-md">Regression</span>
+</button>
+<button class="w-full flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">exposure_zero</span>
+<span class="font-body-md">T-Test</span>
+</button>
+<button class="w-full flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+<span class="font-body-md">ANOVA</span>
+</button>
+<button class="w-full flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+<span class="font-body-md">MANOVA</span>
+</button>
+<button class="w-full flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span class="font-body-md">Chi Square</span>
+</button>
+</div>
+<div class="pt-4 mt-4 border-t border-outline-variant space-y-1">
+<button class="w-full flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+<span class="font-body-md">Documentation</span>
+</button>
+<button class="w-full flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">contact_support</span>
+<span class="font-body-md">Support</span>
+</button>
+</div>
+</aside>
+<!-- Main Workspace (Center) -->
+<main class="ml-panel-sidebar mr-panel-inspector pt-16 h-screen overflow-y-auto bg-background">
+<div class="p-container-padding max-w-6xl mx-auto space-y-8">
+<!-- Page Header -->
+<div class="flex justify-between items-end">
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface">Regression Analysis</h1>
+<p class="font-body-md text-on-surface-variant">Configure variables and analyze multilinear relationships.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-primary text-primary rounded font-semibold text-body-sm hover:bg-primary-fixed-dim transition-colors">
+            Reset Configuration
+          </button>
+<button class="px-4 py-2 bg-primary text-on-primary rounded font-semibold text-body-sm hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+            Run Analysis
+          </button>
+</div>
+</div>
+<!-- Analysis Config -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-stack-gap">
+<div class="bg-surface-container-lowest analytical-card p-6 rounded-lg border border-outline-variant">
+<h3 class="font-label-caps text-label-caps text-primary mb-4 uppercase">Variable Selection</h3>
+<div class="space-y-4">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Dependent Variable (Y)</label>
+<select class="w-full bg-surface-container-low border border-outline-variant rounded px-3 py-2 focus:ring-2 focus:ring-primary-container outline-none transition-all">
+<option>Performance_Index</option>
+<option>Retention_Rate</option>
+<option>Budget_Allocation</option>
+</select>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Independent Variables (X)</label>
+<div class="space-y-2 max-h-40 overflow-y-auto p-2 bg-surface-container-low rounded border border-outline-variant">
+<label class="flex items-center gap-3 p-2 hover:bg-surface-container-high rounded transition-colors cursor-pointer">
+<input checked="" class="rounded text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-md">Intelligence_Score</span>
+</label>
+<label class="flex items-center gap-3 p-2 hover:bg-surface-container-high rounded transition-colors cursor-pointer">
+<input checked="" class="rounded text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-md">Study_Hours_Weekly</span>
+</label>
+<label class="flex items-center gap-3 p-2 hover:bg-surface-container-high rounded transition-colors cursor-pointer">
+<input class="rounded text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-md">Socioeconomic_Status</span>
+</label>
+<label class="flex items-center gap-3 p-2 hover:bg-surface-container-high rounded transition-colors cursor-pointer">
+<input class="rounded text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-md">Attendance_Record</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest analytical-card p-6 rounded-lg border border-outline-variant">
+<h3 class="font-label-caps text-label-caps text-primary mb-4 uppercase">Test Options</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-3">
+<label class="flex items-center gap-3">
+<input checked="" class="rounded text-primary" type="checkbox"/>
+<span class="font-body-md">Confidence (95%)</span>
+</label>
+<label class="flex items-center gap-3">
+<input class="rounded text-primary" type="checkbox"/>
+<span class="font-body-md">Stepwise Selection</span>
+</label>
+<label class="flex items-center gap-3">
+<input checked="" class="rounded text-primary" type="checkbox"/>
+<span class="font-body-md">Standardize Coefficients</span>
+</label>
+</div>
+<div class="space-y-3">
+<label class="flex items-center gap-3">
+<input class="rounded text-primary" type="checkbox"/>
+<span class="font-body-md">Durbin-Watson</span>
+</label>
+<label class="flex items-center gap-3">
+<input checked="" class="rounded text-primary" type="checkbox"/>
+<span class="font-body-md">Residual Plots</span>
+</label>
+<label class="flex items-center gap-3">
+<input class="rounded text-primary" type="checkbox"/>
+<span class="font-body-md">Collinearity (VIF)</span>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Results Table -->
+<section class="bg-surface-container-lowest analytical-card rounded-lg border border-outline-variant overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-title-sm text-title-sm text-on-surface">Regression Coefficients</h3>
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold rounded-full uppercase">Valid Model</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant uppercase">Predictor</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant uppercase">Coefficient (B)</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant uppercase">Std. Error</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant uppercase">T-Value</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant uppercase">P-Value</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant uppercase">Significance</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-background transition-colors group">
+<td class="px-6 py-4 font-body-md font-semibold text-on-surface">(Constant)</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">14.282</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">2.144</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">6.661</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">&lt;.001</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 bg-primary-container/20 text-primary font-bold text-[10px] rounded uppercase">High</span>
+</td>
+</tr>
+<tr class="hover:bg-background transition-colors group">
+<td class="px-6 py-4 font-body-md text-on-surface">Intelligence_Score</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.642</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.082</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">7.829</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">&lt;.001</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 bg-primary-container/20 text-primary font-bold text-[10px] rounded uppercase">High</span>
+</td>
+</tr>
+<tr class="hover:bg-background transition-colors group">
+<td class="px-6 py-4 font-body-md text-on-surface">Study_Hours_Weekly</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">1.125</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.450</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">2.500</td>
+<td class="px-6 py-4 font-data-mono text-data-mono">0.014</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed-variant font-bold text-[10px] rounded uppercase">Sig.</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Charts & Visuals -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-stack-gap">
+<div class="bg-surface-container-lowest analytical-card p-6 rounded-lg border border-outline-variant h-80 relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-title-sm text-title-sm text-on-surface">Residual Plot</h3>
+<span class="material-symbols-outlined text-outline-variant cursor-help">info</span>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none p-12">
+
+</div>
+<!-- Mock Chart Elements -->
+<div class="w-full h-full border-l border-b border-outline-variant relative">
+<div class="absolute w-2 h-2 rounded-full bg-primary/40 left-[10%] top-[40%]"></div>
+<div class="absolute w-2 h-2 rounded-full bg-primary/40 left-[25%] top-[55%]"></div>
+<div class="absolute w-2 h-2 rounded-full bg-primary/40 left-[40%] top-[30%]"></div>
+<div class="absolute w-2 h-2 rounded-full bg-primary/40 left-[60%] top-[65%]"></div>
+<div class="absolute w-2 h-2 rounded-full bg-primary/40 left-[80%] top-[20%]"></div>
+<div class="absolute w-full h-[1px] bg-error/30 top-1/2 border-dashed"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest analytical-card p-6 rounded-lg border border-outline-variant h-80">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-title-sm text-title-sm text-on-surface">Model Distribution</h3>
+<span class="material-symbols-outlined text-outline-variant cursor-help">info</span>
+</div>
+<div class="h-48 w-full bg-surface-container-low rounded-lg relative overflow-hidden">
+
+<div class="absolute inset-0 flex items-end px-4 pb-4 gap-2">
+<div class="flex-1 bg-primary/20 h-[30%] rounded-t"></div>
+<div class="flex-1 bg-primary/30 h-[45%] rounded-t"></div>
+<div class="flex-1 bg-primary/50 h-[80%] rounded-t"></div>
+<div class="flex-1 bg-primary/80 h-[95%] rounded-t"></div>
+<div class="flex-1 bg-primary/50 h-[70%] rounded-t"></div>
+<div class="flex-1 bg-primary/30 h-[40%] rounded-t"></div>
+<div class="flex-1 bg-primary/20 h-[25%] rounded-t"></div>
+</div>
+</div>
+<div class="mt-4 flex justify-between text-data-mono text-outline">
+<span>-3 Std Dev</span>
+<span>Mean</span>
+<span>+3 Std Dev</span>
+</div>
+</div>
+</section>
+<!-- AI Interpretation -->
+<section class="bg-primary/5 border border-primary/20 rounded-lg p-6 relative">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h3 class="font-title-sm text-title-sm text-on-surface">AI Insights &amp; Conclusion</h3>
+</div>
+<div class="space-y-4 font-body-md text-on-surface-variant">
+<p>The multilinear regression model produced a robust fit with an <span class="font-bold text-primary">R² of 0.842</span>, indicating that approximately 84% of the variance in <span class="italic">Performance_Index</span> can be explained by the selected predictors.</p>
+<p><span class="font-semibold text-on-surface">Key Finding:</span> <span class="italic">Intelligence_Score</span> was the strongest predictor (β = 0.642, p &lt; .001). However, <span class="italic">Study_Hours_Weekly</span> also showed significant unique contribution despite moderate multicollinearity (VIF = 2.1).</p>
+<div class="p-4 bg-surface-container-lowest rounded border border-primary/10">
+<span class="font-label-caps text-label-caps text-primary uppercase block mb-1">Recommendation</span>
+            Consider investigating non-linear interaction effects between Intelligence and Study Hours, as the residual plot suggests slight heteroscedasticity at higher predicted values.
+          </div>
+</div>
+</section>
+</div>
+</main>
+<!-- SideNavBar (Right / Inspector) -->
+<aside class="flex flex-col h-screen fixed right-0 top-0 pt-20 px-6 z-40 w-panel-inspector bg-surface-container-lowest border-l border-outline-variant shadow-sm">
+<div class="mb-6">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-title-sm text-title-sm font-semibold text-tertiary">Insight Panel</h3>
+<span class="px-2 py-1 bg-tertiary-fixed text-[10px] font-bold rounded">AI READY</span>
+</div>
+<p class="font-body-sm text-on-surface-variant">Real-time health check for your active analysis model.</p>
+</div>
+<div class="space-y-6">
+<div class="space-y-3">
+<div class="flex items-center gap-2 text-tertiary">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span class="font-label-caps text-label-caps uppercase">AI Suggestions</span>
+</div>
+<div class="p-3 bg-surface-container rounded-lg border-l-4 border-tertiary text-on-surface-variant text-body-sm">
+          "Try including 'Socioeconomic Status' to see if it attenuates the effect of Study Hours."
+        </div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-2 text-on-surface-variant opacity-70">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+<span class="font-label-caps text-label-caps uppercase">Research Health</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-body-sm">
+<span>Model Validity</span>
+<span class="text-tertiary font-bold">98%</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[98%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-body-sm">
+<span>Sample Sufficiency</span>
+<span class="text-on-surface-variant font-bold">Optimal</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[100%]"></div>
+</div>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-2 text-on-surface-variant opacity-70">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+<span class="font-label-caps text-label-caps uppercase">Anomalies</span>
+</div>
+<div class="flex items-center gap-2 p-2 bg-error-container/20 rounded border border-error/10">
+<span class="material-symbols-outlined text-error text-[18px]">error</span>
+<span class="text-body-sm text-on-error-container">3 outliers detected in Study_Hours.</span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-2 text-on-surface-variant opacity-70">
+<span class="material-symbols-outlined text-[18px]">data_object</span>
+<span class="font-label-caps text-label-caps uppercase">Live Logs</span>
+</div>
+<div class="bg-inverse-surface text-inverse-on-surface p-3 rounded font-data-mono text-[10px] leading-relaxed">
+<div class="flex gap-2">
+<span class="text-tertiary-fixed">[14:22:10]</span>
+<span>MODEL_BUILD_INIT...</span>
+</div>
+<div class="flex gap-2">
+<span class="text-tertiary-fixed">[14:22:11]</span>
+<span>COV_MATRIX_CALC: OK</span>
+</div>
+<div class="flex gap-2">
+<span class="text-tertiary-fixed">[14:22:12]</span>
+<span>OLS_REGR_SOLVED.</span>
+</div>
+<div class="animate-pulse">_</div>
+</div>
+</div>
+</div>
+<div class="mt-auto py-6">
+<button class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-secondary text-on-secondary rounded-lg font-bold text-body-md hover:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">ios_share</span>
+        Export Full Report
+      </button>
+</div>
+</aside>
+<!-- Interaction Script -->
+<script>
+    document.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.add('opacity-80', 'scale-95');
+        setTimeout(() => btn.classList.remove('opacity-80', 'scale-95'), 150);
+      });
+    });
+  </script>
+</body></html>

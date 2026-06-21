@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WRT | Research Quality Dashboard</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "tertiary-fixed": "#6ffbbe",
+                  "surface-container-lowest": "#ffffff",
+                  "inverse-surface": "#213145",
+                  "surface-container-highest": "#d3e4fe",
+                  "error-container": "#ffdad6",
+                  "on-secondary-fixed": "#001946",
+                  "on-error-container": "#93000a",
+                  "on-error": "#ffffff",
+                  "tertiary-fixed-dim": "#4edea3",
+                  "surface-variant": "#d3e4fe",
+                  "primary-fixed": "#d2e4ff",
+                  "error": "#ba1a1a",
+                  "primary": "#0061a5",
+                  "on-tertiary-fixed-variant": "#005236",
+                  "on-secondary": "#ffffff",
+                  "surface-dim": "#cbdbf5",
+                  "tertiary-container": "#0cb880",
+                  "background": "#f8f9ff",
+                  "surface-container-low": "#eff4ff",
+                  "outline-variant": "#c0c7d4",
+                  "on-surface": "#0b1c30",
+                  "inverse-primary": "#a0caff",
+                  "on-tertiary-fixed": "#002113",
+                  "tertiary": "#006c49",
+                  "surface-container-high": "#dce9ff",
+                  "on-tertiary": "#ffffff",
+                  "secondary-fixed-dim": "#b1c5ff",
+                  "secondary-fixed": "#dae2ff",
+                  "on-primary": "#ffffff",
+                  "surface-tint": "#0061a5",
+                  "surface-bright": "#f8f9ff",
+                  "primary-fixed-dim": "#a0caff",
+                  "surface": "#f8f9ff",
+                  "on-primary-fixed-variant": "#00497e",
+                  "on-primary-fixed": "#001c37",
+                  "outline": "#707783",
+                  "inverse-on-surface": "#eaf1ff",
+                  "secondary-container": "#036cfb",
+                  "surface-container": "#e5eeff",
+                  "on-primary-container": "#003a67",
+                  "on-secondary-fixed-variant": "#00419e",
+                  "primary-container": "#4da6ff",
+                  "on-secondary-container": "#fefcff",
+                  "on-tertiary-container": "#00412b",
+                  "secondary": "#0055c9",
+                  "on-surface-variant": "#404752",
+                  "on-background": "#0b1c30"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.125rem",
+                  "lg": "0.25rem",
+                  "xl": "0.5rem",
+                  "full": "0.75rem"
+          },
+          "spacing": {
+                  "panel-sidebar": "280px",
+                  "stack-gap": "16px",
+                  "gutter": "24px",
+                  "panel-inspector": "320px",
+                  "panel-content": "1fr",
+                  "container-padding": "32px"
+          },
+          "fontFamily": {
+                  "label-caps": ["Inter"],
+                  "title-sm": ["Hanken Grotesk"],
+                  "headline-md": ["Hanken Grotesk"],
+                  "display-lg": ["Hanken Grotesk"],
+                  "body-sm": ["Inter"],
+                  "data-mono": ["JetBrains Mono"],
+                  "body-md": ["Inter"]
+          },
+          "fontSize": {
+                  "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                  "title-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                  "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                  "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                  "data-mono": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                  "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+    .glass-sidebar {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .custom-shadow-card {
+      box-shadow: 0 4px 20px rgba(13, 110, 253, 0.04);
+    }
+    .circular-progress {
+      transition: stroke-dashoffset 0.8s ease-in-out;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #E4EDF8; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #D2E4FF; }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md overflow-hidden">
+<!-- TOP NAV BAR (Shared Component) -->
+<header class="bg-surface dark:bg-on-background flex justify-between items-center w-full px-container-padding h-16 z-50 docked full-width top-0 border-b border-outline-variant dark:border-outline fixed">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg font-bold text-primary dark:text-primary-fixed tracking-tighter">WRT</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary font-body-md text-body-md transition-colors" href="#">Datasets</a>
+<a class="text-primary dark:text-primary-fixed font-bold border-b-2 border-primary font-body-md text-body-md" href="#">Analysis</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary font-body-md text-body-md transition-colors" href="#">Models</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary font-body-md text-body-md transition-colors" href="#">Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-low border border-outline-variant rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-container text-body-sm" placeholder="Search research projects..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors">settings</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="Researcher Profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a professional academic researcher in a bright, modern office with soft blue lighting. The individual has a focused, intelligent expression, wearing thin-rimmed glasses that catch the subtle office glare. The background shows blurred books and high-tech digital displays, emphasizing a data-driven enterprise research environment. The overall aesthetic is clean, corporate, and intellectually authoritative." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8rcSm7Q3D8qFHWkxTuyKnvOWUe2jMpdA7qPS0ifvvQHD66ZPXPErQx53qd7a2W_pRnfXusc3vFHayAi3BqOj5ZAMiaaq1s1xE2PxekYOJsXNrZLR9aR6ydw5r7mZ7r7sa4qbtZkC_2Z-Cgm1vr2i0QPzYE9gUn-XLXC-K8KeTpx6GjWxHwYb2Kt1Qf_xpF0fGr8DaTyWjvOzTl8bPYsQUrYnLBPWWePKCSbOhNLYWK-Q5OUu2XBGJ3UYj2cKQ9aKPHgx1YCY9a8vt"/>
+</div>
+</div>
+</header>
+<!-- SIDE NAV BAR (Shared Component) -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 pt-20 pb-8 px-4 z-40 bg-surface-container-low/60 dark:bg-inverse-surface/60 docked left-0 h-full w-panel-sidebar glass-sidebar border-r border-outline-variant dark:border-outline">
+<div class="px-4 mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">biotech</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface leading-none">WRT</h2>
+<p class="font-body-sm text-body-sm text-outline opacity-70">V2.4 Enterprise</p>
+</div>
+</div>
+</div>
+<button class="mx-4 mb-8 py-3 bg-primary text-white rounded-xl flex items-center justify-center gap-2 font-title-sm text-title-sm hover:opacity-90 transition-all shadow-sm">
+<span class="material-symbols-outlined">add</span>
+      New Analysis
+    </button>
+<div class="flex flex-col gap-1 overflow-y-auto flex-grow px-2">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps">Workspace</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg font-semibold scale-[0.98]" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps">Research Health</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="font-label-caps text-label-caps">Active Projects</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">table_chart</span>
+<span class="font-label-caps text-label-caps">Raw Data</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-caps text-label-caps">Statistical Models</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-caps text-label-caps">Archived</span>
+</a>
+</div>
+<div class="mt-auto px-2 pt-4 border-t border-outline-variant/30">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high/50 rounded-lg transition-all mb-1" href="#">
+<span class="material-symbols-outlined text-sm">menu_book</span>
+<span class="font-label-caps text-label-caps">Documentation</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined text-sm">contact_support</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+</div>
+</aside>
+<!-- MAIN CANVAS -->
+<main class="ml-[280px] mr-[320px] pt-16 h-screen overflow-y-auto bg-background">
+<div class="p-container-padding max-w-6xl mx-auto">
+<!-- Header Section -->
+<header class="mb-10 flex justify-between items-end">
+<div>
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-widest bg-primary-fixed/30 px-3 py-1 rounded-full">Automated Health Audit</span>
+<h1 class="font-headline-md text-headline-md mt-4 text-on-surface">Research Quality Dashboard</h1>
+<p class="text-on-surface-variant max-w-lg mt-2">Comprehensive diagnostic overview of Project "DeepScale-IV" across multi-dimensional quality benchmarks.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-outline text-on-surface rounded-lg font-label-caps text-label-caps hover:bg-surface-container transition-colors">Export PDF Report</button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg font-label-caps text-label-caps hover:opacity-90 transition-opacity">Recalculate Audit</button>
+</div>
+</header>
+<!-- Main Health Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- LARGE FINAL SCORE -->
+<div class="col-span-12 lg:col-span-5 bg-surface-container-lowest rounded-xl border border-outline-variant custom-shadow-card p-8 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-32 h-32 bg-primary-container/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+<h3 class="font-label-caps text-label-caps text-outline mb-6">OVERALL RESEARCH CONFIDENCE</h3>
+<div class="flex items-center justify-center py-10 relative">
+<!-- Large SVG Ring -->
+<svg class="w-64 h-64 transform -rotate-90">
+<circle class="text-surface-container-high" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary circular-progress" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-dasharray="691" stroke-dashoffset="110" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-lg text-[64px] leading-none text-on-surface font-bold">84</span>
+<span class="font-label-caps text-label-caps text-outline mt-2">PERCENTILE</span>
+</div>
+</div>
+<div class="text-center mt-4">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed font-label-caps text-[12px] px-6 py-2 rounded-full border border-tertiary/20">STATUS: PUBLISHABLE</span>
+<p class="mt-6 text-on-surface-variant text-body-sm italic">"Current metrics suggest this research meets Tier-1 journal standards for data integrity and statistical validity."</p>
+</div>
+</div>
+<!-- INDIVIDUAL INDICATORS GRID -->
+<div class="col-span-12 lg:col-span-7 grid grid-cols-2 gap-4">
+<!-- Data Quality -->
+<div class="bg-white border border-outline-variant p-6 rounded-xl hover:border-primary/30 transition-colors">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-outline">Data Quality</span>
+<span class="material-symbols-outlined text-tertiary text-lg">check_circle</span>
+</div>
+<div class="flex items-end gap-4">
+<div class="w-16 h-16">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-tertiary circular-progress" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-dasharray="175" stroke-dashoffset="14" stroke-width="6"></circle>
+</svg>
+</div>
+<div>
+<span class="font-display-lg text-display-lg block leading-none">92%</span>
+<span class="text-body-sm text-tertiary font-bold">EXCELLENT</span>
+</div>
+</div>
+</div>
+<!-- Instrument Quality -->
+<div class="bg-white border border-outline-variant p-6 rounded-xl hover:border-primary/30 transition-colors">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-outline">Instrument Quality</span>
+<span class="material-symbols-outlined text-primary text-lg">info</span>
+</div>
+<div class="flex items-end gap-4">
+<div class="w-16 h-16">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-primary circular-progress" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-dasharray="175" stroke-dashoffset="45" stroke-width="6"></circle>
+</svg>
+</div>
+<div>
+<span class="font-display-lg text-display-lg block leading-none">74%</span>
+<span class="text-body-sm text-primary font-bold">STABLE</span>
+</div>
+</div>
+</div>
+<!-- Analysis Quality -->
+<div class="bg-white border border-outline-variant p-6 rounded-xl hover:border-primary/30 transition-colors">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-outline">Analysis Quality</span>
+<span class="material-symbols-outlined text-tertiary text-lg">check_circle</span>
+</div>
+<div class="flex items-end gap-4">
+<div class="w-16 h-16">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-tertiary circular-progress" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-dasharray="175" stroke-dashoffset="20" stroke-width="6"></circle>
+</svg>
+</div>
+<div>
+<span class="font-display-lg text-display-lg block leading-none">88%</span>
+<span class="text-body-sm text-tertiary font-bold">ROBUST</span>
+</div>
+</div>
+</div>
+<!-- Reporting Quality -->
+<div class="bg-white border border-outline-variant p-6 rounded-xl hover:border-primary/30 transition-colors">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-outline">Reporting Quality</span>
+<span class="material-symbols-outlined text-error text-lg">warning</span>
+</div>
+<div class="flex items-end gap-4">
+<div class="w-16 h-16">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-error circular-progress" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-dasharray="175" stroke-dashoffset="82" stroke-width="6"></circle>
+</svg>
+</div>
+<div>
+<span class="font-display-lg text-display-lg block leading-none">53%</span>
+<span class="text-body-sm text-error font-bold">MARGINAL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Categorization Benchmarks -->
+<div class="col-span-12 bg-white rounded-xl border border-outline-variant p-6">
+<h3 class="font-label-caps text-label-caps text-outline mb-6">QUALITY BENCHMARKS</h3>
+<div class="relative pt-6 pb-2">
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden flex">
+<div class="h-full bg-error" style="width: 25%"></div>
+<div class="h-full bg-error-container" style="width: 25%"></div>
+<div class="h-full bg-primary-container" style="width: 25%"></div>
+<div class="h-full bg-tertiary" style="width: 25%"></div>
+</div>
+<!-- Marker -->
+<div class="absolute top-0 left-[84%] -translate-x-1/2 flex flex-col items-center">
+<div class="w-1 h-8 bg-on-surface"></div>
+<div class="bg-on-surface text-white text-[10px] px-2 py-0.5 rounded-sm mt-1 font-bold">84% CURRENT</div>
+</div>
+</div>
+<div class="flex justify-between text-[10px] font-label-caps text-outline mt-2">
+<div class="text-center w-[25%] border-r border-outline-variant/30">POOR (&lt;40)</div>
+<div class="text-center w-[25%] border-r border-outline-variant/30">NEEDS WORK (40-60)</div>
+<div class="text-center w-[25%] border-r border-outline-variant/30">ACCEPTABLE (60-80)</div>
+<div class="text-center w-[25%]">PUBLISHABLE (80+)</div>
+</div>
+</div>
+<!-- AI RECOMMENDATIONS -->
+<div class="col-span-12 bg-surface-container-lowest rounded-xl border border-outline-variant p-8 custom-shadow-card">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h3 class="font-title-sm text-title-sm text-on-surface">AI Recommendations for Score Optimization</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Rec 1 -->
+<div class="p-4 bg-background rounded-lg border border-outline-variant/50 hover:shadow-md transition-shadow">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-label-caps text-label-caps text-error">CRITICAL</span>
+</div>
+<p class="font-body-md text-on-surface font-semibold mb-2">Address Skewness in Dataset B</p>
+<p class="text-body-sm text-on-surface-variant">Variables 'response_latency' show significant right-skew (S &gt; 2.4). Normalize using logarithmic transform to improve Analysis Quality score by ~6%.</p>
+<button class="mt-4 text-primary font-label-caps text-label-caps hover:underline">Apply Transform</button>
+</div>
+<!-- Rec 2 -->
+<div class="p-4 bg-background rounded-lg border border-outline-variant/50 hover:shadow-md transition-shadow">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="font-label-caps text-label-caps text-primary">IMPROVEMENT</span>
+</div>
+<p class="font-body-md text-on-surface font-semibold mb-2">Missing Confidence Intervals</p>
+<p class="text-body-sm text-on-surface-variant">Tables 4 and 7 in the final report draft are missing 95% CIs. Adding these will increase Reporting Quality from Marginal to Stable.</p>
+<button class="mt-4 text-primary font-label-caps text-label-caps hover:underline">Auto-populate Tables</button>
+</div>
+<!-- Rec 3 -->
+<div class="p-4 bg-background rounded-lg border border-outline-variant/50 hover:shadow-md transition-shadow">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+<span class="font-label-caps text-label-caps text-tertiary">STRENGTHEN</span>
+</div>
+<p class="font-body-md text-on-surface font-semibold mb-2">External Cross-Validation</p>
+<p class="text-body-sm text-on-surface-variant">Correlation with the 2023 Meta-Study results is high (r = 0.89). Citing this alignment will boost your Research Confidence percentile.</p>
+<button class="mt-4 text-primary font-label-caps text-label-caps hover:underline">Generate Citation</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- RIGHT INSPECTOR PANEL -->
+<aside class="flex flex-col h-screen fixed right-0 top-0 pt-20 px-6 z-40 bg-surface-container-lowest dark:bg-inverse-surface docked right-0 h-full w-panel-inspector border-l border-outline-variant dark:border-outline shadow-sm">
+<div class="flex items-center gap-2 mb-8">
+<span class="material-symbols-outlined text-tertiary">auto_awesome</span>
+<h2 class="font-title-sm text-title-sm font-semibold text-tertiary">Insight Panel</h2>
+</div>
+<div class="space-y-8">
+<!-- Live Logs (Mono) -->
+<div>
+<h4 class="font-label-caps text-label-caps text-outline mb-4">LIVE LOGS</h4>
+<div class="bg-inverse-surface text-tertiary-fixed p-3 rounded-lg font-data-mono text-data-mono overflow-hidden h-48">
+<div class="animate-pulse mb-1">&gt; Initializing audit engine...</div>
+<div class="mb-1 text-white/60">&gt; Scanning dataset metadata [DONE]</div>
+<div class="mb-1 text-white/60">&gt; Checking P-Hacking markers [NULL]</div>
+<div class="mb-1 text-white/60">&gt; Validating instrument reliability [0.78]</div>
+<div class="mb-1 text-white/60">&gt; Calculating power analysis [N=1240]</div>
+<div class="text-primary-fixed-dim">&gt; 4 potential outliers detected in Set C</div>
+<div class="mb-1 text-white/60">&gt; Syncing with enterprise cloud...</div>
+</div>
+</div>
+<!-- Research Health Stats -->
+<div class="space-y-4">
+<h4 class="font-label-caps text-label-caps text-outline">ANOMALY SCAN</h4>
+<div class="flex items-center justify-between p-3 bg-error-container/20 border border-error/20 rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-error">warning</span>
+<span class="text-body-sm font-medium">Duplicate Entries</span>
+</div>
+<span class="font-data-mono text-error font-bold">12</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-high/40 border border-outline-variant rounded-lg opacity-70">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">data_object</span>
+<span class="text-body-sm font-medium">Schema Mismatch</span>
+</div>
+<span class="font-data-mono font-bold">0</span>
+</div>
+</div>
+<!-- Quick Metrics -->
+<div class="p-5 border border-outline-variant rounded-xl bg-surface-container-low">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<h4 class="font-label-caps text-label-caps">PROJECT VELOCITY</h4>
+</div>
+<div class="flex justify-between items-end">
+<div class="w-full h-16 flex items-end gap-1">
+<div class="w-full bg-primary-container h-[40%] rounded-t-sm"></div>
+<div class="w-full bg-primary-container h-[60%] rounded-t-sm"></div>
+<div class="w-full bg-primary-container h-[45%] rounded-t-sm"></div>
+<div class="w-full bg-primary h-[85%] rounded-t-sm"></div>
+<div class="w-full bg-primary h-[70%] rounded-t-sm"></div>
+<div class="w-full bg-primary-container h-[55%] rounded-t-sm"></div>
+</div>
+</div>
+<p class="text-[10px] text-outline-variant mt-2 text-center uppercase tracking-tighter">Last 7 Active Working Days</p>
+</div>
+</div>
+<div class="mt-auto py-8">
+<button class="w-full py-2 bg-surface-container-highest text-on-primary-container rounded-lg font-label-caps text-label-caps hover:bg-primary hover:text-white transition-all">
+        Open Advanced Inspector
+      </button>
+</div>
+</aside>
+<!-- Interactive Script for Circular Indicators -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Small interaction to "ping" the AI Engine
+      const aiItems = document.querySelectorAll('.animate-pulse');
+      setInterval(() => {
+        const timestamp = new Date().toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const logContainer = document.querySelector('.font-data-mono');
+        const newLog = document.createElement('div');
+        newLog.className = 'text-white/40 mb-1 opacity-0 transition-opacity duration-500';
+        newLog.textContent = `> [${timestamp}] System integrity check OK`;
+        logContainer.prepend(newLog);
+        setTimeout(() => newLog.classList.remove('opacity-0'), 100);
+        if (logContainer.children.length > 8) logContainer.removeChild(logContainer.lastChild);
+      }, 5000);
+    });
+  </script>
+</body></html>

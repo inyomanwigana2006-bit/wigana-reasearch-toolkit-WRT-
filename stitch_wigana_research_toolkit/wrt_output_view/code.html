@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Output View - Research Analytics Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Hanken+Grotesk:wght@600;700;900&family=JetBrains+Mono:wght@400&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-sidebar {
+            backdrop-filter: blur(20px);
+            background-color: rgba(229, 238, 255, 0.6);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(13, 110, 253, 0.04);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8f9ff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d3e4fe;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0061a5;
+        }
+        .circular-progress {
+            --percent: 0;
+            background: radial-gradient(closest-side, white 79%, transparent 80% 100%),
+                        conic-gradient(var(--progress-color) calc(var(--percent) * 1%), #eff4ff 0);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "inverse-on-surface": "#eaf1ff",
+                "surface-container-low": "#eff4ff",
+                "on-primary-container": "#003a67",
+                "secondary-fixed-dim": "#b1c5ff",
+                "secondary-fixed": "#dae2ff",
+                "outline-variant": "#c0c7d4",
+                "outline": "#707783",
+                "on-secondary-fixed-variant": "#00419e",
+                "inverse-surface": "#213145",
+                "on-tertiary-fixed-variant": "#005236",
+                "on-primary": "#ffffff",
+                "tertiary-container": "#0cb880",
+                "on-primary-fixed-variant": "#00497e",
+                "secondary-container": "#036cfb",
+                "surface-container": "#e5eeff",
+                "surface-dim": "#cbdbf5",
+                "on-error": "#ffffff",
+                "on-tertiary-container": "#00412b",
+                "surface": "#f8f9ff",
+                "surface-container-lowest": "#ffffff",
+                "surface-tint": "#0061a5",
+                "surface-variant": "#d3e4fe",
+                "on-background": "#0b1c30",
+                "secondary": "#0055c9",
+                "primary-container": "#4da6ff",
+                "on-secondary-fixed": "#001946",
+                "error": "#ba1a1a",
+                "inverse-primary": "#a0caff",
+                "background": "#f8f9ff",
+                "on-secondary": "#ffffff",
+                "tertiary": "#006c49",
+                "on-surface": "#0b1c30",
+                "primary-fixed-dim": "#a0caff",
+                "primary": "#0061a5",
+                "error-container": "#ffdad6",
+                "primary-fixed": "#d2e4ff",
+                "surface-container-high": "#dce9ff",
+                "on-tertiary-fixed": "#002113",
+                "on-secondary-container": "#fefcff",
+                "surface-bright": "#f8f9ff",
+                "tertiary-fixed": "#6ffbbe",
+                "surface-container-highest": "#d3e4fe",
+                "tertiary-fixed-dim": "#4edea3",
+                "on-surface-variant": "#404752",
+                "on-primary-fixed": "#001c37",
+                "on-error-container": "#93000a",
+                "on-tertiary": "#ffffff"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+              },
+              "spacing": {
+                "panel-content": "1fr",
+                "panel-inspector": "320px",
+                "gutter": "24px",
+                "container-padding": "32px",
+                "panel-sidebar": "280px",
+                "stack-gap": "16px"
+              },
+              "fontFamily": {
+                "body-md": ["Inter"],
+                "title-sm": ["Hanken Grotesk"],
+                "display-lg": ["Hanken Grotesk"],
+                "label-caps": ["Inter"],
+                "body-sm": ["Inter"],
+                "headline-md": ["Hanken Grotesk"],
+                "data-mono": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+                "title-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "data-mono": ["12px", {"lineHeight": "18px", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased overflow-hidden h-screen flex flex-col">
+<!-- Top AppBar -->
+<header class="fixed top-0 left-0 w-full flex justify-between items-center px-gutter h-16 z-30 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<h1 class="font-title-sm text-title-sm font-black text-on-surface">Research Analytics Pro</h1>
+<nav class="hidden md:flex gap-6 mt-1">
+<a class="text-on-surface-variant pb-2 font-label-caps hover:text-primary transition-all" href="#">Data View</a>
+<a class="text-on-surface-variant pb-2 font-label-caps hover:text-primary transition-all" href="#">Variable View</a>
+<a class="text-primary border-b-2 border-primary font-bold pb-2 font-label-caps" href="#">Output View</a>
+<a class="text-on-surface-variant pb-2 font-label-caps hover:text-primary transition-all" href="#">Report View</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<input class="bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 text-body-sm w-64 focus:ring-2 focus:ring-primary-container focus:outline-none" placeholder="Search variables..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2 text-on-surface-variant">search</span>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-caps hover:opacity-90 active:scale-95 transition-all">Analyze Automatically</button>
+<div class="flex items-center gap-2 border-l border-outline-variant pl-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-all">notifications</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a senior academic researcher with a thoughtful expression, set against a blurred background of a modern university library. The lighting is soft and natural, emphasizing professional wisdom and scientific authority in a high-density corporate modern UI context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZfBn3N5TyclHtO0aqa3YtcTWQ0QV6fe4uDjkECP_eeBfocfpSzPJbRem3uEWanXztEQlEt1QKzBAfOG5_MwZbHW3DBpVmh3JL2VAOTssoOHPOAm-S6nEec2YBF-PXBNYLi4yl5D6tfduqORCx_bjmdB3ke57WnVG8wFGcQaxXixNwq8RTWW0HnYfWzXKP9l76SERQUktsFM9nUsf0FkTahP1xSkWElaUBpPdCJPoD0kEw4KrCK6yKRubuL8vVoXMat3BtMbLn3P5P"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 pt-16 h-full overflow-hidden">
+<!-- Side Navigation Panel (Left) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-panel-sidebar glass-sidebar border-r border-outline-variant flex flex-col z-20">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="bg-primary-container p-2 rounded-lg text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+</div>
+<div>
+<p class="font-headline-md text-headline-md font-bold text-primary">ResearchCloud</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Enterprise Analytics</p>
+</div>
+</div>
+<nav class="space-y-1">
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">dataset</span>
+<span class="font-body-md">Data Import</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">auto_fix_high</span>
+<span class="font-body-md">Smart Converter</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg font-bold">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="font-body-md">Project Files</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-body-md">Methodology</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md">Archive</span>
+</div>
+</nav>
+</div>
+<div class="mt-auto p-6 border-t border-outline-variant">
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">Settings</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-md">Support</span>
+</div>
+</div>
+</aside>
+<!-- Main Analysis Canvas (Center) -->
+<main class="ml-panel-sidebar mr-panel-inspector flex-1 overflow-y-auto bg-surface p-container-padding">
+<div class="max-w-6xl mx-auto space-y-gutter pb-12">
+<!-- Research Quality Dashboard -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant card-shadow flex flex-col items-center text-center">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Data Quality</h3>
+<div class="circular-progress w-24 h-24 rounded-full flex items-center justify-center mb-4" style="--percent: 92; --progress-color: #006c49;">
+<span class="font-display-lg text-display-lg text-tertiary">92</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Exceptional cleaning and handling of outliers.</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant card-shadow flex flex-col items-center text-center">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Instrument Quality</h3>
+<div class="circular-progress w-24 h-24 rounded-full flex items-center justify-center mb-4" style="--percent: 78; --progress-color: #036cfb;">
+<span class="font-display-lg text-display-lg text-secondary">78</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Strong construct validity across core dimensions.</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant card-shadow flex flex-col items-center text-center">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Overall Score</h3>
+<div class="circular-progress w-24 h-24 rounded-full flex items-center justify-center mb-4" style="--percent: 85; --progress-color: #0061a5;">
+<span class="font-display-lg text-display-lg text-primary">85</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">High statistical power for subsequent analysis.</p>
+</div>
+</section>
+<!-- Validity Results & Chart -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Validity Table -->
+<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden card-shadow">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/30">
+<h2 class="font-title-sm text-title-sm">Construct Validity Matrix</h2>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">info</span>
+</div>
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant">ITEM</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant">CITC</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant">P VALUE</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant">STATUS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors h-10">
+<td class="px-6 py-2 font-data-mono text-data-mono">VAR_001</td>
+<td class="px-6 py-2 font-data-mono text-data-mono">0.842</td>
+<td class="px-6 py-2 font-data-mono text-data-mono">< 0.001</td>
+<td class="px-6 py-2">
+<span class="px-2 py-1 bg-tertiary-container/20 text-tertiary text-[10px] font-bold rounded-full uppercase">Valid</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors h-10">
+<td class="px-6 py-2 font-data-mono text-data-mono">VAR_002</td>
+<td class="px-6 py-2 font-data-mono text-data-mono">0.315</td>
+<td class="px-6 py-2 font-data-mono text-data-mono">0.042</td>
+<td class="px-6 py-2">
+<span class="px-2 py-1 bg-error-container/20 text-error text-[10px] font-bold rounded-full uppercase">Anomaly</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors h-10">
+<td class="px-6 py-2 font-data-mono text-data-mono">VAR_003</td>
+<td class="px-6 py-2 font-data-mono text-data-mono">0.761</td>
+<td class="px-6 py-2 font-data-mono text-data-mono">< 0.001</td>
+<td class="px-6 py-2">
+<span class="px-2 py-1 bg-tertiary-container/20 text-tertiary text-[10px] font-bold rounded-full uppercase">Valid</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors h-10">
+<td class="px-6 py-2 font-data-mono text-data-mono">VAR_004</td>
+<td class="px-6 py-2 font-data-mono text-data-mono">0.124</td>
+<td class="px-6 py-2 font-data-mono text-data-mono">0.158</td>
+<td class="px-6 py-2">
+<span class="px-2 py-1 bg-on-surface-variant/20 text-on-surface-variant text-[10px] font-bold rounded-full uppercase">Invalid</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Modern Plotly Style Interactive Chart -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant card-shadow flex flex-col h-full">
+<div class="flex justify-between items-start mb-6">
+<h2 class="font-title-sm text-title-sm">Distribution Analysis</h2>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer">download</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer">fullscreen</span>
+</div>
+</div>
+<div class="flex-1 min-h-[200px] flex items-end justify-between gap-2 px-2">
+<div class="bg-primary/20 w-full rounded-t-sm h-[40%] transition-all hover:bg-primary/40 cursor-pointer"></div>
+<div class="bg-primary/20 w-full rounded-t-sm h-[65%] transition-all hover:bg-primary/40 cursor-pointer"></div>
+<div class="bg-primary w-full rounded-t-sm h-[90%] transition-all hover:bg-primary/80 cursor-pointer relative group">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-inverse-surface text-on-primary-container px-2 py-1 rounded text-[10px] opacity-0 group-hover:opacity-100 transition-opacity">N: 412</div>
+</div>
+<div class="bg-primary/20 w-full rounded-t-sm h-[75%] transition-all hover:bg-primary/40 cursor-pointer"></div>
+<div class="bg-primary/20 w-full rounded-t-sm h-[30%] transition-all hover:bg-primary/40 cursor-pointer"></div>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant grid grid-cols-2 gap-4">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Mean</p>
+<p class="font-data-mono text-data-mono text-primary">4.21</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">SD</p>
+<p class="font-data-mono text-data-mono text-primary">0.82</p>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Interpretation Card -->
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant card-shadow border-l-4 border-l-secondary relative overflow-hidden">
+<div class="absolute -top-4 -right-4 opacity-5">
+<span class="material-symbols-outlined text-9xl">psychology</span>
+</div>
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h2 class="font-title-sm text-title-sm">AI Result Interpretation</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div>
+<p class="font-label-caps text-label-caps text-secondary mb-2 uppercase">Statistical Result</p>
+<p class="font-data-mono text-sm leading-relaxed text-on-surface">The model indicates a robust significance (F(2, 409) = 18.24, p < .001) with an Adjusted R² of 0.628, suggesting high predictive variance.</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-secondary mb-2 uppercase">Simple Explanation</p>
+<p class="font-body-md text-on-surface-variant leading-relaxed">Basically, the variables you measured explain about 63% of the differences you see in your subjects. This is a very strong connection for this type of research.</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-secondary mb-2 uppercase">Academic Context</p>
+<p class="font-body-md italic text-on-surface-variant leading-relaxed">Aligns with Smith et al. (2022) regarding cognitive-load theory impacts. Consider checking collinearity between VAR_001 and VAR_003.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Inspector/Properties (Right) -->
+<aside class="fixed right-0 top-16 h-[calc(100vh-64px)] w-panel-inspector bg-white border-l border-outline-variant p-6 z-20 overflow-y-auto">
+<h2 class="font-title-sm text-title-sm mb-6">Insight Panel</h2>
+<div class="space-y-6">
+<!-- Suggested Next Steps -->
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase">Suggested Actions</h3>
+<div class="space-y-3">
+<button class="w-full flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:border-primary hover:bg-surface-container-low transition-all text-left">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<span class="font-body-sm font-bold">Run Post-Hoc Tests</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:border-primary hover:bg-surface-container-low transition-all text-left">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">data_thresholding</span>
+<span class="font-body-sm font-bold">Detect Interaction Effects</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:border-primary hover:bg-surface-container-low transition-all text-left">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">picture_as_pdf</span>
+<span class="font-body-sm font-bold">Export PDF Summary</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Analysis History -->
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase">Run History</h3>
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<div class="w-2 h-2 rounded-full bg-tertiary mt-2"></div>
+<div>
+<p class="font-body-sm font-bold">Reliability Check (Final)</p>
+<p class="text-[10px] text-on-surface-variant">2 mins ago • Alpha 0.89</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary mt-2"></div>
+<div>
+<p class="font-body-sm font-bold">Descriptive Statistics</p>
+<p class="text-[10px] text-on-surface-variant">15 mins ago • N=412</p>
+</div>
+</div>
+<div class="flex items-start gap-3 opacity-50">
+<div class="w-2 h-2 rounded-full bg-outline mt-2"></div>
+<div>
+<p class="font-body-sm font-bold">Variable Recoding</p>
+<p class="text-[10px] text-on-surface-variant">2 hours ago</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Visual Asset Placeholder -->
+<div class="rounded-xl overflow-hidden border border-outline-variant">
+<img class="w-full h-40 object-cover" data-alt="A clean, minimalist 3D rendering of abstract data nodes interconnected by glowing filaments on a soft blue and white background. The scene represents complexity being organized into clarity, echoing the analytical transparency and corporate modern aesthetic of the Wigana Research Toolkit. Soft ambient lighting and a cool color palette create a sense of professional precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhOHuOGipZTxvvMbJOQ0-gQzm8JrwMZlhIVl9BdFyoUpq__u8mCY8Mbw6CH7QGKmasSlYeE1Fnd_QNXK5g6Tfyd58rDrzI_LT0DDaFECrAtahG4MR1z2Tu7YjWoOawKfW3RksvH1TzkLY4HRro1ta48wZJcB07DCg_-HFYRjSoEtmIL6CE-ZR229DFD_TGDLbjfqdIVwot0SG0gMr9l4uCB-Kgt4CdNlocLx13FQh_iK1C0azvEJaqqQrSX8Y9XgYVhI4rk10dYj2P"/>
+<div class="p-4 bg-surface-container-low">
+<p class="font-body-sm text-on-surface font-bold">Live Data Connectivity</p>
+<p class="text-[11px] text-on-surface-variant mt-1">Synchronization active with cloud datasets.</p>
+</div>
+</div>
+</div>
+</aside>
+</div>
+<script>
+        // Micro-interactions for circular progress
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.circular-progress');
+            elements.forEach(el => {
+                const target = parseInt(el.style.getPropertyValue('--percent'));
+                let current = 0;
+                const interval = setInterval(() => {
+                    if (current >= target) {
+                        clearInterval(interval);
+                    } else {
+                        current++;
+                        el.style.setProperty('--percent', current);
+                    }
+                }, 15);
+            });
+        });
+    </script>
+</body></html>

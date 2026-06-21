@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wigana Research Toolkit - Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#d8e3fb",
+                        "on-background": "#111c2d",
+                        "on-primary-container": "#eeefff",
+                        "error": "#ba1a1a",
+                        "outline": "#737686",
+                        "on-tertiary-fixed": "#2a1700",
+                        "background": "#f9f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#dee8ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f0f3ff",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#dbe1ff",
+                        "on-secondary-container": "#00714d",
+                        "surface-dim": "#cfdaf2",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "tertiary-fixed": "#ffddb8",
+                        "inverse-on-surface": "#ecf1ff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "surface-container": "#e7eeff",
+                        "primary-container": "#2563eb",
+                        "outline-variant": "#c3c6d7",
+                        "secondary-fixed": "#6ffbbe",
+                        "inverse-surface": "#263143",
+                        "on-surface-variant": "#434655",
+                        "on-surface": "#111c2d",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#00174b",
+                        "primary": "#004ac6",
+                        "tertiary-container": "#996100",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#0053db",
+                        "secondary": "#006c49",
+                        "secondary-container": "#6cf8bb",
+                        "inverse-primary": "#b4c5ff",
+                        "surface-bright": "#f9f9ff",
+                        "surface": "#f9f9ff",
+                        "tertiary": "#784b00",
+                        "surface-variant": "#d8e3fb",
+                        "on-tertiary-container": "#ffeedd",
+                        "on-secondary-fixed": "#002113",
+                        "on-secondary-fixed-variant": "#005236"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "12px",
+                        "2xl": "16px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "gutter": "12px",
+                        "container-padding": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .ai-glow-border {
+            position: relative;
+        }
+        .ai-glow-border::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, #004ac6, #4edea3);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-container-padding h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">WTR Toolkit</h1>
+</div>
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container-high transition-colors active:scale-95 duration-200 text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a research academic with a neutral background, styled in a clean modern interface aesthetic. The image uses soft studio lighting and fits the corporate modernism style with cool blue and white tones. High definition and minimalist." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmdrdx5v-2jYq0V2E2p6OWDg-tgW7InUpm663rqODvOty6QV4msoZ4HttlRZB7CNYW6pLRMnA7MUdzqCZLtpNe5LOeuLvV2_ZKHGk5V66E8pqJIlGg9ecmHO1-SCPyqfb0905bznEmhwYWzpNQsP0PN5yWe_nkhIEFSpZPv64po0k1DB-_YHZWPoGrwml21DGkmRyWv9LsgL4OKQ1gCZrCFDdRR9o8yNtLqQr4A8RoeRm4GfgDUDj627OrMG-clIrAz1PlMrM-qL05"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="pt-20 px-container-padding space-y-6">
+<!-- Project Context -->
+<section class="flex flex-col gap-1">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider">Project Alpha</span>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Data Overview</h2>
+</section>
+<!-- Bento Grid Stats -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Total Respondents -->
+<div class="col-span-1 p-md bg-surface-container-low rounded-2xl shadow-sm border border-outline-variant/10 flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<span class="font-label-md text-label-md text-on-surface-variant">Respondents</span>
+<span class="material-symbols-outlined text-primary">groups</span>
+</div>
+<div class="space-y-1">
+<div class="font-headline-md text-headline-md text-on-surface">1,248</div>
+<div class="flex items-center text-secondary text-xs font-medium">
+<span class="material-symbols-outlined text-xs mr-1">trending_up</span> +12% vs last wk
+                    </div>
+</div>
+</div>
+<!-- Health Score -->
+<div class="col-span-1 p-md bg-surface-container-low rounded-2xl shadow-sm border border-outline-variant/10 flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<span class="font-label-md text-label-md text-on-surface-variant">Health Score</span>
+<span class="material-symbols-outlined text-secondary">verified</span>
+</div>
+<div class="space-y-1">
+<div class="font-headline-md text-headline-md text-on-surface">94.8<span class="text-sm font-normal text-on-surface-variant">%</span></div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full w-[94.8%] shadow-[0_0_8px_rgba(78,222,163,0.4)]"></div>
+</div>
+</div>
+</div>
+<!-- Valid Items Card (Wider) -->
+<div class="col-span-2 p-md bg-surface-container-low rounded-2xl shadow-sm border border-outline-variant/10 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">fact_check</span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface-variant">Valid Research Items</div>
+<div class="font-headline-sm text-headline-sm text-on-surface">11,042</div>
+</div>
+</div>
+<button class="text-primary font-label-md px-3 py-2 rounded-lg hover:bg-primary/5 transition-colors">Details</button>
+</div>
+</div>
+<!-- AI Insight Card (Glassmorphism & AI Aesthetic) -->
+<section class="ai-glow-border p-5 rounded-2xl glass-panel border-l-4 border-secondary overflow-hidden relative">
+<!-- Background Decorative Element -->
+<div class="absolute -right-10 -top-10 w-32 h-32 bg-secondary/10 blur-3xl rounded-full"></div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">AI Research Anomalies</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 leading-relaxed">
+                Detected a <span class="text-secondary font-bold">14% variance</span> in regional demographics compared to historical baseline. This suggests potential over-sampling in urban sectors during Project Alpha Phase II.
+            </p>
+<div class="space-y-3">
+<div class="flex items-center p-3 bg-surface/50 rounded-xl border border-outline-variant/20 gap-3">
+<div class="w-2 h-2 rounded-full bg-error"></div>
+<span class="font-body-md text-on-surface">Data skew in Jakarta North sector</span>
+<span class="material-symbols-outlined ml-auto text-on-surface-variant">chevron_right</span>
+</div>
+<div class="flex items-center p-3 bg-surface/50 rounded-xl border border-outline-variant/20 gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="font-body-md text-on-surface">Positive correlation in age clusters</span>
+<span class="material-symbols-outlined ml-auto text-on-surface-variant">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Dynamic Visualization (Placeholder for data trend) -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Research Velocity</h3>
+<span class="font-label-md text-label-md text-primary">Last 24 Hours</span>
+</div>
+<div class="h-48 w-full bg-surface-container-low rounded-2xl p-4 flex items-end gap-2 border border-outline-variant/10 shadow-sm overflow-hidden relative">
+<!-- Bar Chart Placeholder -->
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[40%] hover:bg-primary transition-all duration-300"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[65%] hover:bg-primary transition-all duration-300"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[50%] hover:bg-primary transition-all duration-300"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[90%] hover:bg-primary transition-all duration-300"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[75%] hover:bg-primary transition-all duration-300"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[60%] hover:bg-primary transition-all duration-300"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[85%] hover:bg-primary transition-all duration-300"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[45%] hover:bg-primary transition-all duration-300"></div>
+<div class="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-9xl">monitoring</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-6 px-6 py-4 rounded-full bg-gradient-to-r from-primary to-secondary text-on-primary shadow-xl flex items-center gap-3 active:scale-90 transition-transform duration-150 z-40">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-headline-sm text-[16px] font-bold">Analisis Otomatis</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface/80 backdrop-blur-xl border-t border-outline-variant/20 shadow-lg rounded-t-xl">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors px-4 py-1 rounded-full" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-label-md text-label-md">Data</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors px-4 py-1 rounded-full" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Analysis</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors px-4 py-1 rounded-full" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors px-4 py-1 rounded-full" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for cards
+        document.querySelectorAll('.bg-surface-container-low').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.classList.add('scale-98');
+            });
+            card.addEventListener('touchend', () => {
+                card.classList.remove('scale-98');
+            });
+        });
+
+        // Simple animation for the health score bar on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const bar = document.querySelector('.bg-secondary.h-full');
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.transition = 'width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                bar.style.width = '94.8%';
+            }, 300);
+        });
+    </script>
+</body></html>

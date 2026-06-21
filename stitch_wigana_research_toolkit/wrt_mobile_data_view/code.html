@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WTR Toolkit - Mobile Data View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#eeefff",
+                    "secondary-fixed-dim": "#4edea3",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#996100",
+                    "on-error": "#ffffff",
+                    "on-surface": "#111c2d",
+                    "on-background": "#111c2d",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed-variant": "#005236",
+                    "tertiary-fixed": "#ffddb8",
+                    "on-secondary": "#ffffff",
+                    "surface": "#f9f9ff",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "primary-fixed": "#dbe1ff",
+                    "surface-container": "#e7eeff",
+                    "inverse-surface": "#263143",
+                    "surface-container-highest": "#d8e3fb",
+                    "outline": "#737686",
+                    "secondary-container": "#6cf8bb",
+                    "secondary-fixed": "#6ffbbe",
+                    "inverse-primary": "#b4c5ff",
+                    "outline-variant": "#c3c6d7",
+                    "primary": "#004ac6",
+                    "on-surface-variant": "#434655",
+                    "on-secondary-container": "#00714d",
+                    "on-tertiary-fixed": "#2a1700",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#00174b",
+                    "secondary": "#006c49",
+                    "inverse-on-surface": "#ecf1ff",
+                    "background": "#f9f9ff",
+                    "surface-tint": "#0053db",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "tertiary": "#784b00",
+                    "on-secondary-fixed": "#002113",
+                    "primary-container": "#2563eb",
+                    "surface-dim": "#cfdaf2",
+                    "on-tertiary-container": "#ffeedd",
+                    "surface-container-low": "#f0f3ff",
+                    "surface-variant": "#d8e3fb",
+                    "surface-container-high": "#dee8ff",
+                    "surface-bright": "#f9f9ff",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-padding": "16px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "base": "4px",
+                    "md": "16px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "gutter": "12px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "headline-sm": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "label-md": ["JetBrains Mono"],
+                    "headline-md": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c3c6d7;
+            border-radius: 10px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-container-padding h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container overflow-hidden">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1ukB9B2br4tPEM0Ls5sZwLW-ZXvdyb8i4Xy-ykZf09cblBdQK5EqN0gY9Kdl_iT4sV3MRGx22c_xhM6rtMz83tmWqM3nlIIgZ8L414kf4zwdh5ppQLOOFwVqJf9F4H7iXjRFz43oeZCOMV0rT5BLrzUnd2_OkkTsua9LEFHWXnkhde_Uw0OMOzTNvVhpjA4d_Xhwh-wYFzr09jx6Z-ZqKpvPk5meLN0TaJOcHCqjxdCkLGYA1dtGWVVOPzX3tai_rqMQbIFERXUxJ"/>
+</div>
+<span class="font-headline-sm text-headline-sm font-bold text-primary">WTR Toolkit</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-primary">unfold_more</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-20 px-container-padding">
+<!-- Search and Filters Section -->
+<section class="mb-lg space-y-md">
+<div class="relative">
+<input class="w-full h-12 pl-12 pr-4 bg-surface-container-low border border-outline-variant rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md" placeholder="Search PID, status, or researcher..." type="text"/>
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+</div>
+<!-- Chips Row (Scrollable) -->
+<div class="flex gap-sm overflow-x-auto pb-2 custom-scrollbar no-scrollbar">
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-primary-container text-on-primary-container text-label-md font-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                    All Cases
+                </button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant text-label-md font-label-md hover:bg-surface-container-highest transition-colors">
+                    Active
+                </button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant text-label-md font-label-md hover:bg-surface-container-highest transition-colors">
+                    Anomalies
+                </button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant text-label-md font-label-md hover:bg-surface-container-highest transition-colors">
+                    High Score
+                </button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant text-label-md font-label-md hover:bg-surface-container-highest transition-colors">
+                    Historical
+                </button>
+</div>
+</section>
+<!-- AI Insights (Glassmorphism Overlay Style) -->
+<section class="mb-lg rounded-xl overflow-hidden border-l-4 border-secondary shadow-sm bg-surface-container-low p-md">
+<div class="flex items-center justify-between mb-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h2 class="text-label-md font-label-md text-secondary uppercase tracking-wider">AI Summary</h2>
+</div>
+<span class="text-label-md font-label-md text-outline">Just now</span>
+</div>
+<p class="text-body-md text-on-surface mb-md">
+                3 research anomalies detected in <span class="font-bold">Project Alpha</span>. Significant score variance identified in PID-9022.
+            </p>
+<div class="flex gap-sm">
+<button class="text-label-md font-label-md text-primary flex items-center gap-1 hover:underline">
+                    View Details <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Mobile Data Grid (Spreadsheet Layout) -->
+<div class="space-y-md">
+<div class="flex items-center justify-between px-2">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Data Explorer</h3>
+<span class="text-label-md font-label-md text-outline">48 Results</span>
+</div>
+<!-- Sticky Header Emulation for the List -->
+<div class="sticky top-16 bg-background z-40 py-2 border-b border-outline-variant flex items-center text-label-md font-label-md text-on-surface-variant px-md uppercase tracking-tight">
+<div class="flex-1">ID / Timestamp</div>
+<div class="w-20 text-center">Score</div>
+<div class="w-12 text-right">Stat</div>
+</div>
+<!-- Data Rows (Collapsible Cards) -->
+<div class="space-y-sm">
+<!-- Card 1 -->
+<div class="group bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-sm transition-all active:scale-[0.98]" onclick="this.classList.toggle('expanded')">
+<div class="p-md flex items-center justify-between cursor-pointer">
+<div class="flex-1">
+<div class="font-label-md text-primary">PID-9022</div>
+<div class="text-label-md text-outline">Oct 24, 09:12 AM</div>
+</div>
+<div class="w-20 text-center">
+<span class="font-label-md text-headline-sm text-on-surface">94.2</span>
+</div>
+<div class="w-12 flex justify-end">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary"></div>
+</div>
+</div>
+<!-- Expanded Details (Progressive Disclosure) -->
+<div class="hidden group-[.expanded]:block px-md pb-md border-t border-outline-variant/20 pt-md bg-surface-container-low/50">
+<div class="grid grid-cols-2 gap-md mb-md">
+<div>
+<span class="text-label-md font-label-md text-outline block uppercase">Researcher</span>
+<span class="text-body-md font-medium">Dr. Aris Thorne</span>
+</div>
+<div>
+<span class="text-label-md font-label-md text-outline block uppercase">Category</span>
+<span class="text-body-md font-medium">Bio-metrics</span>
+</div>
+</div>
+<div class="p-md bg-white rounded-lg border border-outline-variant/20">
+<span class="text-label-md font-label-md text-outline block mb-xs uppercase">Insight</span>
+<p class="text-body-md italic text-on-surface-variant leading-tight">"Anomaly detected in neural oscillation patterns. Suggests cognitive load exceedance."</p>
+</div>
+<div class="flex justify-end mt-md gap-sm">
+<button class="px-4 py-2 text-label-md font-label-md border border-outline-variant rounded-lg hover:bg-surface-container-high">Export</button>
+<button class="px-4 py-2 text-label-md font-label-md bg-primary text-on-primary rounded-lg">View Full</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-sm transition-all active:scale-[0.98]" onclick="this.classList.toggle('expanded')">
+<div class="p-md flex items-center justify-between cursor-pointer">
+<div class="flex-1">
+<div class="font-label-md text-primary">PID-8841</div>
+<div class="text-label-md text-outline">Oct 23, 11:45 PM</div>
+</div>
+<div class="w-20 text-center">
+<span class="font-label-md text-headline-sm text-on-surface">71.5</span>
+</div>
+<div class="w-12 flex justify-end">
+<div class="w-2.5 h-2.5 rounded-full bg-error"></div>
+</div>
+</div>
+<div class="hidden group-[.expanded]:block px-md pb-md border-t border-outline-variant/20 pt-md bg-surface-container-low/50">
+<div class="grid grid-cols-2 gap-md mb-md">
+<div>
+<span class="text-label-md font-label-md text-outline block uppercase">Researcher</span>
+<span class="text-body-md font-medium">Sarah Jenkins</span>
+</div>
+<div>
+<span class="text-label-md font-label-md text-outline block uppercase">Category</span>
+<span class="text-body-md font-medium">Validation</span>
+</div>
+</div>
+<p class="text-body-md text-on-surface-variant">Row requires manual re-evaluation due to sensor disconnect during logging.</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-sm transition-all active:scale-[0.98]" onclick="this.classList.toggle('expanded')">
+<div class="p-md flex items-center justify-between cursor-pointer">
+<div class="flex-1">
+<div class="font-label-md text-primary">PID-8729</div>
+<div class="text-label-md text-outline">Oct 23, 04:30 PM</div>
+</div>
+<div class="w-20 text-center">
+<span class="font-label-md text-headline-sm text-on-surface">88.0</span>
+</div>
+<div class="w-12 flex justify-end">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary"></div>
+</div>
+</div>
+<div class="hidden group-[.expanded]:block px-md pb-md border-t border-outline-variant/20 pt-md bg-surface-container-low/50">
+<div class="grid grid-cols-2 gap-md mb-md">
+<div>
+<span class="text-label-md font-label-md text-outline block uppercase">Researcher</span>
+<span class="text-body-md font-medium">Wigana Alpha-Bot</span>
+</div>
+<div>
+<span class="text-label-md font-label-md text-outline block uppercase">Category</span>
+<span class="text-body-md font-medium">Automated</span>
+</div>
+</div>
+<p class="text-body-md text-on-surface-variant">Routine baseline capture. Data integrity verified 100%.</p>
+</div>
+</div>
+<!-- Card 4 (Placeholder Image as Data Visual) -->
+<div class="relative w-full h-40 rounded-xl overflow-hidden shadow-sm group">
+<img class="w-full h-full object-cover" data-alt="A clean, professional data dashboard visualization with sharp, high-contrast line charts and bar graphs in shades of professional blue and emerald green. The background is a crisp light-mode gray-white with subtle grid lines. The lighting is soft and even, creating an atmosphere of clinical precision and intellectual rigor. No people are present, focusing entirely on the digital interface's data patterns." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9YJoZj1fvdAZyRbiXnZ98TNnkd0LLMmaSBdizyG3jimd8c19j6zx8N9-mqdyknykU45U6KwgVWSJrksCAccV_c3Hcxn-GNKrrPNCN7o5fBWedNA7U0NJp_IwDZqgXP-JpdHTJeJqelNqJ4fSnqnJ9CxITarm04kAACp5Ii8BI-ltUoZRGeVnHpV7yFIumnBk9lJ4O1zU0ZG1SIgiqsLgj984HTm-uoiKPYM_2-UAfCVY4xFcHcc-XSNUk2a6-7cI57IU7dfYPv1Nt"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent flex flex-col justify-end p-md text-white">
+<div class="font-label-md uppercase tracking-widest text-[10px] opacity-80">Weekly Trend</div>
+<div class="font-headline-sm text-headline-sm">Efficiency +12.4%</div>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="group bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-sm transition-all active:scale-[0.98]" onclick="this.classList.toggle('expanded')">
+<div class="p-md flex items-center justify-between cursor-pointer">
+<div class="flex-1">
+<div class="font-label-md text-primary">PID-8550</div>
+<div class="text-label-md text-outline">Oct 22, 10:00 AM</div>
+</div>
+<div class="w-20 text-center">
+<span class="font-label-md text-headline-sm text-on-surface">62.1</span>
+</div>
+<div class="w-12 flex justify-end">
+<div class="w-2.5 h-2.5 rounded-full bg-tertiary-container"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB for Action -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-2xl shadow-xl flex items-center justify-center active:scale-90 transition-transform z-40">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface/80 backdrop-blur-xl border-t border-outline-variant/20 shadow-lg rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-label-md text-label-md">Data</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Analysis</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<!-- Navigation Drawer (Hidden initially, can be toggled by JS) -->
+<aside class="fixed inset-y-0 left-0 w-80 z-[60] bg-surface-container-low shadow-2xl transition-transform duration-300 -translate-x-full overflow-y-auto rounded-r-xl" id="nav-drawer">
+<div class="p-lg flex items-center gap-md border-b border-outline-variant/20">
+<div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-on-primary font-bold">W</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary leading-tight">Wigana Research</h4>
+<p class="text-label-md text-outline">Enterprise Tier</p>
+</div>
+</div>
+<div class="py-md flex flex-col gap-base">
+<a class="bg-secondary-container text-on-secondary-container rounded-lg mx-2 px-4 py-3 flex items-center gap-4" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-body-md text-body-md">AI Assistant</span>
+</a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 flex items-center gap-4 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">error_outline</span>
+<span class="font-body-md text-body-md">Research Anomalies</span>
+</a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 flex items-center gap-4 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-body-md text-body-md">Key Metrics</span>
+</a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 flex items-center gap-4 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-body-md text-body-md">Project History</span>
+</a>
+</div>
+<div class="absolute bottom-4 left-4 right-4 p-md bg-surface-container-high rounded-xl">
+<span class="text-label-md font-label-md text-outline uppercase block mb-xs">Active Project</span>
+<span class="font-medium text-on-surface">Project Alpha v4.2</span>
+</div>
+</aside>
+<!-- Overlay for Drawer -->
+<div class="fixed inset-0 bg-black/30 backdrop-blur-sm z-[55] hidden" id="drawer-overlay" onclick="toggleDrawer()"></div>
+<script>
+        function toggleDrawer() {
+            const drawer = document.getElementById('nav-drawer');
+            const overlay = document.getElementById('drawer-overlay');
+            const isOpen = !drawer.classList.contains('-translate-x-full');
+            
+            if (isOpen) {
+                drawer.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                drawer.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            }
+        }
+
+        // Connect the logo to open the drawer
+        document.querySelector('header .flex.items-center.gap-3').addEventListener('click', toggleDrawer);
+    </script>
+</body></html>

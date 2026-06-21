@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Report Generator | WRT</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter & Hanken Grotesk & JetBrains Mono -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Hanken+Grotesk:wght@600;700&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#6ffbbe",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "surface-container-highest": "#d3e4fe",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed": "#001946",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "surface-variant": "#d3e4fe",
+                    "primary-fixed": "#d2e4ff",
+                    "error": "#ba1a1a",
+                    "primary": "#0061a5",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary-container": "#0cb880",
+                    "background": "#f8f9ff",
+                    "surface-container-low": "#eff4ff",
+                    "outline-variant": "#c0c7d4",
+                    "on-surface": "#0b1c30",
+                    "inverse-primary": "#a0caff",
+                    "on-tertiary-fixed": "#002113",
+                    "tertiary": "#006c49",
+                    "surface-container-high": "#dce9ff",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#b1c5ff",
+                    "secondary-fixed": "#dae2ff",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#0061a5",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#a0caff",
+                    "surface": "#f8f9ff",
+                    "on-primary-fixed-variant": "#00497e",
+                    "on-primary-fixed": "#001c37",
+                    "outline": "#707783",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-container": "#036cfb",
+                    "surface-container": "#e5eeff",
+                    "on-primary-container": "#003a67",
+                    "on-secondary-fixed-variant": "#00419e",
+                    "primary-container": "#4da6ff",
+                    "on-secondary-container": "#fefcff",
+                    "on-tertiary-container": "#00412b",
+                    "secondary": "#0055c9",
+                    "on-surface-variant": "#404752",
+                    "on-background": "#0b1c30"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "panel-sidebar": "280px",
+                    "stack-gap": "16px",
+                    "gutter": "24px",
+                    "panel-inspector": "320px",
+                    "panel-content": "1fr",
+                    "container-padding": "32px"
+            },
+            "fontFamily": {
+                    "label-caps": ["Inter"],
+                    "title-sm": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "body-sm": ["Inter"],
+                    "data-mono": ["JetBrains Mono"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "title-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "data-mono": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .preview-shadow {
+            box-shadow: 0 4px 20px rgba(13, 110, 253, 0.04);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #dce9ff;
+            border-radius: 10px;
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen overflow-hidden font-body-md text-body-md">
+<!-- TopNavBar -->
+<nav class="bg-surface border-b border-outline-variant flex justify-between items-center w-full px-container-padding h-16 z-50 fixed top-0">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg font-bold text-primary tracking-tighter">WRT</span>
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors" href="#">Datasets</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors" href="#">Analysis</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors" href="#">Models</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors" href="#">Library</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:outline-none focus:border-primary-container focus:ring-2 ring-primary-container/20 text-body-sm font-body-sm w-64" placeholder="Search templates..." type="text"/>
+</div>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-xs border border-outline-variant">
+                RP
+            </div>
+</div>
+</nav>
+<!-- SideNavBar (Left) -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 pt-20 pb-8 px-4 z-40 w-panel-sidebar glass-panel border-r border-outline-variant">
+<div class="mb-6 px-2">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">WRT</h2>
+<p class="text-body-sm font-body-sm text-outline">V2.4 Enterprise</p>
+</div>
+<button class="mb-8 w-full bg-primary text-on-primary py-3 px-4 rounded-lg font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined">add</span>
+            New Analysis
+        </button>
+<nav class="flex-1 space-y-1 overflow-y-auto custom-scrollbar">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps">Workspace</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="font-label-caps text-label-caps">Active Projects</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined">table_chart</span>
+<span class="font-label-caps text-label-caps">Raw Data</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-caps text-label-caps">Statistical Models</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg font-semibold shadow-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">ios_share</span>
+<span class="font-label-caps text-label-caps">Export Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-caps text-label-caps">Archived</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-outline-variant/30 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-caps text-label-caps">Documentation</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[280px] mr-[320px] pt-20 px-8 h-screen overflow-y-auto custom-scrollbar pb-12">
+<!-- Header -->
+<header class="mb-10 flex justify-between items-end">
+<div>
+<nav class="flex items-center gap-2 text-outline text-label-caps font-label-caps mb-2">
+<span>PROJECTS</span>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<span>Q4 NEUROMORPHIC STUDIES</span>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<span class="text-primary">REPORT GENERATOR</span>
+</nav>
+<h1 class="font-headline-md text-headline-md text-on-surface">Generate Publication Report</h1>
+<p class="text-on-surface-variant mt-1">Configure and export your research findings using standard academic formats.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-container-highest text-on-primary-container px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:bg-primary-container/40 transition-colors">
+<span class="material-symbols-outlined">save</span>
+                    Save Draft
+                </button>
+<div class="relative group">
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined">download</span>
+                        Export Report
+                        <span class="material-symbols-outlined">expand_more</span>
+</button>
+<div class="absolute right-0 top-full mt-2 w-48 bg-surface-container-lowest border border-outline-variant shadow-xl rounded-xl py-2 invisible group-hover:visible z-50">
+<div class="px-4 py-1 text-label-caps font-label-caps text-outline border-b border-outline-variant/10 mb-1">Select Format</div>
+<a class="flex items-center gap-3 px-4 py-2 hover:bg-surface-container-low text-on-surface text-body-sm" href="#">
+<span class="material-symbols-outlined text-red-500">picture_as_pdf</span> PDF Document (.pdf)
+                        </a>
+<a class="flex items-center gap-3 px-4 py-2 hover:bg-surface-container-low text-on-surface text-body-sm" href="#">
+<span class="material-symbols-outlined text-blue-500">description</span> Word Document (.docx)
+                        </a>
+<a class="flex items-center gap-3 px-4 py-2 hover:bg-surface-container-low text-on-surface text-body-sm" href="#">
+<span class="material-symbols-outlined text-green-600">table_view</span> Excel Sheet (.xlsx)
+                        </a>
+<a class="flex items-center gap-3 px-4 py-2 hover:bg-surface-container-low text-on-surface text-body-sm" href="#">
+<span class="material-symbols-outlined text-orange-500">csv</span> CSV Data (.csv)
+                        </a>
+</div>
+</div>
+</div>
+</header>
+<!-- Template Selector -->
+<section class="mb-10">
+<h3 class="font-title-sm text-title-sm text-on-surface mb-6">Select Report Template</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Template Card -->
+<button class="group bg-surface-container-lowest border-2 border-primary rounded-xl p-5 text-left transition-all hover:shadow-lg relative overflow-hidden ring-4 ring-primary/5">
+<div class="absolute top-3 right-3 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="w-12 h-12 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined">science</span>
+</div>
+<h4 class="font-bold text-on-surface mb-1">Research Report</h4>
+<p class="text-body-sm text-outline-variant">Standard empirical study format with abstract and methodology.</p>
+</button>
+<button class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-5 text-left transition-all hover:border-primary hover:shadow-lg">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant mb-4 group-hover:bg-primary-container/20 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">history_edu</span>
+</div>
+<h4 class="font-bold text-on-surface mb-1">Thesis / Dissertation</h4>
+<p class="text-body-sm text-outline-variant">Comprehensive academic structure with chapters and bibliography.</p>
+</button>
+<button class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-5 text-left transition-all hover:border-primary hover:shadow-lg">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant mb-4 group-hover:bg-primary-container/20 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">article</span>
+</div>
+<h4 class="font-bold text-on-surface mb-1">Journal Article</h4>
+<p class="text-body-sm text-outline-variant">Optimized for peer-reviewed publication formats (APA/IEEE).</p>
+</button>
+<button class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-5 text-left transition-all hover:border-primary hover:shadow-lg">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant mb-4 group-hover:bg-primary-container/20 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">corporate_fare</span>
+</div>
+<h4 class="font-bold text-on-surface mb-1">Institution Summary</h4>
+<p class="text-body-sm text-outline-variant">Executive high-level summary for stakeholder presentation.</p>
+</button>
+</div>
+</section>
+<!-- Preview & Customization Grid -->
+<div class="grid grid-cols-12 gap-8 items-start">
+<!-- Preview Column -->
+<div class="col-span-7">
+<div class="flex items-center justify-between mb-4 px-2">
+<h3 class="font-title-sm text-title-sm text-on-surface">Interactive Preview</h3>
+<div class="flex items-center gap-4 bg-surface-container-low p-1 rounded-lg border border-outline-variant/30">
+<button class="p-1.5 rounded bg-surface-container-lowest shadow-sm">
+<span class="material-symbols-outlined text-[18px]">zoom_in</span>
+</button>
+<span class="text-body-sm font-data-mono">100%</span>
+<button class="p-1.5 rounded hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-[18px]">zoom_out</span>
+</button>
+</div>
+</div>
+<!-- Mockup Paper Sheet -->
+<div class="bg-white rounded-lg shadow-xl border border-outline-variant/20 p-12 min-h-[800px] preview-shadow transition-transform hover:scale-[1.01] duration-500">
+<div class="w-full h-full">
+<div class="text-center mb-16">
+<div class="text-label-caps font-label-caps text-outline tracking-widest mb-4">CONFIDENTIAL RESEARCH REPORT</div>
+<h2 class="font-display-lg text-display-lg text-on-surface leading-tight mb-6">Comparative Analysis of Neuromorphic Architectures in Edge Computing</h2>
+<p class="font-body-md text-on-surface-variant max-w-lg mx-auto italic mb-4">WRT Analytical Report Series — Volume 4, Q4 2023</p>
+<div class="flex justify-center gap-8 mt-10">
+<div>
+<p class="text-label-caps font-label-caps text-outline">AUTHOR</p>
+<p class="font-bold">Dr. Elena Rodriguez</p>
+</div>
+<div class="w-px h-8 bg-outline-variant"></div>
+<div>
+<p class="text-label-caps font-label-caps text-outline">DATE</p>
+<p class="font-bold">November 12, 2023</p>
+</div>
+</div>
+</div>
+<div class="space-y-8">
+<div>
+<h3 class="font-title-sm text-title-sm border-b border-primary/20 pb-2 mb-4 text-primary">I. Executive Abstract</h3>
+<p class="text-body-md text-on-surface-variant leading-relaxed">
+                                    This study investigates the operational efficiency of SNN-based neuromorphic cores versus traditional RISC-V architectures when deployed for real-time sensor fusion tasks. Initial findings suggest a 40% reduction in power consumption...
+                                </p>
+</div>
+<div class="grid grid-cols-2 gap-4 h-48 bg-surface-container-lowest border border-dashed border-outline-variant rounded-lg items-center justify-center">
+<div class="text-center p-4">
+<div class="w-full h-32 bg-primary/5 rounded mb-2 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary/30 text-4xl">bar_chart</span>
+</div>
+<p class="text-label-caps font-label-caps text-outline">FIG 1. Power Distribution</p>
+</div>
+<div class="text-center p-4">
+<div class="w-full h-32 bg-primary/5 rounded mb-2 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary/30 text-4xl">show_chart</span>
+</div>
+<p class="text-label-caps font-label-caps text-outline">FIG 2. Latency Benchmarks</p>
+</div>
+</div>
+<div>
+<h3 class="font-title-sm text-title-sm border-b border-primary/20 pb-2 mb-4 text-primary">II. Methodology</h3>
+<div class="space-y-3">
+<div class="h-4 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary/10 w-3/4"></div>
+</div>
+<div class="h-4 w-5/6 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary/10 w-1/2"></div>
+</div>
+<div class="h-4 w-4/6 bg-surface-container-high rounded-full overflow-hidden"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Settings Column -->
+<div class="col-span-5 space-y-6">
+<!-- Customization Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+<div class="flex items-center gap-2 mb-6 text-primary">
+<span class="material-symbols-outlined">tune</span>
+<h3 class="font-title-sm text-title-sm">Report Settings</h3>
+</div>
+<div class="space-y-6">
+<!-- Branding -->
+<div>
+<label class="font-label-caps text-label-caps text-outline mb-2 block">INSTITUTIONAL BRANDING</label>
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg border-2 border-dashed border-outline-variant flex items-center justify-center group cursor-pointer hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-primary">upload</span>
+</div>
+<div>
+<p class="font-bold text-body-sm">Wigana Logo (Default)</p>
+<button class="text-primary text-[12px] font-bold hover:underline">Replace Logo</button>
+</div>
+</div>
+</div>
+<!-- Data Inclusions -->
+<div>
+<label class="font-label-caps text-label-caps text-outline mb-3 block">CONTENT SECTIONS</label>
+<div class="space-y-3">
+<label class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<span class="text-body-sm font-semibold">Raw Data Appendix</span>
+</div>
+<input checked="" class="rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">menu_book</span>
+<span class="text-body-sm font-semibold">Citations &amp; Reference List</span>
+</div>
+<input checked="" class="rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">psychology</span>
+<span class="text-body-sm font-semibold">AI Insight Summary</span>
+</div>
+<input class="rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+</label>
+</div>
+</div>
+<!-- Formatting -->
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="font-label-caps text-label-caps text-outline mb-2 block">CITATIONS STYLE</label>
+<select class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-body-sm focus:ring-2 ring-primary-container/20 focus:border-primary">
+<option>APA 7th Edition</option>
+<option>IEEE Standard</option>
+<option>Harvard Bluebook</option>
+<option>Chicago Style</option>
+</select>
+</div>
+<div>
+<label class="font-label-caps text-label-caps text-outline mb-2 block">ORIENTATION</label>
+<div class="flex bg-surface-container-low border border-outline-variant rounded-lg p-1">
+<button class="flex-1 py-1 rounded bg-surface-container-lowest shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">portrait</span>
+</button>
+<button class="flex-1 py-1 rounded hover:bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">landscape</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Export Presets -->
+<div class="bg-inverse-surface text-inverse-on-surface rounded-xl p-6 shadow-lg">
+<h4 class="font-title-sm text-title-sm mb-4">Output Profiles</h4>
+<div class="space-y-4">
+<div class="p-3 bg-white/10 rounded-lg border border-white/10 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary-fixed">verified</span>
+<div>
+<p class="font-bold text-body-sm">Final Submission</p>
+<p class="text-[11px] opacity-60">High-res PDF + Word Edit Source</p>
+</div>
+</div>
+<span class="material-symbols-outlined opacity-40">chevron_right</span>
+</div>
+<div class="p-3 hover:bg-white/5 rounded-lg border border-transparent flex items-center justify-between cursor-pointer transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined opacity-60">backup</span>
+<div>
+<p class="font-bold text-body-sm">Data Archive</p>
+<p class="text-[11px] opacity-60">CSV + SAV + XLSX package</p>
+</div>
+</div>
+<span class="material-symbols-outlined opacity-40">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- SideNavBar (Right) / Insight Panel -->
+<aside class="flex flex-col h-screen fixed right-0 top-0 pt-20 px-6 z-40 w-panel-inspector bg-surface-container-lowest border-l border-outline-variant shadow-sm overflow-y-auto custom-scrollbar">
+<div class="mb-8">
+<h3 class="font-title-sm text-title-sm font-semibold text-tertiary mb-1">Insight Panel</h3>
+<p class="text-body-sm font-body-sm text-outline">AI Ready</p>
+</div>
+<div class="space-y-6">
+<!-- AI Suggestion -->
+<div class="bg-tertiary/5 border-l-4 border-tertiary p-4 rounded-r-lg">
+<div class="flex items-center gap-2 text-tertiary mb-2">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span class="font-label-caps text-label-caps">AI SUGGESTION</span>
+</div>
+<p class="text-body-sm text-on-surface leading-snug">"Methodology section length is below journal average for NEUR-402 standards. Consider expanding Chapter 2."</p>
+<button class="mt-3 text-tertiary text-[11px] font-bold uppercase hover:underline">Apply Recommendation</button>
+</div>
+<!-- Health Meter -->
+<div class="p-4 border border-outline-variant/30 rounded-xl">
+<div class="flex items-center justify-between mb-4">
+<span class="font-label-caps text-label-caps text-outline">REPORT COMPLETENESS</span>
+<span class="font-data-mono text-primary">82%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[82%]"></div>
+</div>
+<div class="mt-4 space-y-2">
+<div class="flex items-center gap-2 text-[12px] text-on-surface-variant">
+<span class="material-symbols-outlined text-tertiary text-[16px]">check</span>
+                        Metadata verified
+                    </div>
+<div class="flex items-center gap-2 text-[12px] text-on-surface-variant">
+<span class="material-symbols-outlined text-tertiary text-[16px]">check</span>
+                        Assets linked
+                    </div>
+<div class="flex items-center gap-2 text-[12px] text-on-surface-variant">
+<span class="material-symbols-outlined text-error text-[16px]">warning</span>
+                        3 Citation links broken
+                    </div>
+</div>
+</div>
+<!-- Live Logs -->
+<div>
+<h4 class="font-label-caps text-label-caps text-outline mb-3">SYSTEM ACTIVITY</h4>
+<div class="space-y-3 font-data-mono text-[10px]">
+<div class="flex gap-2">
+<span class="text-outline">14:22:10</span>
+<span class="text-on-surface">PREVIEW_GEN_SUCCESS</span>
+</div>
+<div class="flex gap-2">
+<span class="text-outline">14:21:45</span>
+<span class="text-on-surface">XREF_CHECKING_BIB...</span>
+</div>
+<div class="flex gap-2">
+<span class="text-outline">14:20:02</span>
+<span class="text-tertiary">ASYNC_AUTO_SAVE_OK</span>
+</div>
+</div>
+</div>
+<!-- Document Management -->
+<div class="pt-6 border-t border-outline-variant/30">
+<h4 class="font-label-caps text-label-caps text-outline mb-4">RECENT VERSIONS</h4>
+<div class="space-y-2">
+<div class="p-2 rounded hover:bg-surface-container-low flex items-center justify-between group cursor-pointer">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline">history</span>
+<span class="text-[12px]">v2.1_PeerReview</span>
+</div>
+<span class="text-[10px] text-outline group-hover:text-primary">Restore</span>
+</div>
+<div class="p-2 rounded hover:bg-surface-container-low flex items-center justify-between group cursor-pointer">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline">history</span>
+<span class="text-[12px]">v2.0_MajorFix</span>
+</div>
+<span class="text-[10px] text-outline group-hover:text-primary">Restore</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Notification Toast (Static for Demo) -->
+<div class="fixed bottom-8 right-84 z-[100] flex flex-col gap-3 pointer-events-none">
+<div class="bg-on-background text-surface rounded-lg p-4 shadow-2xl flex items-center gap-4 animate-bounce">
+<div class="w-2 h-2 rounded-full bg-tertiary-fixed animate-pulse"></div>
+<p class="text-body-sm font-semibold">Report is being generated for export...</p>
+</div>
+</div>
+</body></html>

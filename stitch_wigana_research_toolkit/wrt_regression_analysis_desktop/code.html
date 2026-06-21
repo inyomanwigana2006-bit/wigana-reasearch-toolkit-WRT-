@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WRT - Regression Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#003ea8",
+                    "surface-container-highest": "#d8e3fb",
+                    "on-tertiary-fixed": "#2a1700",
+                    "surface": "#f9f9ff",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-tertiary": "#ffffff",
+                    "surface-tint": "#0053db",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "secondary-fixed-dim": "#4edea3",
+                    "secondary": "#006c49",
+                    "on-surface": "#111c2d",
+                    "error-container": "#ffdad6",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#996100",
+                    "surface-bright": "#f9f9ff",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#2563eb",
+                    "secondary-container": "#6cf8bb",
+                    "on-primary-container": "#eeefff",
+                    "on-error": "#ffffff",
+                    "surface-dim": "#cfdaf2",
+                    "primary": "#004ac6",
+                    "on-surface-variant": "#434655",
+                    "on-secondary-fixed": "#002113",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#dbe1ff",
+                    "on-secondary-container": "#00714d",
+                    "tertiary-fixed": "#ffddb8",
+                    "on-tertiary-container": "#ffeedd",
+                    "on-secondary-fixed-variant": "#005236",
+                    "surface-variant": "#d8e3fb",
+                    "inverse-surface": "#263143",
+                    "surface-container": "#e7eeff",
+                    "surface-container-low": "#f0f3ff",
+                    "inverse-primary": "#b4c5ff",
+                    "outline-variant": "#c3c6d7",
+                    "secondary-fixed": "#6ffbbe",
+                    "outline": "#737686",
+                    "inverse-on-surface": "#ecf1ff",
+                    "tertiary": "#784b00",
+                    "surface-container-high": "#dee8ff",
+                    "background": "#f9f9ff",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed": "#00174b",
+                    "error": "#ba1a1a",
+                    "on-background": "#111c2d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "xl": "32px",
+                    "sm": "8px",
+                    "lg": "24px",
+                    "container-padding": "16px",
+                    "base": "4px",
+                    "gutter": "12px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "label-md": ["JetBrains Mono"],
+                    "body-md": ["Hanken Grotesk"],
+                    "headline-sm": ["Hanken Grotesk"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .status-stripe-green { border-left: 4px solid #006c49; }
+        .status-stripe-blue { border-left: 4px solid #004ac6; }
+        .brand-gradient {
+            background: linear-gradient(135deg, #004ac6 0%, #2563eb 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d8e3fb; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex overflow-hidden">
+<!-- Sidebar (Shared Component) -->
+<aside class="hidden md:flex flex-col h-screen w-64 bg-surface-container shadow-sm z-50">
+<div class="p-lg flex items-center gap-sm">
+<div class="w-10 h-10 brand-gradient rounded-lg flex items-center justify-center text-white font-bold text-headline-md">W</div>
+<div>
+<h1 class="text-headline-md font-bold text-primary">WRT</h1>
+<p class="text-label-md font-label-md text-on-surface-variant leading-none">Research Toolkit</p>
+</div>
+</div>
+<div class="px-md mt-md">
+<button class="w-full brand-gradient text-white py-sm px-md rounded-xl font-bold flex items-center justify-center gap-sm shadow-md hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">add</span>
+                New Research
+            </button>
+</div>
+<nav class="flex-1 mt-lg space-y-1 px-sm overflow-y-auto">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="font-body-md">Projects</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary font-bold border-l-4 border-primary bg-primary-container/10" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-body-md">Analysis</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-body-md">Datasets</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md">Archives</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+</nav>
+<div class="p-md space-y-1 border-t border-outline-variant/30">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md">Help</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-label-md">Support</span>
+</a>
+</div>
+</aside>
+<div class="flex-1 flex flex-col min-w-0">
+<!-- Top App Bar (Shared Component) -->
+<header class="w-full h-16 sticky top-0 bg-surface/80 backdrop-blur-md flex justify-between items-center px-lg z-40 shadow-sm">
+<div class="flex items-center gap-lg">
+<h2 class="font-headline-sm text-on-surface font-bold">WRT - Regression Analysis</h2>
+<div class="hidden lg:flex gap-md">
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">Team</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">Reports</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden sm:flex items-center gap-sm">
+<button class="text-on-surface-variant hover:text-primary p-xs rounded-full transition-transform active:scale-90">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary p-xs rounded-full transition-transform active:scale-90">
+<span class="material-symbols-outlined">history</span>
+</button>
+</div>
+<div class="h-8 w-px bg-outline-variant/50 mx-xs"></div>
+<button class="px-md py-sm text-on-surface-variant font-label-md hover:text-primary border border-outline-variant rounded-lg transition-transform active:scale-95">Export</button>
+<button class="px-md py-sm brand-gradient text-white font-label-md rounded-lg shadow-sm transition-transform active:scale-95">Run Regression</button>
+<img alt="User Profile" class="w-8 h-8 rounded-full border-2 border-primary-container object-cover" data-alt="A professional headshot of a middle-aged academic researcher with a thoughtful expression. He is wearing a minimalist navy blue blazer against a clean, softly lit white background that matches a high-end corporate modernism aesthetic. The lighting is bright and even, highlighting a sense of expertise and intellectual rigor within the workspace environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIT5iReYtqu72Kv6kNsDT5iI4PzbQOxWnpynN9lM933pT75zu8pZWWPwUMLF2V_79I2G2daWXq_Pa0vqibdmdfXpNGD4ip2-yrcuR2lcyYtGMJUCl8C0r59ojUjD-_WG0dyjdfeRMiiuX6alDVxDUFsXsgFWLyU4TkVbm-qS5RUG2OHw4jGWfEPHqa0REGHVTxP11YJ8LsQ84pK9CYalc-OS-qeLtG4FQbxkjOmBSpX-eWnalRXqfqUG0h5MSbFm_L1bKedl0B3aX5"/>
+</div>
+</header>
+<!-- Main Content Area: 3-Panel Layout -->
+<main class="flex-1 flex overflow-hidden p-md gap-md">
+<!-- Center Workspace (Statistical Summary + Table + Visuals) -->
+<div class="flex-1 flex flex-col gap-md overflow-y-auto pr-sm custom-scrollbar">
+<!-- Summary Stats Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md">
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm status-stripe-blue">
+<p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">R-Squared</p>
+<h3 class="text-display-lg font-display-lg text-primary">0.842</h3>
+<div class="flex items-center gap-xs text-secondary mt-xs">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+<span class="text-label-md font-label-md">+4.2% from last model</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm status-stripe-blue">
+<p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Adj. R-Squared</p>
+<h3 class="text-display-lg font-display-lg text-primary">0.821</h3>
+<p class="text-label-md font-label-md text-on-surface-variant mt-xs">Penalized for 14 predictors</p>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm border-l-4 border-surface-dim">
+<p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">F-Statistic</p>
+<h3 class="text-display-lg font-display-lg text-on-surface">112.4</h3>
+<p class="text-label-md font-label-md text-secondary mt-xs">p-val &lt; 0.001</p>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm border-l-4 border-surface-dim">
+<p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Durbin-Watson</p>
+<h3 class="text-display-lg font-display-lg text-on-surface">1.98</h3>
+<p class="text-label-md font-label-md text-secondary mt-xs">Optimal Autocorrelation</p>
+</div>
+</div>
+<!-- Predictor Coefficients Table -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-outline-variant/20">
+<div class="p-md border-b border-outline-variant/10 flex justify-between items-center">
+<h4 class="font-headline-sm text-on-surface">Predictor Coefficients</h4>
+<div class="flex gap-sm">
+<button class="p-xs hover:bg-surface-container-high rounded-full"><span class="material-symbols-outlined text-on-surface-variant">filter_list</span></button>
+<button class="p-xs hover:bg-surface-container-high rounded-full"><span class="material-symbols-outlined text-on-surface-variant">download</span></button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-label-md font-label-md text-on-surface-variant">
+<th class="px-md py-sm">Predictor Variable</th>
+<th class="px-md py-sm">Std. Beta</th>
+<th class="px-md py-sm">T-Value</th>
+<th class="px-md py-sm">P-Value</th>
+<th class="px-md py-sm text-center">Sig.</th>
+</tr>
+</thead>
+<tbody class="text-body-md font-body-md">
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container transition-colors">
+<td class="px-md py-md font-medium text-on-surface">Intercept</td>
+<td class="px-md py-md text-on-surface-variant">—</td>
+<td class="px-md py-md text-on-surface-variant">4.12</td>
+<td class="px-md py-md text-on-surface-variant">&lt;0.001</td>
+<td class="px-md py-md text-center"><span class="px-sm py-xs bg-secondary/10 text-secondary rounded-full font-label-md">***</span></td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container transition-colors">
+<td class="px-md py-md font-medium text-on-surface">Market_Volatility_Idx</td>
+<td class="px-md py-md text-on-surface font-semibold">0.452</td>
+<td class="px-md py-md text-on-surface-variant">8.92</td>
+<td class="px-md py-md text-on-surface-variant">0.002</td>
+<td class="px-md py-md text-center"><span class="px-sm py-xs bg-secondary/10 text-secondary rounded-full font-label-md">**</span></td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container transition-colors">
+<td class="px-md py-md font-medium text-on-surface">Consumer_Sentiment</td>
+<td class="px-md py-md text-on-surface font-semibold">0.318</td>
+<td class="px-md py-md text-on-surface-variant">5.41</td>
+<td class="px-md py-md text-on-surface-variant">0.012</td>
+<td class="px-md py-md text-center"><span class="px-sm py-xs bg-secondary/10 text-secondary rounded-full font-label-md">*</span></td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container transition-colors">
+<td class="px-md py-md font-medium text-on-surface">Geopolitical_Risk_Score</td>
+<td class="px-md py-md text-on-surface font-semibold">-0.124</td>
+<td class="px-md py-md text-on-surface-variant">-1.84</td>
+<td class="px-md py-md text-on-surface-variant">0.084</td>
+<td class="px-md py-md text-center"><span class="px-sm py-xs bg-surface-container-high text-on-surface-variant rounded-full font-label-md">ns</span></td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container transition-colors">
+<td class="px-md py-md font-medium text-on-surface">Resource_Allocation</td>
+<td class="px-md py-md text-on-surface font-semibold">0.082</td>
+<td class="px-md py-md text-on-surface-variant">1.02</td>
+<td class="px-md py-md text-on-surface-variant">0.241</td>
+<td class="px-md py-md text-center"><span class="px-sm py-xs bg-surface-container-high text-on-surface-variant rounded-full font-label-md">ns</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Visualizations Row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-md">
+<!-- Residual Plot -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm border border-outline-variant/20 min-h-[300px] flex flex-col">
+<div class="flex justify-between items-center mb-md">
+<h4 class="font-headline-sm text-on-surface">Residual Plot</h4>
+<span class="text-label-md font-label-md text-on-surface-variant">Homoscedasticity Check</span>
+</div>
+<div class="flex-1 relative flex items-center justify-center bg-surface-container-low rounded-lg overflow-hidden border border-outline-variant/10">
+<!-- Visual placeholder for a scatter plot -->
+<div class="absolute inset-0 p-lg opacity-40">
+<div class="w-full h-full border-l-2 border-b-2 border-outline-variant relative">
+<div class="absolute w-2 h-2 rounded-full bg-primary" style="top: 20%; left: 15%"></div>
+<div class="absolute w-2 h-2 rounded-full bg-primary" style="top: 45%; left: 25%"></div>
+<div class="absolute w-2 h-2 rounded-full bg-primary" style="top: 10%; left: 40%"></div>
+<div class="absolute w-2 h-2 rounded-full bg-primary" style="top: 60%; left: 55%"></div>
+<div class="absolute w-2 h-2 rounded-full bg-primary" style="top: 30%; left: 70%"></div>
+<div class="absolute w-2 h-2 rounded-full bg-primary" style="top: 50%; left: 85%"></div>
+<div class="absolute w-full h-[2px] bg-error/40 top-1/2"></div>
+</div>
+</div>
+<span class="z-10 font-label-md text-on-surface-variant bg-white/60 px-md py-sm rounded-lg backdrop-blur-sm">Chart Engine Ready</span>
+</div>
+</div>
+<!-- Model Distribution -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm border border-outline-variant/20 min-h-[300px] flex flex-col">
+<div class="flex justify-between items-center mb-md">
+<h4 class="font-headline-sm text-on-surface">Distribution Analysis</h4>
+<span class="text-label-md font-label-md text-on-surface-variant">Normality Curve</span>
+</div>
+<div class="flex-1 relative flex items-center justify-center bg-surface-container-low rounded-lg overflow-hidden border border-outline-variant/10">
+<!-- Visual placeholder for distribution curve -->
+<div class="absolute inset-0 p-lg opacity-40">
+<div class="w-full h-full border-b-2 border-outline-variant flex items-end justify-center">
+<div class="w-4/5 h-4/5 bg-primary/20 rounded-t-full border-t-2 border-primary"></div>
+</div>
+</div>
+<span class="z-10 font-label-md text-on-surface-variant bg-white/60 px-md py-sm rounded-lg backdrop-blur-sm">Distribution Rendering...</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel (AI Narrative Insights) -->
+<aside class="w-80 hidden xl:flex flex-col gap-md">
+<div class="glass-panel rounded-xl shadow-sm border border-secondary/20 p-md flex flex-col h-full status-stripe-green">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h4 class="font-headline-sm text-on-surface">AI Narrative</h4>
+</div>
+<div class="flex-1 overflow-y-auto pr-sm custom-scrollbar space-y-md">
+<section class="bg-secondary/5 rounded-lg p-md">
+<h5 class="text-label-md font-label-md text-secondary uppercase mb-sm">Model Integrity</h5>
+<p class="text-body-md text-on-surface-variant">The current model explains <span class="font-bold text-on-surface">84.2%</span> of the variance. The Durbin-Watson statistic of 1.98 suggests no significant autocorrelation issues, maintaining high reliability for predictive tasks.</p>
+</section>
+<section>
+<h5 class="text-label-md font-label-md text-on-surface-variant uppercase mb-sm">Primary Drivers</h5>
+<ul class="space-y-sm">
+<li class="flex gap-sm p-sm rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="w-6 h-6 flex-shrink-0 bg-secondary/10 text-secondary flex items-center justify-center rounded text-[12px] font-bold">1</div>
+<p class="text-body-md text-on-surface-variant"><span class="font-medium text-on-surface">Market Volatility</span> acts as the dominant positive predictor with a standard beta of 0.452.</p>
+</li>
+<li class="flex gap-sm p-sm rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="w-6 h-6 flex-shrink-0 bg-secondary/10 text-secondary flex items-center justify-center rounded text-[12px] font-bold">2</div>
+<p class="text-body-md text-on-surface-variant"><span class="font-medium text-on-surface">Consumer Sentiment</span> shows a strong secondary correlation (β = 0.318).</p>
+</li>
+</ul>
+</section>
+<section class="bg-tertiary/5 rounded-lg p-md border-l-2 border-tertiary">
+<h5 class="text-label-md font-label-md text-tertiary uppercase mb-sm">Research Alert</h5>
+<p class="text-body-md text-on-surface-variant">Multicollinearity detected between <span class="italic">Market_Volatility</span> and <span class="italic">Consumer_Sentiment</span>. VIF factors &gt; 5.0. Suggest refining predictor list.</p>
+</section>
+<section class="pt-md">
+<button class="w-full py-sm px-md border-2 border-dashed border-outline-variant text-on-surface-variant font-label-md rounded-lg hover:bg-surface-container-high transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">lightbulb</span>
+                                Generate Executive Summary
+                            </button>
+</section>
+</div>
+<div class="mt-md pt-md border-t border-outline-variant/20">
+<div class="flex items-center gap-sm text-label-md font-label-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">update</span>
+                            Last updated: 2 mins ago
+                        </div>
+</div>
+</div>
+</aside>
+</main>
+</div>
+<!-- Micro-interaction Scripts -->
+<script>
+        document.querySelectorAll('.hover\\:bg-surface-container').forEach(row => {
+            row.addEventListener('click', () => {
+                row.classList.toggle('bg-primary-container/5');
+            });
+        });
+
+        // Simple animation logic for visualization bars or dots if needed in future expansion
+    </script>
+</body></html>
